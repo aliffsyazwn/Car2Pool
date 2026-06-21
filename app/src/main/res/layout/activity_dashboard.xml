@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D9D2C5">
+
+    <TextView
+        android:id="@+id/txtDashboardTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:text="Available Rides"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#5D4037"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- You can add a filter/search EditText here for the Extra Feature requirement -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewRides"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="15dp"
+        android:padding="10dp"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/txtDashboardTitle"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <!-- Floating action button to quickly go to Create Ride -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCreateRide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="#388E3C"
+        app:tint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
