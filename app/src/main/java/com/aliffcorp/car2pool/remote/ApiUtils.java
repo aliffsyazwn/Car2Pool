@@ -3,7 +3,7 @@ package com.aliffcorp.car2pool.remote;
 public class ApiUtils {
 
     // REST API server URL
-    public static final String BASE_URL = "https://aptitude.my/2024794891/api/";
+    public static final String BASE_URL = "https://aptitude.my/car2pool/api/";
 
     // return UserService instance
     public static UserService getUserService() {
