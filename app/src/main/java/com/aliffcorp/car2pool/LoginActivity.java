@@ -14,7 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.aliffcorp.car2pool.model.FailLogin;
-import com.aliffcorp.car2pool.model.Users;
+import com.aliffcorp.car2pool.model.User;
 import com.aliffcorp.car2pool.remote.ApiUtils;
 import com.aliffcorp.car2pool.remote.UserService;
 import com.aliffcorp.car2pool.sharedpref.SharedPrefManager;
@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         // Get UserService instance
         UserService userService = ApiUtils.getUserService();
 
-        Call<Users> call;
+        Call<User> call;
 
         if (username.contains("@")) {
             call = userService.loginEmail(username, password);
@@ -84,14 +84,14 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // Execute REST API
-        call.enqueue(new Callback<Users>() {
+        call.enqueue(new Callback<User>() {
 
             @Override
-            public void onResponse(Call<Users> call, Response<Users> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
 
                 if (response.isSuccessful()) {
 
-                    Users user = response.body();
+                    User user = response.body();
 
                     if (user != null && user.getToken() != null) {
 
@@ -143,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Users> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
 
                 displayToast("Error connecting to server.");
                 displayToast(t.getMessage());
