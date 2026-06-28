@@ -2,6 +2,9 @@ package com.aliffcorp.car2pool;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,9 +12,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.aliffcorp.car2pool.model.User;
 import com.aliffcorp.car2pool.sharedpref.SharedPrefManager;
 
 public class MainActivity extends AppCompatActivity {
+    private TextView tvHello;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        tvHello = findViewById(R.id.tvHello);
+
         // if the user is already logged in we will directly start
         // the main activity
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
@@ -33,6 +40,30 @@ public class MainActivity extends AppCompatActivity {
             // forward to Login Page
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+        } else {
+            // Greet user
+            User user = spm.getUser();
+            tvHello.setText("Hello " + user.getUsername());
         }
     }
+
+    public void logoutClicked(View view) {
+        // clear the shared preferences
+        SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
+        spm.logout();
+
+        // display message
+        Toast.makeText(getApplicationContext(),
+                "You have successfully logged out.",
+                Toast.LENGTH_LONG).show();
+
+        // terminate this MainActivity
+        finish();
+
+        // forward to Login Page
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+
+    }
+
 }
