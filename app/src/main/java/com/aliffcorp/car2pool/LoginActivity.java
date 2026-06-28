@@ -59,7 +59,6 @@ public class LoginActivity extends AppCompatActivity {
 
         // Validate form
         if (validateLogin(username, password)) {
-
             // Login using REST API
             doLogin(username, password);
 
@@ -87,59 +86,42 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<User>() {
 
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call call, Response response) {
 
-                if (response.isSuccessful()) {
-
-                    User user = response.body();
-
+                if (response.isSuccessful()) {  // code 200
+                    // parse response to POJO
+                    User user = (User) response.body();
                     if (user != null && user.getToken() != null) {
+                        // successful login. server replies a token value
+                        displayToast("Login successful");
+                        displayToast("Token: " + user.getToken());
 
-                        displayToast("Login Successful");
-
-                        // Save user
-                        SharedPrefManager spm =
-                                new SharedPrefManager(getApplicationContext());
-
+                        // store value in Shared Preferences
+                        SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
                         spm.storeUser(user);
 
-                        // Go to MainActivity
+                        // forward to MainActivity
                         finish();
-
-                        Intent intent =
-                                new Intent(LoginActivity.this,
-                                        MainActivity.class);
-
+                        android.content.Intent intent = new android.content.Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
-
-                    } else {
-
-                        displayToast("Login Error");
-
                     }
-
-                } else {
-
-                    try {
-
-                        String errorResp = response.errorBody().string();
-
-                        FailLogin e =
-                                new Gson().fromJson(errorResp,
-                                        FailLogin.class);
-
-                        displayToast(e.getError().getMessage());
-
-                    } catch (Exception e) {
-
-                        Log.e("MyApp", e.toString());
-
-                        displayToast("Error");
-
+                    else {
+                        // server return success but no user info replied
+                        displayToast("Login error");
                     }
-
                 }
-
+                else {  // other than 200
+                    // try to parse the response to FailLogin POJO
+                    String errorResp = null;
+                    try {
+                        errorResp = response.errorBody().string();
+                        FailLogin e = new Gson().fromJson(errorResp, FailLogin.class);
+                        displayToast(e.getError().getMessage());
+                    } catch (Exception e) {
+                        Log.e("MyApp:", e.toString()); // print error details to error log
+                        displayToast("Error");
+                    }
+                }
             }
 
             @Override
