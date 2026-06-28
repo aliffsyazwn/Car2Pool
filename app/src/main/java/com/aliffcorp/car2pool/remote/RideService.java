@@ -6,7 +6,6 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 import com.aliffcorp.car2pool.model.Rides;
-import com.aliffcorp.car2pool.model.Users;
 
 public interface RideService {
 
