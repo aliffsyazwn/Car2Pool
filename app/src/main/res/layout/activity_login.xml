@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#F5F7FA"
-    android:backgroundTint="#D9D2C5">
+    android:backgroundTint="#D9D2C5"
+    tools:context="com.aliffcorp.car2pool.LoginActivity"
+    android:id="@+id/login">
 
     <!-- Logo -->
     <ImageView
@@ -79,10 +81,10 @@
                 android:layout_marginBottom="20dp"/>
 
             <EditText
-                android:id="@+id/etEmail"
+                android:id="@+id/etUserName"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:hint="Email"
+                android:hint="Email/Username"
                 android:inputType="textEmailAddress"
                 android:padding="15dp"/>
 
