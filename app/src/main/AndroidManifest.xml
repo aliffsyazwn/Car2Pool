@@ -15,9 +15,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Car2Pool">
         <activity
+            android:name=".RideDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RideListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
-        <activity android:name=".RegisterActivity"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
