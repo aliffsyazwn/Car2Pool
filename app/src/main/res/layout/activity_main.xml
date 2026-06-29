@@ -62,8 +62,9 @@
 
         <TextView
             android:id="@+id/tvHello"
-            android:layout_width="wrap_content"
+            android:layout_width="153dp"
             android:layout_height="wrap_content"
+            android:text="Hi User"
             android:textColor="#666666"
             android:textSize="16sp" />
 
