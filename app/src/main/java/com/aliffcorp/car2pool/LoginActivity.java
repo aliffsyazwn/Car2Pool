@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -28,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText edtUsername;
     private EditText edtPassword;
+    private TextView txtRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,16 @@ public class LoginActivity extends AppCompatActivity {
         // Get references to form elements
         edtUsername = findViewById(R.id.etUserName);
         edtPassword = findViewById(R.id.etPassword);
+        txtRegister = findViewById(R.id.txtRegister);
+
+        // Open Register Page
+        txtRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     /**
@@ -53,17 +65,12 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void loginClicked(View view) {
 
-        // Get username/email and password
         String username = edtUsername.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
 
-        // Validate form
         if (validateLogin(username, password)) {
-            // Login using REST API
             doLogin(username, password);
-
         }
-
     }
 
     /**
@@ -71,7 +78,6 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void doLogin(String username, String password) {
 
-        // Get UserService instance
         UserService userService = ApiUtils.getUserService();
 
         Call<User> call;
@@ -82,46 +88,60 @@ public class LoginActivity extends AppCompatActivity {
             call = userService.login(username, password);
         }
 
-        // Execute REST API
         call.enqueue(new Callback<User>() {
 
             @Override
-            public void onResponse(Call call, Response response) {
+            public void onResponse(Call<User> call, Response<User> response) {
 
-                if (response.isSuccessful()) {  // code 200
-                    // parse response to POJO
-                    User user = (User) response.body();
+                if (response.isSuccessful()) {
+
+                    User user = response.body();
+
                     if (user != null && user.getToken() != null) {
-                        // successful login. server replies a token value
-                        displayToast("Login successful");
-                        displayToast("Token: " + user.getToken());
 
-                        // store value in Shared Preferences
-                        SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
+                        displayToast("Login successful");
+
+                        SharedPrefManager spm =
+                                new SharedPrefManager(getApplicationContext());
+
                         spm.storeUser(user);
 
-                        // forward to MainActivity
                         finish();
-                        android.content.Intent intent = new android.content.Intent(LoginActivity.this, MainActivity.class);
+
+                        Intent intent =
+                                new Intent(LoginActivity.this, MainActivity.class);
+
                         startActivity(intent);
-                    }
-                    else {
-                        // server return success but no user info replied
+
+                    } else {
+
                         displayToast("Login error");
+
                     }
-                }
-                else {  // other than 200
-                    // try to parse the response to FailLogin POJO
-                    String errorResp = null;
+
+                } else {
+
+                    String errorResp;
+
                     try {
+
                         errorResp = response.errorBody().string();
-                        FailLogin e = new Gson().fromJson(errorResp, FailLogin.class);
+
+                        FailLogin e =
+                                new Gson().fromJson(errorResp, FailLogin.class);
+
                         displayToast(e.getError().getMessage());
+
                     } catch (Exception e) {
-                        Log.e("MyApp:", e.toString()); // print error details to error log
+
+                        Log.e("MyApp", e.toString());
+
                         displayToast("Error");
+
                     }
+
                 }
+
             }
 
             @Override
@@ -133,7 +153,9 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e("MyApp", t.toString());
 
             }
+
         });
+
     }
 
     /**
@@ -143,21 +165,22 @@ public class LoginActivity extends AppCompatActivity {
 
         if (username == null || username.trim().isEmpty()) {
 
-            edtUsername.setError("Email is required");
+            edtUsername.setError("Username or Email is required");
             edtUsername.requestFocus();
-
             return false;
+
         }
 
         if (password == null || password.trim().isEmpty()) {
 
             edtPassword.setError("Password is required");
             edtPassword.requestFocus();
-
             return false;
+
         }
 
         return true;
+
     }
 
     /**
@@ -165,9 +188,8 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void displayToast(String message) {
 
-        Toast.makeText(this,
-                message,
-                Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 
     }
+
 }
