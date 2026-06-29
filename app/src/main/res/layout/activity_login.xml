@@ -9,7 +9,7 @@
     tools:context="com.aliffcorp.car2pool.LoginActivity"
     android:id="@+id/login">
 
-    <!-- Logo -->
+
     <ImageView
         android:id="@+id/imgLogo"
         android:layout_width="177dp"
@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- App Name -->
+
     <TextView
         android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
