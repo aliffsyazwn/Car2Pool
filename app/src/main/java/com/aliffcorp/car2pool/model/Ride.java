@@ -1,14 +1,14 @@
 package com.aliffcorp.car2pool.model;
 
-public class Rides {
+public class Ride {
 
     private String origin;
     private String destination;
     private String time;
     private String driver;
 
-    public Rides(){}
-    public Rides(String origin, String driver, String time, String destination) {
+    public Ride(){}
+    public Ride(String origin, String driver, String time, String destination) {
         this.origin = origin;
         this.driver = driver;
         this.time = time;
