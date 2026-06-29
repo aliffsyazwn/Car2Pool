@@ -222,7 +222,6 @@
             android:layout_height="55dp"
             android:layout_marginTop="30dp"
             android:backgroundTint="#E53935"
-            android:onClick="logoutClicked"
             android:text="@string/logout"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"

@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -17,6 +18,8 @@ import com.aliffcorp.car2pool.sharedpref.SharedPrefManager;
 
 public class MainActivity extends AppCompatActivity {
     private TextView tvHello;
+    private CardView cardSearchRide;
+    private android.widget.Button btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
         tvHello = findViewById(R.id.tvHello);
+        cardSearchRide = findViewById(R.id.cardSearchRide);
+        btnLogout = findViewById(R.id.btnLogout);
+
+        cardSearchRide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rideListClicked(v);
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logoutClicked(v);
+            }
+        });
 
         // if the user is already logged in we will directly start
         // the main activity
@@ -45,6 +64,13 @@ public class MainActivity extends AppCompatActivity {
             User user = spm.getUser();
             tvHello.setText("Hello " + user.getUsername());
         }
+    }
+
+    public void rideListClicked(View view) {
+        // forward user to rideListActivity
+        Intent intent = new Intent(getApplicationContext(), RideListActivity.class);
+        startActivity(intent);
+
     }
 
     public void logoutClicked(View view) {

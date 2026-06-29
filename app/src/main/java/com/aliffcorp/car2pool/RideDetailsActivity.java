@@ -7,6 +7,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -21,10 +22,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RideDetailsActivity {
+public class RideDetailsActivity extends AppCompatActivity {
 
     private RideService rideService;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -89,7 +91,7 @@ public class RideDetailsActivity {
 
             @Override
             public void onFailure(Call<Ride> call, Throwable t) {
-                Toast.makeText(null, "Error connecting", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error connecting", Toast.LENGTH_LONG).show();
             }
         });
 

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -30,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RideListActivity {
+public class RideListActivity extends AppCompatActivity {
     private RideService rideService;
     private RecyclerView rvRideList;
     private RideAdapter adapter;
@@ -139,9 +140,9 @@ public class RideListActivity {
 
     private void doViewDetails(Ride selectedBook) {
         Log.d("MyApp:", "viewing details: " + selectedBook.toString());
-        // forward user to BookDetailsActivity, passing the selected book id
-        Intent intent = new Intent(getApplicationContext(), RideListActivity.class);
-        intent.putExtra("book_id", selectedBook.getId());
+        // forward user to RideDetailsActivity, passing the selected ride id
+        Intent intent = new Intent(getApplicationContext(), RideDetailsActivity.class);
+        intent.putExtra("ride_id", selectedBook.getId());
         startActivity(intent);
     }
 }

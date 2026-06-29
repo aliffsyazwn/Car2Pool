@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edtUsername;
     private EditText edtPassword;
     private TextView txtRegister;
+    private android.widget.Button btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,14 @@ public class LoginActivity extends AppCompatActivity {
         edtUsername = findViewById(R.id.etUserName);
         edtPassword = findViewById(R.id.etPassword);
         txtRegister = findViewById(R.id.txtRegister);
+        btnLogin = findViewById(R.id.btnLogin);
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginClicked(v);
+            }
+        });
 
         // Open Register Page
         txtRegister.setOnClickListener(new View.OnClickListener() {
