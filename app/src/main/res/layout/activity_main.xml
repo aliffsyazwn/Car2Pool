@@ -86,6 +86,7 @@
                 app:cardElevation="8dp">
 
                 <LinearLayout
+                    android:id="@+id/btnSearchRide"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -119,6 +120,7 @@
                 app:cardElevation="8dp">
 
                 <LinearLayout
+                    android:id="@+id/btnCreateRide"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -152,6 +154,7 @@
                 app:cardElevation="8dp">
 
                 <LinearLayout
+                    android:id="@+id/btnMyBooking"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -185,6 +188,7 @@
                 app:cardElevation="8dp">
 
                 <LinearLayout
+                    android:id="@+id/btnProfile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
