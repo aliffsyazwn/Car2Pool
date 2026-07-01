@@ -59,7 +59,6 @@
                     android:layout_height="54dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_input"
-                    android:entries="@array/ori"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp" />
 
@@ -78,7 +77,6 @@
                     android:layout_height="54dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_input"
-                    android:entries="@array/dest"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp" />
 

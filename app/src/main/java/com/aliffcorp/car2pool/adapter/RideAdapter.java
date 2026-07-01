@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aliffcorp.car2pool.R;
+import com.aliffcorp.car2pool.model.Driver;
 import com.aliffcorp.car2pool.model.Ride;
 
 import java.util.List;
@@ -71,7 +72,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         Ride m = rideListData.get(position);
         holder.tvOrigin.setText(m.getOrigin());
         holder.tvDestination.setText(m.getDestination());
-        holder.tvTime.setText(m.getTime());
+        holder.tvTime.setText(m.getDeparture_time());
         if (m.getDriver() != null) {
             holder.tvDriver.setText(m.getDriver().getFullname());
         }
@@ -90,6 +91,18 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         // return the ride record if the current selected position/index is valid
         if(currentPos>=0 && rideListData !=null && currentPos<rideListData.size()) {
             return rideListData.get(currentPos);
+        }
+        return null;
+    }
+
+    /**
+     * return driver object for currently selected ride (index already set by long press in viewholder)
+     * @return
+     */
+    public Driver getDriver() {
+        // return the driver record if the current selected position/index is valid
+        if(currentPos>=0 && rideListData !=null && currentPos<rideListData.size()) {
+            return rideListData.get(currentPos).getDriver();
         }
         return null;
     }
