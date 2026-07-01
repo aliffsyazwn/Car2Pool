@@ -64,13 +64,13 @@
                 android:id="@+id/etUserName"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:backgroundTint="#5F5D5D"
+                android:backgroundTint="#FFFFFF"
                 android:drawableStart="@android:drawable/ic_dialog_email"
                 android:drawablePadding="10dp"
                 android:hint="Email / Username"
-                android:hintTextColor="#0D0000"
-                android:inputType="textEmailAddress"
-                android:textColor="#0D0000" />
+                android:textColorHint="#646262"
+                android:textColor="#070202"
+                android:inputType="textEmailAddress"/>
 
             <!-- Password -->
             <EditText
@@ -78,13 +78,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:backgroundTint="#2C2A2A"
+                android:backgroundTint="#646262"
                 android:drawableStart="@android:drawable/ic_lock_lock"
                 android:drawablePadding="10dp"
                 android:hint="Password"
-                android:hintTextColor="#F1F1F1"
-                android:inputType="textPassword"
-                android:textColor="#FFFFFF" />
+                android:textColorHint="#646262"
+                android:textColor="#070202"
+                android:inputType="textPassword"/>
 
             <!-- Remember + Forgot -->
             <LinearLayout
