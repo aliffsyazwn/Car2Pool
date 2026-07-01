@@ -10,7 +10,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardLogin"
         android:layout_width="320dp"
-        android:layout_height="550dp"
+        android:layout_height="600dp"
         android:layout_margin="20dp"
         app:cardBackgroundColor="#EFFFFFFF"
         app:cardCornerRadius="28dp"
@@ -25,7 +25,7 @@
             android:layout_height="580dp"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="25dp">
+            android:padding="20dp">
 
             <!-- Profile -->
             <ImageView
@@ -34,7 +34,7 @@
                 android:layout_height="112dp"
                 android:layout_gravity="center"
                 android:background="@drawable/circle_profile"
-                android:padding="20dp"
+                android:padding="30dp"
                 android:src="@drawable/user" />
 
             <!-- App Name -->
