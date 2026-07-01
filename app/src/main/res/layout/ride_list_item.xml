@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="2dp"
@@ -15,7 +14,6 @@
         android:text="Origin"
         android:textSize="17sp"
         android:textStyle="bold" />
-
     <TextView
         android:id="@+id/tvDestination"
         android:layout_width="wrap_content"
@@ -24,32 +22,21 @@
         android:text="Destination"
         android:textSize="17sp"
         android:textStyle="bold" />
+    <TextView
+        android:id="@+id/tvDriver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDestination"
+        android:text="Driver"
+        android:textSize="17sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvDestination"
+        android:layout_below="@+id/tvDriver"
         android:text="Time"
         android:textSize="17sp"
         android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="Book" />
-
-    <TextView
-        android:id="@+id/tvDriver"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTime"
-        android:layout_marginTop="-1dp"
-        android:text="Driver"
-        android:textSize="17sp"
-        android:textStyle="bold" />
-
-
 </RelativeLayout>
