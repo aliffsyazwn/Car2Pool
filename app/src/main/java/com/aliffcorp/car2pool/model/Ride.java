@@ -6,15 +6,18 @@ public class Ride {
     private String origin;
     private String destination;
     private String time;
-    private String driver;
+    private int available_seats;
+    private Driver driver;
 
     public Ride(){}
-    public Ride(int id, String origin, String driver, String time, String destination) {
+
+    public Ride(int id, String origin, String destination, int available_seats, String time, Driver driver) {
         this.id = id;
         this.origin = origin;
-        this.driver = driver;
-        this.time = time;
         this.destination = destination;
+        this.available_seats = available_seats;
+        this.time = time;
+        this.driver = driver;
     }
 
     public int getId() {
@@ -49,11 +52,19 @@ public class Ride {
         this.time = time;
     }
 
-    public String getDriver() {
+    public int getAvailable_seats() {
+        return available_seats;
+    }
+
+    public void setAvailable_seats(int available_seats) {
+        this.available_seats = available_seats;
+    }
+
+    public Driver getDriver() {
         return driver;
     }
 
-    public void setDriver(String driver) {
+    public void setDriver(Driver driver) {
         this.driver = driver;
     }
 }
