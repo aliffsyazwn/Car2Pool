@@ -59,7 +59,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         // Inflate layout using the single item layout
-        View view = inflater.inflate(R.layout.rides_list_item, parent, false);
+        View view = inflater.inflate(R.layout.ride_list_item, parent, false);
         // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
@@ -72,7 +72,9 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         holder.tvOrigin.setText(m.getOrigin());
         holder.tvDestination.setText(m.getDestination());
         holder.tvTime.setText(m.getTime());
-        holder.tvDriver.setText(m.getDriver());
+        if (m.getDriver() != null) {
+            holder.tvDriver.setText(m.getDriver().getFullname());
+        }
     }
 
     @Override
@@ -81,12 +83,12 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
     }
 
     /**
-     * return book object for currently selected book (index already set by long press in viewholder)
+     * return ride object for currently selected ride (index already set by long press in viewholder)
      * @return
      */
     public Ride getSelectedItem() {
-        // return the book record if the current selected position/index is valid
-        if (currentPos >= 0 && rideListData != null && currentPos < rideListData.size()) {
+        // return the ride record if the current selected position/index is valid
+        if(currentPos>=0 && rideListData !=null && currentPos<rideListData.size()) {
             return rideListData.get(currentPos);
         }
         return null;

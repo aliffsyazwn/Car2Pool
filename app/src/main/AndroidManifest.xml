@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Car2Pool">
         <activity
-            android:name=".RideDetailsActivity"
+            android:name=".RideDetailActivity"
             android:exported="false" />
         <activity
             android:name=".RideListActivity"

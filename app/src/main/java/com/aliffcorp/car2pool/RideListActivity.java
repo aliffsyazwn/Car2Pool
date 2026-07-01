@@ -1,11 +1,11 @@
 package com.aliffcorp.car2pool;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -32,23 +32,23 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RideListActivity extends AppCompatActivity {
+
     private RideService rideService;
     private RecyclerView rvRideList;
-    private RideAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.available_rides);
+        setContentView(R.layout.activity_ride_list);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // get reference to the RecyclerView bookList
-        rvRideList = findViewById(R.id.rvAvailableList);
+        // get reference to the RecyclerView rideList
+        rvRideList = findViewById(R.id.rvRideList);
 
         //register for context menu
         registerForContextMenu(rvRideList);
@@ -58,7 +58,7 @@ public class RideListActivity extends AppCompatActivity {
         User user = spm.getUser();
         String token = user.getToken();
 
-        // get book service instance
+        // get ride service instance
         rideService = ApiUtils.getRideService();
 
         // execute the call. send the user token when sending the query
@@ -69,11 +69,11 @@ public class RideListActivity extends AppCompatActivity {
                 Log.d("MyApp:", "Response: " + response.raw().toString());
 
                 if (response.code() == 200) {
-                    // Get list of book object from response
-                    List<Ride> books = response.body();
+                    // Get list of ride object from response
+                    List<Ride> rides = response.body();
 
                     // initialize adapter
-                    adapter = new RideAdapter(getApplicationContext(), books);
+                    RideAdapter adapter = new RideAdapter(getApplicationContext(), rides);
 
                     // set adapter to the RecyclerView
                     rvRideList.setAdapter(adapter);
@@ -124,25 +124,5 @@ public class RideListActivity extends AppCompatActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.ride_context_menu, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        Ride selectedBook = adapter.getSelectedItem();
-        Log.d("MyApp", "selected "+selectedBook.toString());    // debug purpose
-
-        if (item.getItemId() == R.id.menu_details) {    // user clicked details contextual menu
-            doViewDetails(selectedBook);
-        }
-
-        return super.onContextItemSelected(item);
-    }
-
-    private void doViewDetails(Ride selectedBook) {
-        Log.d("MyApp:", "viewing details: " + selectedBook.toString());
-        // forward user to RideDetailsActivity, passing the selected ride id
-        Intent intent = new Intent(getApplicationContext(), RideDetailsActivity.class);
-        intent.putExtra("ride_id", selectedBook.getId());
-        startActivity(intent);
     }
 }
