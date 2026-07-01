@@ -2,4 +2,18 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="btn">#49AD9A</color>
+    <color name="red">#FF0000</color>
+
+    <color name="btn">#49AD9A</color>
+    <color name="light_teal1">#6BC0B0</color>
+    <color name="light_teal2">#8DD2C6</color>
+    <color name="light_teal3">#B6E5DD</color>
+    <color name="bg_teal">#E8F7F4</color>
+    <color name="dark_teal1">#3A8A7B</color>
+    <color name="dark_teal2">#2B675C</color>
+    <color name="dark_teal3">#1C453D</color>
+
+
+
 </resources>
