@@ -33,6 +33,18 @@
         app:layout_constraintEnd_toStartOf="@+id/textPrice"
         android:layout_marginEnd="16dp" />
 
+    <TextView
+        android:id="@+id/textPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RM 15.00"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#388E3C"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
