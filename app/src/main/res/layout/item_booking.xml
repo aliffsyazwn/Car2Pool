@@ -9,26 +9,14 @@
     android:background="@android:color/white">
 
     <TextView
-        android:id="@+id/textDestination"
+        android:id="@+id/textRideInfo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Kuala Lumpur"
-        android:textSize="18sp"
+        android:text="Driver: Hafiz - Kuala Lumpur"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@android:color/black"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textPrice"
-        android:layout_marginEnd="16dp" />
-
-    <TextView
-        android:id="@+id/textDate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="25 Oct 2026"
-        android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@+id/textDestination"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textPrice"
         android:layout_marginEnd="16dp" />
@@ -44,7 +32,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
