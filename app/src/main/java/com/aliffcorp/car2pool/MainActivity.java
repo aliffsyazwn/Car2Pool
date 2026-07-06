@@ -19,6 +19,7 @@ import com.aliffcorp.car2pool.sharedpref.SharedPrefManager;
 public class MainActivity extends AppCompatActivity {
     private TextView tvHello;
     private CardView cardSearchRide;
+    private CardView cardBooking;
     private android.widget.Button btnLogout;
 
     @Override
@@ -34,12 +35,21 @@ public class MainActivity extends AppCompatActivity {
 
         tvHello = findViewById(R.id.tvHello);
         cardSearchRide = findViewById(R.id.cardSearchRide);
+        cardBooking = findViewById(R.id.cardBooking);
         btnLogout = findViewById(R.id.btnLogout);
 
         cardSearchRide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rideListClicked(v);
+            }
+        });
+
+        cardBooking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), BookingList.class);
+                startActivity(intent);
             }
         });
 
