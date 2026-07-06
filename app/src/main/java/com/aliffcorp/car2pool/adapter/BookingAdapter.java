@@ -22,9 +22,12 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
     public static class BookingViewHolder extends RecyclerView.ViewHolder {
         TextView rideInfoText;
+        TextView priceText;
 
         public BookingViewHolder(@NonNull View itemView) {
             super(itemView);
+            rideInfoText = itemView.findViewById(R.id.textRideInfo);
+            priceText = itemView.findViewById(R.id.textPrice);
         }
     }
 
@@ -39,8 +42,8 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     public void onBindViewHolder(@NonNull BookingViewHolder holder, int position) {
         Ride currentRide = rideList.get(position);
 
-
-        // holder.rideInfoText.setText("Pemandu: Hafiz - " + currentRide.getDestination());
+        holder.rideInfoText.setText("Driver: Hafiz - " + currentRide.getDestination());
+        holder.priceText.setText("RM " + String.format("%.2f", currentRide.getPrice()));
     }
 
     @Override
