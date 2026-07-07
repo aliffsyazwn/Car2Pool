@@ -3,26 +3,21 @@ package com.aliffcorp.car2pool.model;
 public class Ride {
 
     private int ride_id;
-
     private int driver_id;
     private String origin;
     private String destination;
     private String departure_time;
     private int available_seats;
-    private double price;
-    private Driver driver;
 
     public Ride(){}
 
-    public Ride(int ride_id, int driver_id, String origin, String destination, String departure_time, int available_seats, double price, Driver driver) {
+    public Ride(int ride_id, int driver_id, String origin, String destination, String departure_time, int available_seats) {
         this.ride_id = ride_id;
         this.driver_id = driver_id;
         this.origin = origin;
         this.destination = destination;
         this.departure_time = departure_time;
         this.available_seats = available_seats;
-        this.price = price;
-        this.driver = driver;
     }
 
     public int getRide_id() {
@@ -31,6 +26,14 @@ public class Ride {
 
     public void setRide_id(int ride_id) {
         this.ride_id = ride_id;
+    }
+
+    public int getDriver_id() {
+        return driver_id;
+    }
+
+    public void setDriver_id(int driver_id) {
+        this.driver_id = driver_id;
     }
 
     public String getOrigin() {
@@ -65,30 +68,6 @@ public class Ride {
         this.available_seats = available_seats;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public Driver getDriver() {
-        return driver;
-    }
-
-    public void setDriver(Driver driver) {
-        this.driver = driver;
-    }
-
-    public int getDriver_id() {
-        return driver_id;
-    }
-
-    public void setDriver_id(int driver_id) {
-        this.driver_id = driver_id;
-    }
-
     @Override
     public String toString() {
         return "Ride{" +
@@ -98,8 +77,6 @@ public class Ride {
                 ", destination='" + destination + '\'' +
                 ", departure_time='" + departure_time + '\'' +
                 ", available_seats=" + available_seats +
-                ", price=" + price +
-                ", driver=" + driver +
                 '}';
     }
 }

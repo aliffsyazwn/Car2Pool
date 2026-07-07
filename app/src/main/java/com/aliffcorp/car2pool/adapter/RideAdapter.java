@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aliffcorp.car2pool.R;
-import com.aliffcorp.car2pool.model.Driver;
 import com.aliffcorp.car2pool.model.Ride;
 
 import java.util.List;
@@ -42,7 +41,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
 
     // adapter class definitions
 
-    private List<Ride> rideListData;   // list of book objects
+    private List<Ride> rideListData;   // list of ride objects
     private Context mContext;       // activity context
     private int currentPos;         // currently selected item (long press)
 
@@ -73,16 +72,12 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         holder.tvOrigin.setText(m.getOrigin());
         holder.tvDestination.setText(m.getDestination());
         holder.tvTime.setText(m.getDeparture_time());
-        if (m.getDriver() != null) {
-            holder.tvDriver.setText(m.getDriver().getFullname());
-        }
     }
 
     @Override
     public int getItemCount() {
         return rideListData.size();
     }
-
     /**
      * return ride object for currently selected ride (index already set by long press in viewholder)
      * @return
@@ -99,12 +94,5 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
      * return driver object for currently selected ride (index already set by long press in viewholder)
      * @return
      */
-    public Driver getDriver() {
-        // return the driver record if the current selected position/index is valid
-        if(currentPos>=0 && rideListData !=null && currentPos<rideListData.size()) {
-            return rideListData.get(currentPos).getDriver();
-        }
-        return null;
-    }
 
 }
