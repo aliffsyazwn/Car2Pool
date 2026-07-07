@@ -119,7 +119,7 @@ public class RideListActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
-    public void bookClicked(View view) {
+    public void detailClicked(View view) {
         RecyclerView rvRideList = findViewById(R.id.rvRideList);
         int position = rvRideList.getChildAdapterPosition((View) view.getParent());
         if (position != RecyclerView.NO_POSITION && adapter != null) {

@@ -16,6 +16,7 @@ import com.aliffcorp.car2pool.model.Ride;
 import com.aliffcorp.car2pool.model.User;
 import com.aliffcorp.car2pool.remote.ApiUtils;
 import com.aliffcorp.car2pool.remote.RideService;
+import com.aliffcorp.car2pool.remote.UserService;
 import com.aliffcorp.car2pool.sharedpref.SharedPrefManager;
 
 import retrofit2.Call;
@@ -24,6 +25,7 @@ import retrofit2.Response;
 
 public class RideDetailActivity extends AppCompatActivity {
     private RideService rideService;
+    private UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class RideDetailActivity extends AppCompatActivity {
 
         // get ride service instance
         rideService = ApiUtils.getRideService();
+        userService = ApiUtils.getUserService();
 
         rideService.getRides(token, rideId).enqueue(new Callback<Ride>() {
 
@@ -67,9 +70,25 @@ public class RideDetailActivity extends AppCompatActivity {
 
                     // set values
                     tvOrigin.setText(ride.getOrigin());
-                    tvDriver.setText(String.valueOf(ride.getDriver_id()));
                     tvTime.setText(ride.getDeparture_time());
                     tvDestination.setText(ride.getDestination());
+
+                    // fetch driver username
+                    userService.getUser(token, ride.getDriver_id()).enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                tvDriver.setText(response.body().getUsername());
+                            } else {
+                                tvDriver.setText("Unknown Driver (" + ride.getDriver_id() + ")");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+                            tvDriver.setText("Error loading driver (" + ride.getDriver_id() + ")");
+                        }
+                    });
                 } else if (response.code() == 401) {
                     // unauthorized error. invalid token, ask user to relogin
                     Toast.makeText(getApplicationContext(), "Invalid session. Please login again", Toast.LENGTH_LONG).show();
@@ -83,7 +102,7 @@ public class RideDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Ride> call, Throwable t) {
-                Toast.makeText(null, "Error connecting", Toast.LENGTH_LONG).show();
+                Toast.makeText(RideDetailActivity.this, "Error connecting", Toast.LENGTH_LONG).show();
             }
         });
 
