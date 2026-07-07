@@ -43,7 +43,6 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         Ride currentRide = rideList.get(position);
 
         holder.rideInfoText.setText("Driver: Hafiz - " + currentRide.getDestination());
-        holder.priceText.setText("RM " + String.format("%.2f", currentRide.getPrice()));
     }
 
     @Override

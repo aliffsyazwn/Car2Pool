@@ -125,4 +125,10 @@ public class RideListActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.ride_context_menu, menu);
     }
+
+    public void bookClicked(View view) {
+        // forward user to BookListActivity
+        Intent intent = new Intent(getApplicationContext(), RideDetailActivity.class);
+        startActivity(intent);
+    }
 }
