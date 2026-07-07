@@ -35,6 +35,7 @@ public class RideListActivity extends AppCompatActivity {
 
     private RideService rideService;
     private RecyclerView rvRideList;
+    private RideAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class RideListActivity extends AppCompatActivity {
                     List<Ride> rides = response.body();
 
                     // initialize adapter
-                    RideAdapter adapter = new RideAdapter(getApplicationContext(), rides);
+                    adapter = new RideAdapter(getApplicationContext(), rides);
 
                     // set adapter to the RecyclerView
                     rvRideList.setAdapter(adapter);
@@ -117,18 +118,20 @@ public class RideListActivity extends AppCompatActivity {
         // forward to Login Page
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-
     }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.ride_context_menu, menu);
-    }
-
     public void bookClicked(View view) {
-        // forward user to BookListActivity
+        RecyclerView rvRideList = findViewById(R.id.rvRideList);
+        int position = rvRideList.getChildAdapterPosition((View) view.getParent());
+        if (position != RecyclerView.NO_POSITION && adapter != null) {
+            Ride selectedRide = adapter.getItemAt(position); // Or however your adapter exposes the list item
+            doViewDetails(selectedRide);
+        }
+    }
+    private void doViewDetails(Ride selectedRide) {
+        Log.d("MyApp:", "viewing details: " + selectedRide.toString());
+        // forward user to BookDetailsActivity, passing the selected book id
         Intent intent = new Intent(getApplicationContext(), RideDetailActivity.class);
+        intent.putExtra("ride_id", selectedRide.getRide_id());
         startActivity(intent);
     }
 }

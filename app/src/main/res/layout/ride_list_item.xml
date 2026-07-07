@@ -41,12 +41,11 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnBook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Book"
         android:layout_alignParentEnd="true"
         android:layout_alignBottom="@id/tvTime"
-        android:layout_alignTop="@id/tvTime"
         android:onClick="bookClicked"/>
 </RelativeLayout>

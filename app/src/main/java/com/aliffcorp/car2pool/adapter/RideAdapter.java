@@ -43,7 +43,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
 
     private List<Ride> rideListData;   // list of ride objects
     private Context mContext;       // activity context
-    private int currentPos;         // currently selected item (long press)
+    private int currentPos = -1;         // currently selected item (long press)
 
     public RideAdapter(Context context, List<Ride> listData) {
         rideListData = listData;
@@ -87,6 +87,13 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         // return the ride record if the current selected position/index is valid
         if(currentPos>=0 && rideListData !=null && currentPos<rideListData.size()) {
             return rideListData.get(currentPos);
+        }
+        return null;
+    }
+
+    public Ride getItemAt(int position) {
+        if (rideListData != null && position >= 0 && position < rideListData.size()) {
+            return rideListData.get(position);
         }
         return null;
     }
