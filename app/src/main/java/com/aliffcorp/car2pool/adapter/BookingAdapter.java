@@ -26,11 +26,15 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     public static class BookingViewHolder extends RecyclerView.ViewHolder {
         TextView rideInfoText;
         TextView priceText;
+        TextView bookingDateText;
+        TextView statusText;
 
         public BookingViewHolder(@NonNull View itemView) {
             super(itemView);
-            rideInfoText = itemView.findViewById(R.id.textRideInfo);
-            priceText = itemView.findViewById(R.id.textPrice);
+            rideInfoText = itemView.findViewById(R.id.tvRideInfo);
+            priceText = itemView.findViewById(R.id.tvPrice);
+            bookingDateText = itemView.findViewById(R.id.tvBookingDate);
+            statusText = itemView.findViewById(R.id.tvStatus);
         }
     }
 
@@ -45,8 +49,39 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     public void onBindViewHolder(@NonNull BookingViewHolder holder, int position) {
         Booking currentBooking = bookingList.get(position);
 
-        holder.rideInfoText.setText("Booking ID: " + currentBooking.getBooking_id());
-        holder.priceText.setText("Driver ID: " + currentBooking.getDriver_id());
+        // Set up safe fallback values
+        String origin = "N/A";
+        String destination = "N/A";
+        String driverName = "Driver: Unknown";
+        String departureTime = "Unknown";
+
+        // Navigate the nested JSON safely to avoid NullPointerExceptions
+        if (currentBooking.getRide() != null) {
+            origin = currentBooking.getRide().getOrigin();
+            destination = currentBooking.getRide().getDestination();
+
+            // Extract the actual date/time from the nested Ride object
+            if (currentBooking.getRide().getDeparture_time() != null) {
+                departureTime = currentBooking.getRide().getDeparture_time();
+            }
+
+            if (currentBooking.getRide().getDriver() != null) {
+                driverName = "Driver: " + currentBooking.getRide().getDriver().getUsername();
+            }
+        }
+
+        // Bind the extracted data to their exact corresponding XML views
+        // XML ID: tvRideInfo -> Assign Origin and Destination
+        holder.rideInfoText.setText(origin + " ➔ " + destination);
+
+        // XML ID: tvBookingDate -> Assign the actual departure time from JSON
+        holder.bookingDateText.setText("Date: " + departureTime);
+
+        // XML ID: tvStatus -> Assign the driver's name
+        holder.statusText.setText(driverName);
+
+        // XML ID: tvPrice -> Clear it since there's no price in your current JSON response
+        holder.priceText.setText("");
     }
 
     @Override
