@@ -14,7 +14,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.aliffcorp.car2pool.model.User;
-import com.aliffcorp.car2pool.sharedpref.BookingList;
 import com.aliffcorp.car2pool.sharedpref.SharedPrefManager;
 
 public class MainActivity extends AppCompatActivity {
