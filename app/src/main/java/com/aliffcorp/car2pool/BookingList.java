@@ -1,4 +1,4 @@
-package com.aliffcorp.car2pool.sharedpref;
+package com.aliffcorp.car2pool;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aliffcorp.car2pool.LoginActivity;
-import com.aliffcorp.car2pool.R;
 import com.aliffcorp.car2pool.adapter.BookingAdapter;
 import com.aliffcorp.car2pool.model.Ride;
 import com.aliffcorp.car2pool.model.User;
