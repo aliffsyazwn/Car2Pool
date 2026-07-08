@@ -6,6 +6,9 @@ public class Booking {
     private int user_id;
     private int driver_id;
 
+    private Ride ride;
+
+    public Ride getRide() { return ride; }
     public Booking() {
     }
 
