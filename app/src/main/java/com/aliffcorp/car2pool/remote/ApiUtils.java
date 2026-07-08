@@ -14,4 +14,8 @@ public class ApiUtils {
         return RetrofitClient.getClient(BASE_URL).create(RideService.class);
     }
 
+    public static BookingService getBookingService() {
+        return RetrofitClient.getClient(BASE_URL).create(BookingService.class);
+    }
+
 }
