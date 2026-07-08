@@ -9,6 +9,10 @@ public class Ride {
     private String departure_time;
     private int available_seats;
 
+    private User driver;
+
+    public User getDriver() { return driver; }
+
     public Ride(){}
 
     public Ride(int ride_id, int driver_id, String origin, String destination, String departure_time, int available_seats) {
