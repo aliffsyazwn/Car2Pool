@@ -86,8 +86,12 @@ public class BookingList extends AppCompatActivity {
                     List<Booking> bookings = response.body();
 
                     // initialize adapter
-                    adapter = new BookingAdapter(getApplicationContext(), bookings);
-
+                    adapter = new BookingAdapter(getApplicationContext(), bookings, new BookingAdapter.OnCancelClickListener() {
+                        @Override
+                        public void onCancelClick(Booking booking) {
+                            confirmCancellation(booking, token);
+                        }
+                    });
                     // set adapter to the RecyclerView
                     rvBookList.setAdapter(adapter);
 
@@ -103,6 +107,35 @@ public class BookingList extends AppCompatActivity {
             public void onFailure(Call<List<Booking>> call, Throwable t) {
                 Toast.makeText(BookingList.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("Car2Pool", t.toString());
+            }
+        });
+    }
+
+    private void confirmCancellation(Booking booking, String token) {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Cancel Booking")
+                .setMessage("Are you sure, want to cancel the booking?")
+                .setPositiveButton("Yes", (dialog, which) -> executeCancel(booking.getBooking_id(), token))
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void executeCancel(int bookingId, String token) {
+        bookingService.cancelBooking(token, bookingId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(BookingList.this, "Booking Cancelled", Toast.LENGTH_SHORT).show();
+                    // Refresh the list so the deleted item disappears
+                    fetchBookings();
+                } else {
+                    Toast.makeText(BookingList.this, "Failed to cancel booking", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(BookingList.this, "Network Error", Toast.LENGTH_SHORT).show();
             }
         });
     }
