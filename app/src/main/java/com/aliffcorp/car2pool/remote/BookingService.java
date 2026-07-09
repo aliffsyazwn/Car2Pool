@@ -8,6 +8,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.DELETE;
 import retrofit2.http.Path;
 
 public interface BookingService {
@@ -17,4 +18,7 @@ public interface BookingService {
 
     @GET("bookings/{booking_id}")
     Call<Booking> getBooking(@Header("api-key") String api_key, @Path("booking_id") int bookingId);
+
+    @DELETE("bookings/{booking_id}")
+    Call<Void> cancelBooking(@Header("api-key") String api_key, @Path("booking_id") int bookingId);
 }
