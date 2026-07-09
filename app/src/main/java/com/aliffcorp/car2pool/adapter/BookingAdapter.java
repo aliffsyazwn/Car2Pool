@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,10 +18,20 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
     private List<Booking> bookingList;
     private Context context;
+    private OnCancelClickListener cancelListener;
 
-    public BookingAdapter(Context context, List<Booking> bookingList) {
+    public interface OnCancelClickListener {
+        void onCancelClick(Booking booking);
+    }
+
+    public void setOnCancelClickListener(OnCancelClickListener listener) {
+        this.cancelListener = listener;
+    }
+
+    public BookingAdapter(Context context, List<Booking> bookingList, OnCancelClickListener cancelListener) {
         this.context = context;
         this.bookingList = bookingList;
+        this.cancelListener = cancelListener;
     }
 
     public static class BookingViewHolder extends RecyclerView.ViewHolder {
@@ -28,6 +39,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         TextView priceText;
         TextView bookingDateText;
         TextView statusText;
+        Button btnCancel;
 
         public BookingViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -35,6 +47,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             priceText = itemView.findViewById(R.id.tvPrice);
             bookingDateText = itemView.findViewById(R.id.tvBookingDate);
             statusText = itemView.findViewById(R.id.tvStatus);
+            btnCancel = itemView.findViewById(R.id.btnCancel);
         }
     }
 
@@ -82,6 +95,12 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
         // XML ID: tvPrice -> Clear it since there's no price in your current JSON response
         holder.priceText.setText("");
+
+        holder.btnCancel.setOnClickListener(v -> {
+            if (cancelListener != null) {
+                cancelListener.onCancelClick(currentBooking);
+            }
+        });
     }
 
     @Override
