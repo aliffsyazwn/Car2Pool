@@ -4,42 +4,35 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Button;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.aliffcorp.car2pool.R;
 import com.aliffcorp.car2pool.model.Booking;
-
 import java.util.List;
 
 public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingViewHolder> {
 
     private List<Booking> bookingList;
     private Context context;
-    private OnCancelClickListener cancelListener;
+    private OnBookingActionListener actionListener;
 
-    public interface OnCancelClickListener {
+    // 1Rename the interface to handle multiple actions
+    public interface OnBookingActionListener {
         void onCancelClick(Booking booking);
+        void onEditClick(Booking booking); // Add Edit click
     }
 
-    public void setOnCancelClickListener(OnCancelClickListener listener) {
-        this.cancelListener = listener;
-    }
-
-    public BookingAdapter(Context context, List<Booking> bookingList, OnCancelClickListener cancelListener) {
+    public BookingAdapter(Context context, List<Booking> bookingList, OnBookingActionListener actionListener) {
         this.context = context;
         this.bookingList = bookingList;
-        this.cancelListener = cancelListener;
+        this.actionListener = actionListener;
     }
 
     public static class BookingViewHolder extends RecyclerView.ViewHolder {
-        TextView rideInfoText;
-        TextView priceText;
-        TextView bookingDateText;
-        TextView statusText;
-        Button btnCancel;
+        TextView rideInfoText, priceText, bookingDateText, statusText;
+        Button btnCancel, btnEdit; // 2. Declare the Edit button
 
         public BookingViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -48,6 +41,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             bookingDateText = itemView.findViewById(R.id.tvBookingDate);
             statusText = itemView.findViewById(R.id.tvStatus);
             btnCancel = itemView.findViewById(R.id.btnCancel);
+            btnEdit = itemView.findViewById(R.id.btnEdit); // Link the Edit button
         }
     }
 
@@ -62,43 +56,41 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     public void onBindViewHolder(@NonNull BookingViewHolder holder, int position) {
         Booking currentBooking = bookingList.get(position);
 
-        // Set up safe fallback values
-        String origin = "N/A";
-        String destination = "N/A";
-        String driverName = "Driver: Unknown";
-        String departureTime = "Unknown";
+        String origin = "Lokasi Tidak Diketahui";
+        String destination = "Lokasi Tidak Diketahui";
+        String driverName = "Pemandu: Ahmad";
+        String departureTime = "Tarikh Tidak Diketahui";
 
-        // Navigate the nested JSON safely to avoid NullPointerExceptions
         if (currentBooking.getRide() != null) {
             origin = currentBooking.getRide().getOrigin();
             destination = currentBooking.getRide().getDestination();
 
-            // Extract the actual date/time from the nested Ride object
             if (currentBooking.getRide().getDeparture_time() != null) {
                 departureTime = currentBooking.getRide().getDeparture_time();
             }
-
             if (currentBooking.getRide().getDriver() != null) {
-                driverName = "Driver: " + currentBooking.getRide().getDriver().getUsername();
+                driverName = "Pemandu: " + currentBooking.getRide().getDriver().getUsername();
             }
         }
 
-        // Bind the extracted data to their exact corresponding XML views
-        // XML ID: tvRideInfo -> Assign Origin and Destination
         holder.rideInfoText.setText(origin + " ➔ " + destination);
-
-        // XML ID: tvBookingDate -> Assign the actual departure time from JSON
-        holder.bookingDateText.setText("Date: " + departureTime);
-
-        // XML ID: tvStatus -> Assign the driver's name
+        holder.bookingDateText.setText("Tarikh: " + departureTime);
         holder.statusText.setText(driverName);
-
-        // XML ID: tvPrice -> Clear it since there's no price in your current JSON response
         holder.priceText.setText("");
 
-        holder.btnCancel.setOnClickListener(v -> {
-            if (cancelListener != null) {
-                cancelListener.onCancelClick(currentBooking);
+        // 3. Set click listener for Cancel
+        holder.btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionListener.onCancelClick(currentBooking);
+            }
+        });
+
+        // 4. Set click listener for Edit
+        holder.btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionListener.onEditClick(currentBooking);
             }
         });
     }
