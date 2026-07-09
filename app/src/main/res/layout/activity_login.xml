@@ -30,11 +30,11 @@
             <!-- Profile -->
             <ImageView
                 android:id="@+id/imgLogo"
-                android:layout_width="114dp"
-                android:layout_height="112dp"
+                android:layout_width="103dp"
+                android:layout_height="97dp"
                 android:layout_gravity="center"
                 android:background="@drawable/circle_profile"
-                android:padding="30dp"
+                android:padding="24dp"
                 android:src="@drawable/user" />
 
             <!-- App Name -->
