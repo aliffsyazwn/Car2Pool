@@ -18,7 +18,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     private Context context;
     private OnBookingActionListener actionListener;
 
-    // 1Rename the interface to handle multiple actions
+    // 1. Rename the interface to handle multiple actions
     public interface OnBookingActionListener {
         void onCancelClick(Booking booking);
         void onEditClick(Booking booking); // Add Edit click
