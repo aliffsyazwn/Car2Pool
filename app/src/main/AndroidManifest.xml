@@ -23,6 +23,12 @@
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
+            android:name=".ViewProfileActivity"/>
+
+        <activity
+            android:name=".UpdateProfileActivity"/>
+
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity

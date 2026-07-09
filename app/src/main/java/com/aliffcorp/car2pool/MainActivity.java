@@ -17,89 +17,97 @@ import com.aliffcorp.car2pool.model.User;
 import com.aliffcorp.car2pool.sharedpref.SharedPrefManager;
 
 public class MainActivity extends AppCompatActivity {
+
     private TextView tvHello;
+
     private CardView cardSearchRide;
+    private CardView cardCreateRide;
     private CardView cardBooking;
-    private android.widget.Button btnLogout;
+    private CardView cardProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        // Initialize Views
         tvHello = findViewById(R.id.tvHello);
+
         cardSearchRide = findViewById(R.id.cardSearchRide);
+        cardCreateRide = findViewById(R.id.cardCreateRide);
         cardBooking = findViewById(R.id.cardBooking);
-        btnLogout = findViewById(R.id.btnLogout);
+        cardProfile = findViewById(R.id.cardProfile);
 
-        cardSearchRide.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rideListClicked(v);
-            }
-        });
-
-        cardBooking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), BookingList.class);
-                startActivity(intent);
-            }
-        });
-
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logoutClicked(v);
-            }
-        });
-
-        // if the user is already logged in we will directly start
-        // the main activity
+        // Check Login
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
-        if (!spm.isLoggedIn()) {    // no session record
-            // stop this MainActivity
-            finish();
-            // forward to Login Page
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        } else {
-            // Greet user
-            User user = spm.getUser();
-            tvHello.setText("Hello " + user.getUsername());
-        }
-    }
 
-    public void rideListClicked(View view) {
-        // forward user to rideListActivity
-        Intent intent = new Intent(getApplicationContext(), RideListActivity.class);
-        startActivity(intent);
+        if (!spm.isLoggedIn()) {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        // Display username
+        User user = spm.getUser();
+        tvHello.setText("Welcome back, " + user.getUsername() + "!");
+
+        // ===========================
+        // Bottom Navigation
+        // ===========================
+
+        // Search Ride
+        cardSearchRide.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, RideListActivity.class);
+            startActivity(intent);
+        });
+
+        // Create Ride
+        cardCreateRide.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, CreateRideActivity.class);
+            startActivity(intent);
+        });
+
+        // My Booking
+        cardBooking.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, BookingList.class);
+            startActivity(intent);
+        });
+
+// Profile
+        cardProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ViewProfileActivity.class);
+            startActivity(intent);
+        });
+
+        cardProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ViewProfileActivity.class);
+            startActivity(intent);
+        });
 
     }
 
     public void logoutClicked(View view) {
-        // clear the shared preferences
+
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
         spm.logout();
 
-        // display message
-        Toast.makeText(getApplicationContext(),
+        Toast.makeText(
+                this,
                 "You have successfully logged out.",
-                Toast.LENGTH_LONG).show();
+                Toast.LENGTH_LONG
+        ).show();
 
-        // terminate this MainActivity
-        finish();
-
-        // forward to Login Page
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-
+        finish();
     }
-
 }
