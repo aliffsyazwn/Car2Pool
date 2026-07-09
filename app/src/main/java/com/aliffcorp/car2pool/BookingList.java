@@ -86,10 +86,15 @@ public class BookingList extends AppCompatActivity {
                     List<Booking> bookings = response.body();
 
                     // initialize adapter
-                    adapter = new BookingAdapter(getApplicationContext(), bookings, new BookingAdapter.OnCancelClickListener() {
+                    adapter = new BookingAdapter(getApplicationContext(), bookings, new BookingAdapter.OnBookingActionListener() {
                         @Override
                         public void onCancelClick(Booking booking) {
                             confirmCancellation(booking, token);
+                        }
+
+                        @Override
+                        public void onEditClick(Booking booking) {
+                            // TODO: Implement edit functionality
                         }
                     });
                     // set adapter to the RecyclerView
