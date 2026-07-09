@@ -57,6 +57,21 @@
         android:textColor="#43A047"
         android:textSize="20sp" />
 
+    <!-- Edit Button -->
+    <Button
+        android:id="@+id/btnEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_below="@id/tvStatus"
+        android:layout_toStartOf="@id/btnCancel"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#1976D2"
+        android:text="EDIT"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
     <!-- Cancel Button -->
     <Button
         android:id="@+id/btnCancel"
