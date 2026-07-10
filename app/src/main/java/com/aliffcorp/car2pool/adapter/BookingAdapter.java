@@ -56,10 +56,10 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     public void onBindViewHolder(@NonNull BookingViewHolder holder, int position) {
         Booking currentBooking = bookingList.get(position);
 
-        String origin = "Lokasi Tidak Diketahui";
-        String destination = "Lokasi Tidak Diketahui";
-        String driverName = "Pemandu: Ahmad";
-        String departureTime = "Tarikh Tidak Diketahui";
+        String origin = "Unknown";
+        String destination = "Unknown";
+        String driverName = "Unknown";
+        String departureTime = "N/A";
 
         if (currentBooking.getRide() != null) {
             origin = currentBooking.getRide().getOrigin();
@@ -69,12 +69,12 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
                 departureTime = currentBooking.getRide().getDeparture_time();
             }
             if (currentBooking.getRide().getDriver() != null) {
-                driverName = "Pemandu: " + currentBooking.getRide().getDriver().getUsername();
+                driverName = "Driver: " + currentBooking.getRide().getDriver().getUsername();
             }
         }
 
         holder.rideInfoText.setText(origin + " ➔ " + destination);
-        holder.bookingDateText.setText("Tarikh: " + departureTime);
+        holder.bookingDateText.setText("Date: " + departureTime);
         holder.statusText.setText(driverName);
         holder.priceText.setText("");
 
