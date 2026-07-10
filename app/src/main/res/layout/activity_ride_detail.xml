@@ -188,7 +188,8 @@
                         android:text="Book"
                         android:textColor="@color/black"
                         android:textSize="18dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:onClick="bookRide"/>
                 </LinearLayout>
 
             </LinearLayout>

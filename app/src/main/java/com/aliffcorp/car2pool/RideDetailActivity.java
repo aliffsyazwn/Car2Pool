@@ -3,6 +3,8 @@ package com.aliffcorp.car2pool;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,9 +14,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.aliffcorp.car2pool.model.Booking;
 import com.aliffcorp.car2pool.model.Ride;
 import com.aliffcorp.car2pool.model.User;
 import com.aliffcorp.car2pool.remote.ApiUtils;
+import com.aliffcorp.car2pool.remote.BookingService;
 import com.aliffcorp.car2pool.remote.RideService;
 import com.aliffcorp.car2pool.remote.UserService;
 import com.aliffcorp.car2pool.sharedpref.SharedPrefManager;
@@ -26,6 +30,10 @@ import retrofit2.Response;
 public class RideDetailActivity extends AppCompatActivity {
     private RideService rideService;
     private UserService userService;
+    private BookingService bookingService;
+    private Ride ride;
+    private User user;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +49,26 @@ public class RideDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int rideId = intent.getIntExtra("ride_id", -1);
 
+        // get references to the view elements
+        TextView tvOrigin = findViewById(R.id.tvOrigin);
+        TextView tvDestination = findViewById(R.id.tvDestination);
+        TextView tvDriver = findViewById(R.id.tvDriver);
+        TextView tvTime = findViewById(R.id.tvTime);
+        CheckBox cbFSeat = findViewById(R.id.cbFSeat);
+        CheckBox cbRSeat = findViewById(R.id.cbRSeat);
+        CheckBox cbMSeat = findViewById(R.id.cbMSeat);
+        CheckBox cbLSeat = findViewById(R.id.cbLSeat);
+
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
-        User user = spm.getUser();
-        String token = user.getToken();
+        user = spm.getUser();
+        token = user.getToken();
 
         // get ride service instance
         rideService = ApiUtils.getRideService();
         userService = ApiUtils.getUserService();
+        bookingService = ApiUtils.getBookingService();
 
         rideService.getRides(token, rideId).enqueue(new Callback<Ride>() {
-
             @Override
             public void onResponse(Call<Ride> call, Response<Ride> response) {
                 // for debug purpose
@@ -58,20 +76,16 @@ public class RideDetailActivity extends AppCompatActivity {
 
                 if (response.code() == 200) {
                     // server return success
-
                     // get ride object from response
-                    Ride ride = response.body();
-
-                    // get references to the view elements
-                    TextView tvOrigin = findViewById(R.id.tvOrigin);
-                    TextView tvDestination = findViewById(R.id.tvDestination);
-                    TextView tvDriver = findViewById(R.id.tvDriver);
-                    TextView tvTime = findViewById(R.id.tvTime);
-
+                    ride = response.body();
                     // set values
                     tvOrigin.setText(ride.getOrigin());
                     tvTime.setText(ride.getDeparture_time());
                     tvDestination.setText(ride.getDestination());
+                    cbFSeat.setChecked(ride.getfSeat());
+                    cbRSeat.setChecked(ride.getrSeat());
+                    cbMSeat.setChecked(ride.getmSeat());
+                    cbLSeat.setChecked(ride.getlSeat());
 
                     // fetch driver username
                     userService.getUser(token, ride.getDriver_id()).enqueue(new Callback<User>() {
@@ -119,6 +133,37 @@ public class RideDetailActivity extends AppCompatActivity {
         // forward to Login Page
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
 
+    public void bookRide(View view) {
+        if (ride == null) {
+            Toast.makeText(this, "Ride info not loaded yet", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Booking booking = new Booking();
+        booking.setUser_id(user.getId());
+        booking.setDriver_id(ride.getDriver_id());
+        booking.setRide_id(ride.getRide_id());
+
+        bookingService.createBooking(token, booking).enqueue(new Callback<Booking>() {
+            @Override
+            public void onResponse(Call<Booking> call, Response<Booking> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(RideDetailActivity.this, "Booking Successful!", Toast.LENGTH_LONG).show();
+                    // Redirect to Booking List
+                    Intent intent = new Intent(RideDetailActivity.this, BookingList.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(RideDetailActivity.this, "Booking Failed: " + response.message(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Booking> call, Throwable t) {
+                Toast.makeText(RideDetailActivity.this, "Error connecting to server", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
