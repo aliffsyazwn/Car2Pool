@@ -79,9 +79,7 @@
                 android:id="@+id/txtPassword"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.75"
-                android:inputType="textMultiLine"
-                android:lines="2" />
+                android:layout_weight="0.75" />
         </LinearLayout>
 
         <LinearLayout
@@ -107,6 +105,7 @@
             android:layout_height="wrap_content" >
 
             <Button
+                android:id="@+id/btnNewRider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Register Rider"
