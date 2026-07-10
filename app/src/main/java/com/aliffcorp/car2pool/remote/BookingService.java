@@ -20,7 +20,7 @@ public interface BookingService {
     Call<List<Booking>> getBookings(@Header("api-key") String api_key);
 
     @GET("bookings/{booking_id}")
-    Call<Booking> getBookings(@Header("api-key") String api_key, @Path("booking_id") int bookingId);
+    Call<Booking> getBooking(@Header("api-key") String api_key, @Path("booking_id") int bookingId);
 
     @DELETE("bookings/{booking_id}")
     Call<Void> cancelBooking(@Header("api-key") String api_key, @Path("booking_id") int bookingId);
@@ -29,5 +29,5 @@ public interface BookingService {
     Call<Booking> createBooking(@Header("api-key") String api_key, @Body Booking booking);
 
     @PUT("bookings/{booking_id}")
-    Call<Booking> updateBooking(@Header("api-key") String api_key, @Path("booking_id") int bookingId, @Body Booking booking);
+    Call<Booking> updateBooking(@Header("api-key") String api_key, @Path("booking_id") int bookingId, @Body Booking updatedBooking);
 }
