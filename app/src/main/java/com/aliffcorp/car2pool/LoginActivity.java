@@ -41,8 +41,7 @@ public class LoginActivity extends AppCompatActivity {
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.login), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top,
-                    systemBars.right, systemBars.bottom);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
@@ -58,22 +57,12 @@ public class LoginActivity extends AppCompatActivity {
                 loginClicked(v);
             }
         });
-
-        // Open Register Page
-        txtRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     /**
      * Login button action handler
      */
     public void loginClicked(View view) {
-
         String username = edtUsername.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
 
@@ -86,9 +75,7 @@ public class LoginActivity extends AppCompatActivity {
      * Call REST API to login
      */
     private void doLogin(String username, String password) {
-
         UserService userService = ApiUtils.getUserService();
-
         Call<User> call;
 
         if (username.contains("@")) {
@@ -98,107 +85,73 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         call.enqueue(new Callback<User>() {
-
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-
                 if (response.isSuccessful()) {
-
                     User user = response.body();
 
                     if (user != null && user.getToken() != null) {
-
                         displayToast("Login successful");
 
-                        SharedPrefManager spm =
-                                new SharedPrefManager(getApplicationContext());
-
+                        SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
                         spm.storeUser(user);
 
                         finish();
-
-                        Intent intent =
-                                new Intent(LoginActivity.this, MainActivity.class);
-
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
-
                     } else {
-
                         displayToast("Login error");
-
                     }
-
                 } else {
-
                     String errorResp;
-
                     try {
-
                         errorResp = response.errorBody().string();
-
-                        FailLogin e =
-                                new Gson().fromJson(errorResp, FailLogin.class);
-
+                        FailLogin e = new Gson().fromJson(errorResp, FailLogin.class);
                         displayToast(e.getError().getMessage());
-
                     } catch (Exception e) {
-
                         Log.e("MyApp", e.toString());
-
                         displayToast("Error");
-
                     }
-
                 }
-
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
                 displayToast("Error connecting to server.");
                 displayToast(t.getMessage());
-
                 Log.e("MyApp", t.toString());
-
             }
-
         });
-
     }
 
     /**
      * Validate login
      */
     private boolean validateLogin(String username, String password) {
-
         if (username == null || username.trim().isEmpty()) {
-
             edtUsername.setError("Username or Email is required");
             edtUsername.requestFocus();
             return false;
-
         }
 
         if (password == null || password.trim().isEmpty()) {
-
             edtPassword.setError("Password is required");
             edtPassword.requestFocus();
             return false;
-
         }
 
         return true;
-
     }
 
     /**
      * Display Toast
      */
     public void displayToast(String message) {
-
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-
     }
 
+    public void newRiderClicked(View view) {
+        Intent intent = new Intent(getApplicationContext(), NewRiderActivity.class);
+        startActivity(intent);
+    }
 }

@@ -10,22 +10,22 @@ public class User {
     private String role;
     private int is_active;
     private String secret;
+    private String studID;
 
-    public User(int id, String email, String username, String password, String token, String lease, String role, int is_active, String secret) {
+    public User(int id, String email, String username, String password, String lease, String token, String role, int is_active, String secret, String studID) {
         this.id = id;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.token = token;
         this.lease = lease;
+        this.token = token;
         this.role = role;
         this.is_active = is_active;
         this.secret = secret;
+        this.studID = studID;
     }
 
-    public User() {
-
-    }
+    public User() {}
 
     public int getId() {
         return id;
@@ -97,5 +97,29 @@ public class User {
 
     public void setSecret(String secret) {
         this.secret = secret;
+    }
+
+    public String getStudID() {
+        return studID;
+    }
+
+    public void setStudID(String studID) {
+        this.studID = studID;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", token='" + token + '\'' +
+                ", lease='" + lease + '\'' +
+                ", role='" + role + '\'' +
+                ", is_active=" + is_active +
+                ", secret='" + secret + '\'' +
+                ", studID='" + studID + '\'' +
+                '}';
     }
 }

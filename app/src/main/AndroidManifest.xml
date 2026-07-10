@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -14,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Car2Pool">
         <activity
+            android:name=".NewRiderActivity"
+            android:exported="false" />
+        <activity
             android:name=".RideDetailActivity"
             android:exported="false" />
         <activity
@@ -23,11 +27,11 @@
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".ViewProfileActivity"/>
-
+            android:name=".ViewProfileActivity"
+            android:exported="false"/>
         <activity
-            android:name=".UpdateProfileActivity"/>
-
+            android:name=".UpdateProfileActivity"
+            android:exported="false"/>
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
@@ -36,7 +40,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
