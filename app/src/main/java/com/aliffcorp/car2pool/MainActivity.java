@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvHello;
 
     private CardView cardSearchRide;
-    private CardView cardCreateRide;
     private CardView cardBooking;
     private CardView cardProfile;
 
@@ -41,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         tvHello = findViewById(R.id.tvHello);
 
         cardSearchRide = findViewById(R.id.cardSearchRide);
-        cardCreateRide = findViewById(R.id.cardCreateRide);
         cardBooking = findViewById(R.id.cardBooking);
         cardProfile = findViewById(R.id.cardProfile);
 
@@ -69,21 +67,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Create Ride
-        cardCreateRide.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, CreateRideActivity.class);
-            startActivity(intent);
-        });
 
         // My Booking
         cardBooking.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, BookingList.class);
-            startActivity(intent);
-        });
-
-// Profile
-        cardProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, ViewProfileActivity.class);
             startActivity(intent);
         });
 

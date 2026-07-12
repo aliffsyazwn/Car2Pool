@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5"
-    tools:context=".MainActivity">
+    tools:context=".DriverMainActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,6 +20,7 @@
             android:orientation="vertical"
             android:padding="40dp">
 
+            <!-- Logo -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,7 +42,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/app_name"
+                        android:text="Car2Pool Driver"
                         android:textColor="#2E7D32"
                         android:textSize="28sp"
                         android:textStyle="bold" />
@@ -49,18 +50,19 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/slogan"
+                        android:text="Drive. Share. Earn."
                         android:textColor="#777777" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
+            <!-- Welcome -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:text="@string/welcome_morning"
+                android:text="Welcome Driver!"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -68,6 +70,7 @@
                 android:id="@+id/tvHello"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Ready to create a ride?"
                 android:textColor="#666666"
                 android:textSize="16sp" />
 
@@ -75,12 +78,14 @@
 
     </ScrollView>
 
+    <!-- Bottom Navigation -->
     <androidx.cardview.widget.CardView
         android:id="@+id/footerCard"
         android:layout_width="match_parent"
         android:layout_height="74dp"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         app:cardBackgroundColor="#FFFFFF"
@@ -93,9 +98,9 @@
             android:orientation="horizontal"
             android:weightSum="3">
 
-            <!-- My Booking -->
+            <!-- Update Ride -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardBooking"
+                android:id="@+id/cardUpdateRide"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -114,14 +119,14 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/booking"
-                        android:contentDescription="@string/desc_booking_icon" />
+                        android:src="@drawable/edit"
+                        android:contentDescription="Update Ride" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="@string/my_booking"
+                        android:text="Update Ride"
                         android:textColor="#666666"
                         android:textSize="11sp" />
 
@@ -129,9 +134,9 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Search Ride -->
+            <!-- Create Ride -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardSearchRide"
+                android:id="@+id/cardCreateRide"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -152,14 +157,14 @@
                         android:layout_height="34dp"
                         android:background="@android:color/holo_blue_dark"
                         android:padding="6dp"
-                        android:src="@drawable/search"
-                        android:contentDescription="@string/desc_search_icon" />
+                        android:src="@drawable/add"
+                        android:contentDescription="Create Ride" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="@string/search_ride"
+                        android:text="Create Ride"
                         android:textColor="#000000"
                         android:textSize="11sp"
                         android:textStyle="bold" />
@@ -190,13 +195,13 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/profile"
-                        android:contentDescription="@string/desc_profile_icon" />
+                        android:contentDescription="Profile" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="@string/profile"
+                        android:text="Profile"
                         android:textColor="#666666"
                         android:textSize="11sp" />
 
@@ -207,11 +212,5 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone" />
 
 </RelativeLayout>

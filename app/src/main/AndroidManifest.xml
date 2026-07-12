@@ -33,6 +33,11 @@
             android:name=".UpdateProfileActivity"
             android:exported="false"/>
         <activity
+            android:name=".DriverMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DriverRideDetailActivity"/>
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity

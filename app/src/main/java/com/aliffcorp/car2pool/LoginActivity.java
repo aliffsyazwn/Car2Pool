@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -45,23 +44,15 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Get references to form elements
         edtUsername = findViewById(R.id.etUserName);
         edtPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginClicked(v);
-            }
-        });
+        btnLogin.setOnClickListener(v -> loginClicked(v));
     }
 
-    /**
-     * Login button action handler
-     */
     public void loginClicked(View view) {
+
         String username = edtUsername.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
 
@@ -70,10 +61,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Call REST API to login
-     */
     private void doLogin(String username, String password) {
+
         UserService userService = ApiUtils.getUserService();
         Call<User> call;
 
@@ -84,56 +73,117 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         call.enqueue(new Callback<User>() {
+
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
+
                 if (response.isSuccessful()) {
+
                     User user = response.body();
 
                     if (user != null && user.getToken() != null) {
-                        displayToast("Login successful");
 
-                        SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
+                        SharedPrefManager spm =
+                                new SharedPrefManager(getApplicationContext());
+
                         spm.storeUser(user);
 
-                        finish();
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        // Debug
+                        Log.d("LOGIN", "ID = " + user.getId());
+                        Log.d("LOGIN", "Username = " + user.getUsername());
+                        Log.d("LOGIN", "Role = " + user.getRole());
+
+                        Toast.makeText(
+                                LoginActivity.this,
+                                "Login Successful",
+                                Toast.LENGTH_SHORT
+                        ).show();
+
+                        Intent intent;
+
+                        if (user.getRole() != null &&
+                                user.getRole().equalsIgnoreCase("driver")) {
+
+                            Log.d("LOGIN", "Open DriverMainActivity");
+
+                            intent = new Intent(
+                                    LoginActivity.this,
+                                    DriverMainActivity.class
+                            );
+
+                        } else {
+
+                            Log.d("LOGIN", "Open MainActivity");
+
+                            intent = new Intent(
+                                    LoginActivity.this,
+                                    MainActivity.class
+                            );
+                        }
+
                         startActivity(intent);
+                        finish();
+
                     } else {
-                        displayToast("Login error");
+
+                        Toast.makeText(
+                                LoginActivity.this,
+                                "Login Failed",
+                                Toast.LENGTH_SHORT
+                        ).show();
                     }
+
                 } else {
-                    String errorResp;
+
                     try {
-                        errorResp = response.errorBody().string();
-                        FailLogin e = new Gson().fromJson(errorResp, FailLogin.class);
-                        displayToast(e.getError().getMessage());
+
+                        String errorResp = response.errorBody().string();
+
+                        FailLogin e =
+                                new Gson().fromJson(errorResp, FailLogin.class);
+
+                        Toast.makeText(
+                                LoginActivity.this,
+                                e.getError().getMessage(),
+                                Toast.LENGTH_LONG
+                        ).show();
+
                     } catch (Exception e) {
-                        Log.e("MyApp", e.toString());
-                        displayToast("Error");
+
+                        Log.e("LOGIN", e.toString());
+
+                        Toast.makeText(
+                                LoginActivity.this,
+                                "Error",
+                                Toast.LENGTH_SHORT
+                        ).show();
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                displayToast("Error connecting to server.");
-                displayToast(t.getMessage());
-                Log.e("MyApp", t.toString());
+
+                Toast.makeText(
+                        LoginActivity.this,
+                        "Error connecting to server",
+                        Toast.LENGTH_LONG
+                ).show();
+
+                Log.e("LOGIN", t.toString());
             }
         });
     }
 
-    /**
-     * Validate login
-     */
     private boolean validateLogin(String username, String password) {
-        if (username == null || username.trim().isEmpty()) {
+
+        if (username.isEmpty()) {
             edtUsername.setError("Username or Email is required");
             edtUsername.requestFocus();
             return false;
         }
 
-        if (password == null || password.trim().isEmpty()) {
+        if (password.isEmpty()) {
             edtPassword.setError("Password is required");
             edtPassword.requestFocus();
             return false;
@@ -142,15 +192,13 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    /**
-     * Display Toast
-     */
-    public void displayToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
-
     public void newRiderClicked(View view) {
-        Intent intent = new Intent(getApplicationContext(), NewRiderActivity.class);
+
+        Intent intent = new Intent(
+                LoginActivity.this,
+                NewRiderActivity.class
+        );
+
         startActivity(intent);
     }
 }
