@@ -41,6 +41,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
                         android:text="@string/app_name"
                         android:textColor="#2E7D32"
                         android:textSize="28sp"
@@ -60,6 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
+                android:fontFamily="serif-monospace"
                 android:text="@string/welcome_morning"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -112,8 +114,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:src="@drawable/booking"
                         android:contentDescription="@string/desc_booking_icon" />
 
@@ -122,8 +124,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@string/my_booking"
-                        android:textColor="#666666"
-                        android:textSize="11sp" />
+                        android:textColor="#020202"
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -148,8 +150,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="34dp"
-                        android:layout_height="34dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:padding="6dp"
                         android:src="@drawable/add"
                         android:contentDescription="@string/desc_search_icon" />
@@ -160,8 +162,8 @@
                         android:layout_marginTop="2dp"
                         android:text="@string/search_ride"
                         android:textColor="#000000"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
+                        android:textSize="16sp"
+                         />
 
                 </LinearLayout>
 
@@ -186,8 +188,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:src="@drawable/user"
                         android:contentDescription="@string/desc_profile_icon" />
 
@@ -196,8 +198,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@string/profile"
-                        android:textColor="#666666"
-                        android:textSize="11sp" />
+                        android:textColor="#000000"
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
