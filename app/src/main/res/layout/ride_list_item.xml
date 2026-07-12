@@ -22,20 +22,13 @@
         android:text="Destination"
         android:textSize="17sp"
         android:textStyle="bold" />
-    <TextView
-        android:id="@+id/tvDriver"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvDestination"
-        android:text="Driver"
-        android:textSize="17sp"
-        android:textStyle="bold" />
+
 
     <TextView
         android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvDriver"
+        android:layout_below="@+id/tvDestination"
         android:text="Time"
         android:textSize="17sp"
         android:textStyle="bold" />

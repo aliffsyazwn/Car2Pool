@@ -5,6 +5,7 @@ public class Booking {
     private int booking_id;
     private int user_id;
     private int driver_id;
+    private int ride_id;
 
     private Ride ride;
 
@@ -12,10 +13,11 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(int booking_id, int user_id, int driver_id) {
+    public Booking(int booking_id, int user_id, int driver_id, int ride_id) {
         this.booking_id = booking_id;
         this.user_id = user_id;
         this.driver_id = driver_id;
+        this.ride_id = ride_id;
     }
 
     public int getBooking_id() {
@@ -42,12 +44,21 @@ public class Booking {
         this.driver_id = driver_id;
     }
 
+    public int getRide_id() {
+        return ride_id;
+    }
+
+    public void setRide_id(int ride_id) {
+        this.ride_id = ride_id;
+    }
+
     @Override
     public String toString() {
         return "Booking{" +
                 "booking_id=" + booking_id +
                 ", user_id=" + user_id +
                 ", driver_id=" + driver_id +
+                ", ride_id=" + ride_id +
                 '}';
     }
 }

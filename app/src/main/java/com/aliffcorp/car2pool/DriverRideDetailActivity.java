@@ -80,7 +80,6 @@ public class DriverRideDetailActivity extends AppCompatActivity {
                     tvOrigin.setText(ride.getOrigin());
                     tvDestination.setText(ride.getDestination());
                     tvTime.setText(ride.getDeparture_time());
-                    tvSeats.setText(String.valueOf(ride.getAvailable_seats()));
 
                     userService.getUser(token, ride.getDriver_id())
                             .enqueue(new Callback<User>() {
