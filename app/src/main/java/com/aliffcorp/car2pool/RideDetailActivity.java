@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.aliffcorp.car2pool.model.Booking;
 import com.aliffcorp.car2pool.model.Ride;
+import com.aliffcorp.car2pool.StringUtils;
 import com.aliffcorp.car2pool.model.User;
 import com.aliffcorp.car2pool.remote.ApiUtils;
 import com.aliffcorp.car2pool.remote.BookingService;
@@ -105,7 +106,7 @@ public class RideDetailActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<User> call, Response<User> response) {
                             if (response.isSuccessful() && response.body() != null) {
-                                tvDriver.setText(response.body().getUsername());
+                                tvDriver.setText(StringUtils.capitalize(response.body().getUsername()));
                             } else {
                                 tvDriver.setText("Unknown Driver (" + ride.getDriver_id() + ")");
                             }
@@ -183,8 +184,10 @@ public class RideDetailActivity extends AppCompatActivity {
                             "Booking added successfully.",
                             Toast.LENGTH_LONG).show();
 
-                    // end this activity and go back to previous activity
+                    // end this activity
                     finish();
+                    Intent intent = new Intent(RideDetailActivity.this, BookingList.class);
+                    startActivity(intent);
                 }
                 else if (response.code() == 401) {
                     // invalid token, ask user to relogin

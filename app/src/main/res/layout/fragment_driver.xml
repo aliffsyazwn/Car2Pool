@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Enter Driver Information"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp" />
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.25" android:text="Email:" />
+        <EditText android:id="@+id/txtDriverEmail" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.75" android:inputType="textEmailAddress" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.25" android:text="Username:" />
+        <EditText android:id="@+id/txtDriverUsername" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.75" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.25" android:text="Password:" />
+        <EditText android:id="@+id/txtDriverPassword" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.75" android:inputType="textPassword" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.25" android:text="Student ID:" />
+        <EditText android:id="@+id/txtDriverID" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.75" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.25" android:text="Car Model:" />
+        <EditText android:id="@+id/txtCarModel" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.75" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.25" android:text="Plate No:" />
+        <EditText android:id="@+id/txtPlateNumber" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.75" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.25" android:text="License:" />
+        <EditText android:id="@+id/txtLicense" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.75" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnNewDriver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Register Driver" />
+</LinearLayout>
