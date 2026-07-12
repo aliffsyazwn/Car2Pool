@@ -18,10 +18,9 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     private Context context;
     private OnBookingActionListener actionListener;
 
-    // 1. Rename the interface to handle multiple actions
+    // Interface for cancel action
     public interface OnBookingActionListener {
         void onCancelClick(Booking booking);
-        void onEditClick(Booking booking); // Add Edit click
     }
 
     public BookingAdapter(Context context, List<Booking> bookingList, OnBookingActionListener actionListener) {
@@ -32,7 +31,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
     public static class BookingViewHolder extends RecyclerView.ViewHolder {
         TextView rideInfoText, priceText, bookingDateText, statusText;
-        Button btnCancel, btnEdit; // 2. Declare the Edit button
+        Button btnCancel;
 
         public BookingViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -40,8 +39,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             priceText = itemView.findViewById(R.id.tvPrice);
             bookingDateText = itemView.findViewById(R.id.tvBookingDate);
             statusText = itemView.findViewById(R.id.tvStatus);
-            btnCancel = itemView.findViewById(R.id.btnCancel);
-            btnEdit = itemView.findViewById(R.id.btnEdit); // Link the Edit button
+            btnCancel = itemView.findViewById(R.id.btnCancel); // Cancel button
         }
     }
 
@@ -58,9 +56,10 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
         String origin = "Unknown";
         String destination = "Unknown";
-        String driverName = "Unknown";
+        String driverName = "Driver: Ahmad"; // Default Malay name
         String departureTime = "N/A";
 
+        // Extract ride details safely
         if (currentBooking.getRide() != null) {
             origin = currentBooking.getRide().getOrigin();
             destination = currentBooking.getRide().getDestination();
@@ -73,24 +72,19 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             }
         }
 
+        // Bind data to UI
         holder.rideInfoText.setText(origin + " ➔ " + destination);
         holder.bookingDateText.setText("Date: " + departureTime);
         holder.statusText.setText(driverName);
         holder.priceText.setText("");
 
-        // 3. Set click listener for Cancel
+        // Cancel click listener
         holder.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                actionListener.onCancelClick(currentBooking);
-            }
-        });
-
-        // 4. Set click listener for Edit
-        holder.btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actionListener.onEditClick(currentBooking);
+                if (actionListener != null) {
+                    actionListener.onCancelClick(currentBooking);
+                }
             }
         });
     }
