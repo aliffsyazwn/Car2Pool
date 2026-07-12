@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.Toast;
+import androidx.cardview.widget.CardView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,13 +28,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BookingList extends AppCompatActivity implements BookingAdapter.OnBookingActionListener {
+public class BookingList extends AppCompatActivity
+        implements BookingAdapter.OnBookingActionListener {
 
     private BookingService bookingService;
     private RecyclerView rvBookList;
     private BookingAdapter adapter;
+
     private String token;
     private int userId;
+
+    private CardView cardHome;
+    private CardView cardSearchRide;
+    private CardView cardBooking;
+    private CardView cardProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +52,12 @@ public class BookingList extends AppCompatActivity implements BookingAdapter.OnB
 
         rvBookList.setLayoutManager(new LinearLayoutManager(this));
         rvBookList.addItemDecoration(
-                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+                new DividerItemDecoration(this,
+                        DividerItemDecoration.VERTICAL));
 
-        SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
+        SharedPrefManager spm =
+                new SharedPrefManager(getApplicationContext());
+
         User user = spm.getUser();
 
         if (user != null) {
@@ -56,6 +67,40 @@ public class BookingList extends AppCompatActivity implements BookingAdapter.OnB
 
         bookingService = ApiUtils.getBookingService();
 
+        // ==========================
+        // Bottom Navigation
+        // ==========================
+
+        cardHome = findViewById(R.id.cardHome);
+        cardSearchRide = findViewById(R.id.cardSearchRide);
+        cardBooking = findViewById(R.id.cardBooking);
+        cardProfile = findViewById(R.id.cardProfile);
+
+        cardHome.setOnClickListener(v -> {
+            startActivity(new Intent(
+                    BookingList.this,
+                    MainActivity.class));
+            finish();
+        });
+
+        cardSearchRide.setOnClickListener(v -> {
+            startActivity(new Intent(
+                    BookingList.this,
+                    RideListActivity.class));
+            finish();
+        });
+
+        // Already in Booking page
+        cardBooking.setOnClickListener(v -> {
+        });
+
+        cardProfile.setOnClickListener(v -> {
+            startActivity(new Intent(
+                    BookingList.this,
+                    ViewProfileActivity.class));
+            finish();
+        });
+
         fetchBookings();
     }
 
@@ -63,58 +108,58 @@ public class BookingList extends AppCompatActivity implements BookingAdapter.OnB
 
         if (token == null) return;
 
-        bookingService.getUserBookings(token, userId).enqueue(new Callback<List<Booking>>() {
+        bookingService.getUserBookings(token, userId)
+                .enqueue(new Callback<List<Booking>>() {
 
-            @Override
-            public void onResponse(Call<List<Booking>> call,
-                                   Response<List<Booking>> response) {
+                    @Override
+                    public void onResponse(Call<List<Booking>> call,
+                                           Response<List<Booking>> response) {
 
-                if (response.isSuccessful() && response.body() != null) {
+                        if (response.isSuccessful()
+                                && response.body() != null) {
 
-                    List<Booking> bookings = response.body();
+                            adapter = new BookingAdapter(
+                                    BookingList.this,
+                                    response.body(),
+                                    BookingList.this);
 
-                    adapter = new BookingAdapter(
-                            BookingList.this,
-                            bookings,
-                            BookingList.this);
+                            rvBookList.setAdapter(adapter);
 
-                    rvBookList.setAdapter(adapter);
+                        } else if (response.code() == 204) {
 
-                } else if (response.code() == 204) {
+                            Toast.makeText(
+                                    BookingList.this,
+                                    "No Booking Found",
+                                    Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(
-                            BookingList.this,
-                            "No Booking Found",
-                            Toast.LENGTH_SHORT).show();
+                        } else if (response.code() == 401) {
 
-                } else if (response.code() == 401) {
+                            Toast.makeText(
+                                    BookingList.this,
+                                    "Session expired.",
+                                    Toast.LENGTH_LONG).show();
 
-                    Toast.makeText(
-                            BookingList.this,
-                            "Session expired. Please login again.",
-                            Toast.LENGTH_LONG).show();
+                            handleLogout();
 
-                    handleLogout();
+                        } else {
 
-                } else {
+                            Toast.makeText(
+                                    BookingList.this,
+                                    "Failed to load bookings",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-                    Toast.makeText(
-                            BookingList.this,
-                            "Failed to load bookings",
-                            Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onFailure(Call<List<Booking>> call,
+                                          Throwable t) {
 
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Booking>> call, Throwable t) {
-
-                Toast.makeText(
-                        BookingList.this,
-                        t.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+                        Toast.makeText(
+                                BookingList.this,
+                                t.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     // Cancel Button
