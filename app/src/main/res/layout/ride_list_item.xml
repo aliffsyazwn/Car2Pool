@@ -33,12 +33,21 @@
         android:textSize="17sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/tvDriver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTime"
+        android:text="Driver"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
     <Button
         android:id="@+id/btnDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Book"
         android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@id/tvTime"
+        android:layout_alignBottom="@id/tvDriver"
         android:onClick="detailClicked"/>
 </RelativeLayout>
