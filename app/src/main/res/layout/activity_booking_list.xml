@@ -36,13 +36,15 @@
 
     </LinearLayout>
 
-    <!-- Booking List Card -->
+    <!-- Booking List -->
     <androidx.cardview.widget.CardView
+        android:id="@+id/bookingCard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/header"
-        android:layout_marginTop="-20dp"
+        android:layout_above="@id/footerCard"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="-20dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:cardCornerRadius="20dp"
@@ -53,8 +55,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:padding="12dp" />
+            android:padding="12dp"/>
 
     </androidx.cardview.widget.CardView>
+
+    <!-- Reusable Navigation -->
+    <include
+        android:id="@+id/footerCard"
+        layout="@layout/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"/>
 
 </RelativeLayout>
