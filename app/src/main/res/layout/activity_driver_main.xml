@@ -117,8 +117,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
                         android:src="@drawable/edit"
                         android:contentDescription="Update Ride" />
 
@@ -127,8 +127,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Update Ride"
-                        android:textColor="#666666"
-                        android:textSize="11sp" />
+                        android:textColor="#000000"
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -153,9 +153,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="34dp"
-                        android:layout_height="34dp"
-                        android:background="@android:color/holo_blue_dark"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
                         android:padding="6dp"
                         android:src="@drawable/add"
                         android:contentDescription="Create Ride" />
@@ -166,8 +165,7 @@
                         android:layout_marginTop="2dp"
                         android:text="Create Ride"
                         android:textColor="#000000"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -192,9 +190,9 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/profile"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/user"
                         android:contentDescription="Profile" />
 
                     <TextView
@@ -202,8 +200,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Profile"
-                        android:textColor="#666666"
-                        android:textSize="11sp" />
+                        android:textColor="#000000"
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
