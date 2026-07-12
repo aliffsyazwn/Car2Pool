@@ -1,6 +1,7 @@
 package com.aliffcorp.car2pool.remote;
 
 import com.aliffcorp.car2pool.model.Booking;
+import com.aliffcorp.car2pool.model.LocationItem;
 
 import java.util.List;
 
@@ -19,6 +20,9 @@ public interface BookingService {
 
     @GET("users/{user_id}/bookings")
     Call<List<Booking>> getUserBookings(@Header("api-key") String api_key, @Path("user_id") int userId);
+
+    @GET("locations") // Change "locations" to your actual backend URL path
+    Call<List<LocationItem>> getAllLocations(@Header("api-key") String api_key);
 
     @GET("bookings/{booking_id}")
     Call<Booking> getBooking(@Header("api-key") String api_key, @Path("booking_id") int bookingId);
