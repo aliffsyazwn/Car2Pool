@@ -155,7 +155,6 @@
                     <ImageView
                         android:layout_width="34dp"
                         android:layout_height="34dp"
-                        android:background="@android:color/holo_blue_dark"
                         android:padding="6dp"
                         android:src="@drawable/add"
                         android:contentDescription="Create Ride" />
@@ -194,7 +193,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/profile"
+                        android:src="@drawable/user"
                         android:contentDescription="Profile" />
 
                     <TextView
