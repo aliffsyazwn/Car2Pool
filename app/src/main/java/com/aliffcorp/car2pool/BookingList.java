@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -39,102 +41,189 @@ public class BookingList extends AppCompatActivity implements BookingAdapter.OnB
 
         rvBookList = findViewById(R.id.rvBookList);
 
-        // Setup RecyclerView layout and decoration
         rvBookList.setLayoutManager(new LinearLayoutManager(this));
-        rvBookList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        rvBookList.addItemDecoration(
+                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        // Get user token
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
         User user = spm.getUser();
+
         if (user != null) {
             token = user.getToken();
         }
 
         bookingService = ApiUtils.getBookingService();
+
         fetchBookings();
     }
 
     private void fetchBookings() {
+
         if (token == null) return;
 
         bookingService.getBookings(token).enqueue(new Callback<List<Booking>>() {
+
             @Override
-            public void onResponse(Call<List<Booking>> call, Response<List<Booking>> response) {
+            public void onResponse(Call<List<Booking>> call,
+                                   Response<List<Booking>> response) {
+
                 if (response.isSuccessful() && response.body() != null) {
+
                     List<Booking> bookings = response.body();
-                    adapter = new BookingAdapter(BookingList.this, bookings, BookingList.this);
+
+                    adapter = new BookingAdapter(
+                            BookingList.this,
+                            bookings,
+                            BookingList.this);
+
                     rvBookList.setAdapter(adapter);
+
                 } else if (response.code() == 204) {
-                    // Handle empty database
-                    Toast.makeText(BookingList.this, "No Booking found", Toast.LENGTH_SHORT).show();
-                    rvBookList.setAdapter(null);
+
+                    Toast.makeText(
+                            BookingList.this,
+                            "No Booking Found",
+                            Toast.LENGTH_SHORT).show();
+
                 } else if (response.code() == 401) {
-                    // Handle expired or invalid token (Unauthorized)
-                    Toast.makeText(BookingList.this, "Session expired. Please login again.", Toast.LENGTH_LONG).show();
+
+                    Toast.makeText(
+                            BookingList.this,
+                            "Session expired. Please login again.",
+                            Toast.LENGTH_LONG).show();
+
                     handleLogout();
+
                 } else {
-                    Toast.makeText(BookingList.this, "Failed to load bookings", Toast.LENGTH_SHORT).show();
-                    Log.e("BookingList", "Error: " + response.message());
+
+                    Toast.makeText(
+                            BookingList.this,
+                            "Failed to load bookings",
+                            Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<List<Booking>> call, Throwable t) {
-                Toast.makeText(BookingList.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("BookingList", "Failure: ", t);
+
+                Toast.makeText(
+                        BookingList.this,
+                        t.getMessage(),
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    // Cancel Button
     @Override
     public void onCancelClick(Booking booking) {
-        // Show cancellation confirmation
+
         new AlertDialog.Builder(this)
                 .setTitle("Cancel Booking")
-                .setMessage("Are you sure want to cancel the booking?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Proceed to delete
-                        executeCancel(booking.getBooking_id());
-                    }
-                })
+                .setMessage("Are you sure you want to cancel this booking?")
+                .setPositiveButton("Yes",
+                        (dialog, which) -> executeCancel(booking.getBooking_id()))
                 .setNegativeButton("No", null)
                 .show();
     }
 
-    private void executeCancel(int bookingId) {
-        if (token == null) return;
+    // Long Press Context Menu
+    @Override
+    public void onLongClick(View view, Booking booking) {
 
-        bookingService.cancelBooking(token, bookingId).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(BookingList.this, "Booking cancelled", Toast.LENGTH_SHORT).show();
-                    // Refresh list after successful cancellation
-                    fetchBookings();
-                } else if (response.code() == 401) {
-                    // Handle expired token during cancellation
-                    Toast.makeText(BookingList.this, "Session expired. Please login again.", Toast.LENGTH_LONG).show();
-                    handleLogout();
-                } else {
-                    Toast.makeText(BookingList.this, "Failed to cancel", Toast.LENGTH_SHORT).show();
-                }
+        PopupMenu popup = new PopupMenu(this, view);
+
+        popup.getMenu().add(0, 1, 0, "View Booking Detail");
+        popup.getMenu().add(0, 2, 1, "View Driver Detail");
+
+        popup.setOnMenuItemClickListener(item -> {
+
+            switch (item.getItemId()) {
+
+                case 1:
+
+                    Toast.makeText(
+                            BookingList.this,
+                            "Booking ID : " + booking.getBooking_id(),
+                            Toast.LENGTH_SHORT
+                    ).show();
+
+
+                    return true;
+
+                case 2:
+
+                    if (booking.getRide() != null) {
+
+                        Intent intent = new Intent(
+                                BookingList.this,
+                                RideDetailActivity.class);
+
+                        intent.putExtra(
+                                "ride_id",
+                                booking.getRide().getRide_id());
+
+                        startActivity(intent);
+                    }
+
+                    return true;
             }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(BookingList.this, "Network error", Toast.LENGTH_SHORT).show();
-            }
+            return false;
         });
+
+        popup.show();
+    }
+    private void executeCancel(int bookingId) {
+
+        bookingService.cancelBooking(token, bookingId)
+                .enqueue(new Callback<Void>() {
+
+                    @Override
+                    public void onResponse(Call<Void> call,
+                                           Response<Void> response) {
+
+                        if (response.isSuccessful()) {
+
+                            Toast.makeText(
+                                    BookingList.this,
+                                    "Booking Cancelled",
+                                    Toast.LENGTH_SHORT).show();
+
+                            fetchBookings();
+
+                        } else {
+
+                            Toast.makeText(
+                                    BookingList.this,
+                                    "Failed to cancel booking",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                        Toast.makeText(
+                                BookingList.this,
+                                "Network Error",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
-    // Helper method to clear session and return to Login
     private void handleLogout() {
-        SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
+
+        SharedPrefManager spm =
+                new SharedPrefManager(getApplicationContext());
+
         spm.logout();
+
         finish();
-        // Replace LoginActivity.class with your actual login screen class name if it is different
-        startActivity(new Intent(BookingList.this, LoginActivity.class));
+
+        startActivity(new Intent(
+                BookingList.this,
+                LoginActivity.class));
     }
 }

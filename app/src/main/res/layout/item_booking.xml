@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bookingCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="10dp"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="4dp"
     android:background="#FFFFFF"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
     android:elevation="3dp"
     android:padding="16dp">
 
@@ -16,35 +20,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/tvPrice"
+        android:layout_toStartOf="@id/tvPrice"
         android:layout_marginEnd="12dp"
-        android:fontFamily="sans-serif-medium"
         android:textColor="#212121"
-        android:textSize="18sp" />
-
-    <!-- Date & Time -->
-    <TextView
-        android:id="@+id/tvBookingDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvRideInfo"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="6dp"
-        android:fontFamily="sans-serif"
-        android:textColor="#757575"
-        android:textSize="14sp" />
-
-    <!-- Driver Name / Status -->
-    <TextView
-        android:id="@+id/tvStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvBookingDate"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="4dp"
-        android:fontFamily="sans-serif-medium"
-        android:textColor="#1976D2"
-        android:textSize="14sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <!-- Price -->
     <TextView
@@ -52,23 +32,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:fontFamily="sans-serif-black"
+        android:layout_alignParentTop="true"
         android:textColor="#43A047"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
+    <!-- Date -->
+    <TextView
+        android:id="@+id/tvBookingDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvRideInfo"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="6dp"
+        android:textColor="#757575"
+        android:textSize="14sp" />
 
+    <!-- Driver -->
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvBookingDate"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="4dp"
+        android:textColor="#1976D2"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
-    <!-- Cancel Button -->
+    <!-- Cancel Button (UNCHANGED) -->
     <Button
         android:id="@+id/btnCancel"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
-        android:layout_below="@id/tvStatus"
         android:layout_alignParentEnd="true"
+        android:layout_below="@id/tvPrice"
         android:layout_marginTop="10dp"
         android:backgroundTint="#E53935"
         android:text="CANCEL"
+        android:textAllCaps="true"
         android:textColor="#FFFFFF"
         android:textSize="12sp"
         android:textStyle="bold" />

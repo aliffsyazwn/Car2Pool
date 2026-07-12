@@ -43,6 +43,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Car2Pool Driver"
+                        android:fontFamily="@font/poppins_bold"
                         android:textColor="#2E7D32"
                         android:textSize="28sp"
                         android:textStyle="bold" />
@@ -62,6 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
+                android:fontFamily="serif-monospace"
                 android:text="Welcome Driver!"
                 android:textSize="24sp"
                 android:textStyle="bold" />
