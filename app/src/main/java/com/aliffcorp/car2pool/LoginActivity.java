@@ -90,16 +90,35 @@ public class LoginActivity extends AppCompatActivity {
                     User user = response.body();
 
                     if (user != null && user.getToken() != null) {
+
                         displayToast("Login successful");
 
+                        // Save logged-in user
                         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
                         spm.storeUser(user);
 
-                        finish();
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent;
+
+                        // Check user role
+                        if (user.getRole().equalsIgnoreCase("driver")) {
+
+                            // Driver homepage
+                            intent = new Intent(LoginActivity.this, DriverMainActivity.class);
+
+                        } else {
+
+                            // Rider homepage
+                            intent = new Intent(LoginActivity.this, MainActivity.class);
+
+                        }
+
                         startActivity(intent);
+                        finish();
+
                     } else {
+
                         displayToast("Login error");
+
                     }
                 } else {
                     String errorResp;
