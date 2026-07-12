@@ -165,29 +165,61 @@ public class RideDetailActivity extends AppCompatActivity {
             return;
         }
 
+        //update seat based on form content
+        int driver_id = ride.getDriver_id();
+        String origin = tvOrigin.getText().toString();
+        String destination = tvDestination.getText().toString();
+        String departure_time = tvTime.getText().toString();
+        int fSeat = cbFSeat.isChecked() ? 1 : 0;
+        int rSeat = cbRSeat.isChecked() ? 1 : 0;
+        int mSeat = cbMSeat.isChecked() ? 1 : 0;
+        int lSeat = cbLSeat.isChecked() ? 1 : 0;
+
+        // update all fields excluding the ride_id
+        ride.setDriver_id(driver_id);
+        ride.setOrigin(origin);
+        ride.setDestination(destination);
+        ride.setDeparture_time(departure_time);
+        ride.setfSeat(fSeat);
+        ride.setrSeat(rSeat);
+        ride.setmSeat(mSeat);
+        ride.setlSeat(lSeat);
+
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
         User user = spm.getUser();
-        Call<Booking> call = bookingService.addBooking(user.getToken(), user.getId(), ride.getRide_id());
 
-        call.enqueue(new Callback<Booking>() {
+        bookingService.addBooking(user.getToken(), user.getId(), ride.getRide_id()).enqueue(new Callback<Booking>() {
             @Override
             public void onResponse(Call<Booking> call, Response<Booking> response) {
-
                 // for debug purpose
-                Log.d("MyApp:", "Response: " + response.raw().toString());
+                Log.d("MyApp:", "Booking Response: " + response.raw().toString());
 
                 if (response.code() == 201) {
-                    // book added successfully
-                    Booking addedBooking = response.body();
-                    // display message
-                    Toast.makeText(getApplicationContext(),
-                            "Booking added successfully.",
-                            Toast.LENGTH_LONG).show();
+                    // book added successfully, now update ride seat
+                    rideService.updateSeat(user.getToken(), ride.getRide_id(),
+                            ride.getDriver_id(), ride.getOrigin(), ride.getDestination(), ride.getDeparture_time(),
+                            fSeat, rSeat, mSeat, lSeat).enqueue(new Callback<Ride>() {
+                        @Override
+                        public void onResponse(Call<Ride> callRide, Response<Ride> responseRide) {
+                            Log.d("MyApp:", "Ride Update Response: " + responseRide.raw().toString());
+                            if (responseRide.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "Booking added successfully.", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Booking added, but failed to update seats.", Toast.LENGTH_LONG).show();
+                            }
+                            finish();
+                            Intent intent = new Intent(RideDetailActivity.this, BookingList.class);
+                            startActivity(intent);
+                        }
 
-                    // end this activity
-                    finish();
-                    Intent intent = new Intent(RideDetailActivity.this, BookingList.class);
-                    startActivity(intent);
+                        @Override
+                        public void onFailure(Call<Ride> callRide, Throwable t) {
+                            Toast.makeText(getApplicationContext(), "Booking added, but network error updating seats.", Toast.LENGTH_LONG).show();
+                            finish();
+                            Intent intent = new Intent(RideDetailActivity.this, BookingList.class);
+                            startActivity(intent);
+                        }
+                    });
                 }
                 else if (response.code() == 401) {
                     // invalid token, ask user to relogin
