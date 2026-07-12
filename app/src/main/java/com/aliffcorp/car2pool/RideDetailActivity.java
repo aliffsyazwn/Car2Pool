@@ -34,6 +34,14 @@ public class RideDetailActivity extends AppCompatActivity {
     private Ride ride;
     private User user;
     private String token;
+    TextView tvOrigin;
+    TextView tvDestination;
+    TextView tvDriver;
+    TextView tvTime;
+    CheckBox cbFSeat;
+    CheckBox cbRSeat;
+    CheckBox cbMSeat;
+    CheckBox cbLSeat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +58,14 @@ public class RideDetailActivity extends AppCompatActivity {
         int rideId = intent.getIntExtra("ride_id", -1);
 
         // get references to the view elements
-        TextView tvOrigin = findViewById(R.id.tvOrigin);
-        TextView tvDestination = findViewById(R.id.tvDestination);
-        TextView tvDriver = findViewById(R.id.tvDriver);
-        TextView tvTime = findViewById(R.id.tvTime);
-        CheckBox cbFSeat = findViewById(R.id.cbFSeat);
-        CheckBox cbRSeat = findViewById(R.id.cbRSeat);
-        CheckBox cbMSeat = findViewById(R.id.cbMSeat);
-        CheckBox cbLSeat = findViewById(R.id.cbLSeat);
+        tvOrigin = findViewById(R.id.tvOrigin);
+        tvDestination = findViewById(R.id.tvDestination);
+        tvDriver = findViewById(R.id.tvDriver);
+        tvTime = findViewById(R.id.tvTime);
+        cbFSeat = findViewById(R.id.cbFSeat);
+        cbRSeat = findViewById(R.id.cbRSeat);
+        cbMSeat = findViewById(R.id.cbMSeat);
+        cbLSeat = findViewById(R.id.cbLSeat);
 
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
         user = spm.getUser();
@@ -86,6 +94,11 @@ public class RideDetailActivity extends AppCompatActivity {
                     cbRSeat.setChecked(ride.getrSeat());
                     cbMSeat.setChecked(ride.getmSeat());
                     cbLSeat.setChecked(ride.getlSeat());
+
+                    setupSeatCheckBox(cbFSeat);
+                    setupSeatCheckBox(cbRSeat);
+                    setupSeatCheckBox(cbMSeat);
+                    setupSeatCheckBox(cbLSeat);
 
                     // fetch driver username
                     userService.getUser(token, ride.getDriver_id()).enqueue(new Callback<User>() {
@@ -122,6 +135,16 @@ public class RideDetailActivity extends AppCompatActivity {
 
     }
 
+    private void setupSeatCheckBox(CheckBox cb) {
+        cb.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!isChecked) {
+                // once checked, cannot uncheck
+                buttonView.setChecked(true);
+                Toast.makeText(RideDetailActivity.this, "Cannot uncheck seat", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void clearSessionAndRedirect() {
         // clear the shared preferences
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
@@ -141,9 +164,28 @@ public class RideDetailActivity extends AppCompatActivity {
             return;
         }
 
+        int user_id = user.getId();
+        int ride_id = ride.getRide_id();
+        String origin = tvOrigin.getText().toString();
+        String destination = tvDestination.getText().toString();
+        String time = tvTime.getText().toString();
+        CheckBox fSeat = cbFSeat.isChecked();
+        CheckBox rSeat = cbRSeat.isChecked();
+        CheckBox lSeat = cbLSeat.isChecked();
+        CheckBox mSeat = cbMSeat.isChecked();
+
+        //update seat fields
+        ride.setfSeat();
+
+
+
+
+
+
+
+
         Booking booking = new Booking();
         booking.setUser_id(user.getId());
-        booking.setDriver_id(ride.getDriver_id());
         booking.setRide_id(ride.getRide_id());
 
         bookingService.createBooking(token, booking).enqueue(new Callback<Booking>() {

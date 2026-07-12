@@ -1,5 +1,7 @@
 package com.aliffcorp.car2pool.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Ride {
 
     private int ride_id;
@@ -7,10 +9,15 @@ public class Ride {
     private String origin;
     private String destination;
     private String departure_time;
-    private Boolean fSeat;
-    private Boolean rSeat;
-    private Boolean mSeat;
-    private Boolean lSeat;
+    
+    @SerializedName("fSeat")
+    private int fSeat;
+    @SerializedName("rSeat")
+    private int rSeat;
+    @SerializedName("mSeat")
+    private int mSeat;
+    @SerializedName("lSeat")
+    private int lSeat;
 
     private User driver;
 
@@ -18,7 +25,7 @@ public class Ride {
 
     public Ride(){}
 
-    public Ride(int ride_id, int driver_id, String origin, String destination, String departure_time, Boolean fSeat, Boolean mSeat, Boolean rSeat, Boolean lSeat, User driver) {
+    public Ride(int ride_id, int driver_id, String origin, String destination, String departure_time, int fSeat, int mSeat, int rSeat, int lSeat, User driver) {
         this.ride_id = ride_id;
         this.driver_id = driver_id;
         this.origin = origin;
@@ -71,35 +78,35 @@ public class Ride {
         this.departure_time = departure_time;
     }
 
-    public Boolean getfSeat() {
-        return fSeat;
+    public boolean getfSeat() {
+        return fSeat == 1;
     }
 
-    public void setfSeat(Boolean fSeat) {
+    public void setfSeat(int fSeat) {
         this.fSeat = fSeat;
     }
 
-    public Boolean getrSeat() {
-        return rSeat;
+    public boolean getrSeat() {
+        return rSeat == 1;
     }
 
-    public void setrSeat(Boolean rSeat) {
+    public void setrSeat(int rSeat) {
         this.rSeat = rSeat;
     }
 
-    public Boolean getmSeat() {
-        return mSeat;
+    public boolean getmSeat() {
+        return mSeat == 1;
     }
 
-    public void setmSeat(Boolean mSeat) {
+    public void setmSeat(int mSeat) {
         this.mSeat = mSeat;
     }
 
-    public Boolean getlSeat() {
-        return lSeat;
+    public boolean getlSeat() {
+        return lSeat == 1;
     }
 
-    public void setlSeat(Boolean lSeat) {
+    public void setlSeat(int lSeat) {
         this.lSeat = lSeat;
     }
 

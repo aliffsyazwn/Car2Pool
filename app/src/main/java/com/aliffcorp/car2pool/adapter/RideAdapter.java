@@ -72,7 +72,6 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         holder.tvOrigin.setText(m.getOrigin());
         holder.tvDestination.setText(m.getDestination());
         holder.tvTime.setText(m.getDeparture_time());
-        holder.tvDriver.setText(String.valueOf(m.getDriver_id()));
     }
 
     @Override

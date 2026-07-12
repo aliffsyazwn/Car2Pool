@@ -1,8 +1,11 @@
 package com.aliffcorp.car2pool.remote;
 
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 import com.aliffcorp.car2pool.model.Ride;
@@ -16,4 +19,18 @@ public interface RideService {
 
     @GET("rides/{id}")
     Call<Ride> getRides(@Header("api-key") String api_key, @Path("id") int id);
+
+    @FormUrlEncoded
+    @POST("rides")
+    Call<Ride> createRide(
+            @Header("api-key") String api_key,
+            @Field("driver_id") int driverId,
+            @Field("origin") String origin,
+            @Field("destination") String destination,
+            @Field("departure_time") String departureTime,
+            @Field("fSeat") int fSeat,
+            @Field("rSeat") int rSeat,
+            @Field("mSeat") int mSeat,
+            @Field("lSeat") int lSeat
+    );
 }
