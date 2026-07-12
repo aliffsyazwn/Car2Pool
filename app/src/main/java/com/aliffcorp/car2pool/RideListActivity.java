@@ -73,6 +73,11 @@ public class RideListActivity extends AppCompatActivity {
                     // Get list of ride object from response
                     List<Ride> rides = response.body();
 
+                    // filter out rides where all four seats are taken (checked)
+                    if (rides != null) {
+                        rides.removeIf(ride -> ride.getfSeat() && ride.getmSeat() && ride.getrSeat() && ride.getlSeat());
+                    }
+
                     // initialize adapter
                     adapter = new RideAdapter(getApplicationContext(), rides);
 
