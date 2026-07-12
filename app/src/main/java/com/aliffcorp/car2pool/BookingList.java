@@ -38,10 +38,12 @@ public class BookingList extends AppCompatActivity implements BookingAdapter.OnB
         setContentView(R.layout.activity_booking_list);
 
         rvBookList = findViewById(R.id.rvBookList);
-        // Best practice: Set LayoutManager and ItemDecoration once in onCreate
+
+        // Setup RecyclerView layout and decoration
         rvBookList.setLayoutManager(new LinearLayoutManager(this));
         rvBookList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
+        // Get user token
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
         User user = spm.getUser();
         if (user != null) {
@@ -63,16 +65,19 @@ public class BookingList extends AppCompatActivity implements BookingAdapter.OnB
                     adapter = new BookingAdapter(BookingList.this, bookings, BookingList.this);
                     rvBookList.setAdapter(adapter);
                 } else if (response.code() == 204) {
-                    // Added this back in to prevent blank screen errors when database is empty
+                    // Handle empty database
                     Toast.makeText(BookingList.this, "No Booking found", Toast.LENGTH_SHORT).show();
                     rvBookList.setAdapter(null);
+                } else if (response.code() == 401) {
+                    // Handle expired or invalid token (Unauthorized)
+                    Toast.makeText(BookingList.this, "Session expired. Please login again.", Toast.LENGTH_LONG).show();
+                    handleLogout();
                 } else {
                     Toast.makeText(BookingList.this, "Failed to load bookings", Toast.LENGTH_SHORT).show();
                     Log.e("BookingList", "Error: " + response.message());
                 }
             }
 
-            // You were missing the onFailure method for the fetch API call!
             @Override
             public void onFailure(Call<List<Booking>> call, Throwable t) {
                 Toast.makeText(BookingList.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -81,18 +86,16 @@ public class BookingList extends AppCompatActivity implements BookingAdapter.OnB
         });
     }
 
-    // --- BUTTON CLICK LOGIC ---
-
     @Override
     public void onCancelClick(Booking booking) {
-        // Show confirmation popup
+        // Show cancellation confirmation
         new AlertDialog.Builder(this)
                 .setTitle("Cancel Booking")
                 .setMessage("Are you sure want to cancel the booking?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // If they click Yes, run the executeCancel method below
+                        // Proceed to delete
                         executeCancel(booking.getBooking_id());
                     }
                 })
@@ -100,7 +103,6 @@ public class BookingList extends AppCompatActivity implements BookingAdapter.OnB
                 .show();
     }
 
-    // You were missing this method entirely! This actually tells the server to delete the booking.
     private void executeCancel(int bookingId) {
         if (token == null) return;
 
@@ -109,8 +111,12 @@ public class BookingList extends AppCompatActivity implements BookingAdapter.OnB
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(BookingList.this, "Booking cancelled", Toast.LENGTH_SHORT).show();
-                    // Refresh the list automatically so the deleted item goes away
+                    // Refresh list after successful cancellation
                     fetchBookings();
+                } else if (response.code() == 401) {
+                    // Handle expired token during cancellation
+                    Toast.makeText(BookingList.this, "Session expired. Please login again.", Toast.LENGTH_LONG).show();
+                    handleLogout();
                 } else {
                     Toast.makeText(BookingList.this, "Failed to cancel", Toast.LENGTH_SHORT).show();
                 }
@@ -123,11 +129,12 @@ public class BookingList extends AppCompatActivity implements BookingAdapter.OnB
         });
     }
 
-    @Override
-    public void onEditClick(Booking booking) {
-        // Opens the Update screen and passes the Booking ID
-        Intent intent = new Intent(BookingList.this, UpdateBookingActivity.class);
-        intent.putExtra("booking_id", booking.getBooking_id());
-        startActivity(intent);
+    // Helper method to clear session and return to Login
+    private void handleLogout() {
+        SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
+        spm.logout();
+        finish();
+        // Replace LoginActivity.class with your actual login screen class name if it is different
+        startActivity(new Intent(BookingList.this, LoginActivity.class));
     }
 }
