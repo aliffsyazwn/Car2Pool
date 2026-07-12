@@ -55,7 +55,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <EditText
+                <AutoCompleteTextView
                     android:id="@+id/etOrigin"
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
@@ -76,7 +76,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <EditText
+                <AutoCompleteTextView
                     android:id="@+id/etDestination"
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
