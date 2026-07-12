@@ -35,19 +35,39 @@ public class DriverMainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Get logged in user
+        // Shared Preference
         SharedPrefManager spm = new SharedPrefManager(this);
+
+        // Check login
+        if (!spm.isLoggedIn()) {
+            Intent intent = new Intent(DriverMainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        // Get logged in user
         User user = spm.getUser();
 
-        // Connect XML
+        // Only allow drivers
+        if (user == null || user.getRole() == null ||
+                !user.getRole().equalsIgnoreCase("driver")) {
+
+            Intent intent = new Intent(DriverMainActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        // Initialize Views
         tvHello = findViewById(R.id.tvHello);
 
         cardProfile = findViewById(R.id.cardProfile);
         cardCreateRide = findViewById(R.id.cardCreateRide);
         cardUpdateRide = findViewById(R.id.cardUpdateRide);
 
-        // Display username
-        tvHello.setText("Hello, " + user.getUsername());
+        // Welcome message
+        tvHello.setText("Welcome back, " + user.getUsername() + "!");
 
         // ==========================
         // Profile
