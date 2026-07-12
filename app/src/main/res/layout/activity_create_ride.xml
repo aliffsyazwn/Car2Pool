@@ -63,7 +63,8 @@
                     android:background="@drawable/bg_input"
                     android:hint="Enter origin"
                     android:inputType="textCapWords"
-                    android:padding="15dp" />
+                    android:padding="15dp"
+                    android:textColor="@color/black" />
 
                 <!-- Destination -->
 
@@ -84,7 +85,8 @@
                     android:background="@drawable/bg_input"
                     android:hint="Enter destination"
                     android:inputType="textCapWords"
-                    android:padding="15dp" />
+                    android:padding="15dp"
+                    android:textColor="@color/black" />
 
                 <!-- Departure Time -->
 
@@ -106,7 +108,8 @@
                     android:hint="Select departure time"
                     android:focusable="false"
                     android:clickable="true"
-                    android:padding="15dp" />
+                    android:padding="15dp"
+                    android:textColor="@color/black" />
 
                 <!-- Seats -->
 
