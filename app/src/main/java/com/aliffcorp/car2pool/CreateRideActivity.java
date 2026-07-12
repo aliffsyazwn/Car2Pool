@@ -3,6 +3,9 @@ package com.aliffcorp.car2pool;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -14,13 +17,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.aliffcorp.car2pool.model.LocationItem;
 import com.aliffcorp.car2pool.model.Ride;
 import com.aliffcorp.car2pool.model.User;
 import com.aliffcorp.car2pool.remote.ApiUtils;
 import com.aliffcorp.car2pool.remote.RideService;
 import com.aliffcorp.car2pool.sharedpref.SharedPrefManager;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -29,8 +35,8 @@ import retrofit2.Response;
 
 public class CreateRideActivity extends AppCompatActivity {
 
-    private EditText etOrigin;
-    private EditText etDestination;
+    private AutoCompleteTextView etOrigin;
+    private AutoCompleteTextView etDestination;
     private EditText etDepTime;
 
     private CheckBox cbFSeat;
@@ -42,6 +48,7 @@ public class CreateRideActivity extends AppCompatActivity {
     private Button btnCancel;
 
     private RideService rideService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +82,45 @@ public class CreateRideActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(v -> finish());
 
         btnCreate.setOnClickListener(v -> createRide());
+
+        fetchLocationsFromDatabase();
+    }
+
+    private void fetchLocationsFromDatabase() {
+        SharedPrefManager spm = new SharedPrefManager(this);
+        User user = spm.getUser();
+        if (user == null || user.getToken() == null) return;
+
+        rideService.getAllLocations(user.getToken()).enqueue(new Callback<List<LocationItem>>() {
+            @Override
+            public void onResponse(Call<List<LocationItem>> call, Response<List<LocationItem>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<LocationItem> locationItems = response.body();
+                    List<String> locationNames = new ArrayList<>();
+
+                    for (LocationItem item : locationItems) {
+                        locationNames.add(item.getLocationName());
+                    }
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                            CreateRideActivity.this,
+                            android.R.layout.simple_dropdown_item_1line,
+                            locationNames
+                    );
+
+                    // Set the adapter to both origin and destination fields
+                    etOrigin.setAdapter(adapter);
+                    etDestination.setAdapter(adapter);
+                } else {
+                    Toast.makeText(CreateRideActivity.this, "Failed to load locations", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<LocationItem>> call, Throwable t) {
+                Log.e("CreateRide", "Error fetching locations", t);
+            }
+        });
     }
 
     private void showTimePicker() {

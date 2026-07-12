@@ -1,124 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="#F5F5F5"
+    tools:context=".ViewProfileActivity">
 
-    <LinearLayout
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/footerCard"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Profile Image -->
+            <ImageView
+                android:id="@+id/imgProfile"
+                android:layout_width="89dp"
+                android:layout_height="67dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/user" />
+
+            <!-- Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:text="My Profile"
+                android:textColor="#2E7D32"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <!-- Username -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Username"
+                android:textColor="#444444"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="#FFFFFF"
+                android:elevation="3dp"
+                android:padding="14dp"
+                android:text="-"
+                android:textSize="12sp" />
+
+            <!-- Email -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="Email"
+                android:textColor="#444444"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="#FFFFFF"
+                android:elevation="3dp"
+                android:padding="14dp"
+                android:text="-"
+                android:textSize="12sp" />
+
+            <!-- Role -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="Role"
+                android:textColor="#444444"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvRole"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="#FFFFFF"
+                android:elevation="3dp"
+                android:padding="14dp"
+                android:text="-"
+                android:textSize="12sp" />
+
+            <!-- Update Profile -->
+            <Button
+                android:id="@+id/btnUpdateProfile"
+                android:layout_width="198dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="32dp"
+                android:backgroundTint="#2E7D32"
+                android:text="Update Profile"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- Logout -->
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="198dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="30dp"
+                android:backgroundTint="#D32F2F"
+                android:text="Logout"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Reusable Bottom Navigation -->
+    <include
+        android:id="@+id/footerCard"
+        layout="@layout/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"/>
 
-        <!-- Profile Image -->
-        <ImageView
-            android:id="@+id/imgProfile"
-            android:layout_width="89dp"
-            android:layout_height="67dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/user" />
-
-        <!-- Title -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:text="My Profile"
-            android:textColor="#2E7D32"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-
-        <!-- Username -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Username"
-            android:textColor="#444444"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvUsername"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:background="#FFFFFF"
-            android:elevation="3dp"
-            android:padding="14dp"
-            android:text="-"
-            android:textSize="12sp" />
-
-        <!-- Email -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:text="Email"
-            android:textColor="#444444"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:background="#FFFFFF"
-            android:elevation="3dp"
-            android:padding="14dp"
-            android:text="-"
-            android:textSize="12sp" />
-
-        <!-- Role -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:text="Role"
-            android:textColor="#444444"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvRole"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:background="#FFFFFF"
-            android:elevation="3dp"
-            android:padding="14dp"
-            android:text="-"
-            android:textSize="12sp" />
-
-        <!-- Update Profile Button -->
-        <Button
-            android:id="@+id/btnUpdateProfile"
-            android:layout_width="198dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="32dp"
-            android:backgroundTint="#2E7D32"
-            android:text="Update Profile"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <!-- Logout Button -->
-        <Button
-            android:id="@+id/btnLogout"
-            android:layout_width="198dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="30dp"
-            android:backgroundTint="#D32F2F"
-            android:text="Logout"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-</ScrollView>
+</RelativeLayout>

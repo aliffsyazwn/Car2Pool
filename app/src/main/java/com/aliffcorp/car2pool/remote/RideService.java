@@ -8,6 +8,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
+import com.aliffcorp.car2pool.model.LocationItem;
 import com.aliffcorp.car2pool.model.Ride;
 
 import java.util.List;
@@ -34,15 +35,6 @@ public interface RideService {
             @Field("lSeat") int lSeat
     );
 
-    @FormUrlEncoded
-    @POST("rides/{id}")
-    Call<Ride> updateSeat(@Header ("api-key") String apiKey, @Path("id") int ride_id,
-                          @Field("driver_id") int driver_id,
-                          @Field("origin") String origin,
-                          @Field("destination") String destination,
-                          @Field("departure_time") String departureTime,
-                          @Field("fSeat") int fSeat,
-                          @Field("rSeat") int rSeat,
-                          @Field("mSeat") int mSeat,
-                          @Field("lSeat") int lSeat);
+    @GET("locations")
+    Call<List<LocationItem>> getAllLocations(@Header("api-key") String api_key);
 }
