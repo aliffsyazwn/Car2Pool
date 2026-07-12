@@ -132,11 +132,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="25dp"
-                android:text="Create New Rider"
-                android:textColor="#070101"
-                android:textStyle="bold"
-                android:onClick="newRiderClicked"/>
+                android:layout_marginTop="10dp"
+                android:onClick="newRiderClicked"
+                android:text="Create New Account"
+                android:textColor="#070101" />
 
         </LinearLayout>
 
