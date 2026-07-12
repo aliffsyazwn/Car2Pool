@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/light_teal3"
     android:fillViewport="true"
-    tools:context=".MainActivity">
+    tools:context=".CreateRideActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,9 +18,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create ride"
+            android:text="Create Ride"
             android:textColor="@color/dark_teal3"
-            android:textSize="28dp"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_marginTop="4dp"
             android:text="Set your route, time, and open seats."
             android:textColor="@color/black"
-            android:textSize="18dp" />
+            android:textSize="18sp" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -45,22 +45,27 @@
                 android:orientation="vertical"
                 android:padding="22dp">
 
+                <!-- Origin -->
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Origin"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <Spinner
-                    android:id="@+id/spOri"
+                <EditText
+                    android:id="@+id/etOrigin"
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_input"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp" />
+                    android:hint="Enter origin"
+                    android:inputType="textCapWords"
+                    android:padding="15dp" />
+
+                <!-- Destination -->
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -68,25 +73,28 @@
                     android:layout_marginTop="16dp"
                     android:text="Destination"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <Spinner
-                    android:id="@+id/spDest"
+                <EditText
+                    android:id="@+id/etDestination"
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_input"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp" />
+                    android:hint="Enter destination"
+                    android:inputType="textCapWords"
+                    android:padding="15dp" />
+
+                <!-- Departure Time -->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Departure time"
+                    android:text="Departure Time"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <EditText
@@ -95,18 +103,20 @@
                     android:layout_height="54dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_input"
-                    android:hint="14:30"
-                    android:inputType="time"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp" />
+                    android:hint="Select departure time"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:padding="15dp" />
+
+                <!-- Seats -->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
-                    android:text="Available seats"
+                    android:text="Available Seats"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <FrameLayout
@@ -157,7 +167,10 @@
                         android:layout_marginStart="69dp"
                         android:layout_marginTop="31dp"
                         android:buttonTint="@color/red" />
+
                 </FrameLayout>
+
+                <!-- Buttons -->
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -169,25 +182,26 @@
                         android:id="@+id/btnCancel"
                         android:layout_width="0dp"
                         android:layout_height="54dp"
-                        android:layout_marginEnd="8dp"
                         android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
                         android:backgroundTint="@color/btn_color"
                         android:text="Cancel"
                         android:textColor="@color/black"
-                        android:textSize="18dp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <Button
                         android:id="@+id/btnCreate"
                         android:layout_width="0dp"
                         android:layout_height="54dp"
-                        android:layout_marginStart="8dp"
                         android:layout_weight="1"
+                        android:layout_marginStart="8dp"
                         android:backgroundTint="@color/btn_color"
                         android:text="Create"
                         android:textColor="@color/black"
-                        android:textSize="18dp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
+
                 </LinearLayout>
 
             </LinearLayout>
