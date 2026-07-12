@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,8 +34,6 @@ public class NewRiderActivity extends AppCompatActivity {
     private EditText txtPassword;
     private EditText txtID;
 
-    private Button btnNewRider;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,14 +50,6 @@ public class NewRiderActivity extends AppCompatActivity {
         txtEmail = findViewById(R.id.txtEmail);
         txtPassword = findViewById(R.id.txtPassword);
         txtID = findViewById(R.id.txtID);
-        btnNewRider = findViewById(R.id.btnNewRider);
-
-        btnNewRider.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addNewRider(v);
-            }
-        });
     }
 
 

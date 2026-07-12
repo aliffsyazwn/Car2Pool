@@ -164,48 +164,49 @@ public class RideDetailActivity extends AppCompatActivity {
             return;
         }
 
-        int user_id = user.getId();
-        int ride_id = ride.getRide_id();
-        String origin = tvOrigin.getText().toString();
-        String destination = tvDestination.getText().toString();
-        String time = tvTime.getText().toString();
-        CheckBox fSeat = cbFSeat.isChecked();
-        CheckBox rSeat = cbRSeat.isChecked();
-        CheckBox lSeat = cbLSeat.isChecked();
-        CheckBox mSeat = cbMSeat.isChecked();
+        SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
+        User user = spm.getUser();
+        Call<Booking> call = bookingService.addBooking(user.getToken(), user.getId(), ride.getRide_id());
 
-        //update seat fields
-        ride.setfSeat();
-
-
-
-
-
-
-
-
-        Booking booking = new Booking();
-        booking.setUser_id(user.getId());
-        booking.setRide_id(ride.getRide_id());
-
-        bookingService.createBooking(token, booking).enqueue(new Callback<Booking>() {
+        call.enqueue(new Callback<Booking>() {
             @Override
             public void onResponse(Call<Booking> call, Response<Booking> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(RideDetailActivity.this, "Booking Successful!", Toast.LENGTH_LONG).show();
-                    // Redirect to Booking List
-                    Intent intent = new Intent(RideDetailActivity.this, BookingList.class);
-                    startActivity(intent);
+
+                // for debug purpose
+                Log.d("MyApp:", "Response: " + response.raw().toString());
+
+                if (response.code() == 201) {
+                    // book added successfully
+                    Booking addedBooking = response.body();
+                    // display message
+                    Toast.makeText(getApplicationContext(),
+                            "Booking added successfully.",
+                            Toast.LENGTH_LONG).show();
+
+                    // end this activity and go back to previous activity
                     finish();
-                } else {
-                    Toast.makeText(RideDetailActivity.this, "Booking Failed: " + response.message(), Toast.LENGTH_LONG).show();
+                }
+                else if (response.code() == 401) {
+                    // invalid token, ask user to relogin
+                    Toast.makeText(getApplicationContext(), "Invalid session. Please login again", Toast.LENGTH_LONG).show();
+                    clearSessionAndRedirect();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Error: " + response.message(), Toast.LENGTH_LONG).show();
+                    // server return other error
+                    Log.e("MyApp: ", response.toString());
                 }
             }
 
             @Override
             public void onFailure(Call<Booking> call, Throwable t) {
-                Toast.makeText(RideDetailActivity.this, "Error connecting to server", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Error [" + t.getMessage() + "]",
+                        Toast.LENGTH_LONG).show();
+                // for debug purpose
+                Log.e("MyApp:", "Error: " + t.getMessage(), t);
             }
         });
+
+
     }
 }
