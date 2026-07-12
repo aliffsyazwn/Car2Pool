@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.aliffcorp.car2pool.model.User;
+import com.aliffcorp.car2pool.StringUtils;
 import com.aliffcorp.car2pool.sharedpref.SharedPrefManager;
 
 public class ViewProfileActivity extends AppCompatActivity {
@@ -44,9 +45,9 @@ public class ViewProfileActivity extends AppCompatActivity {
         // Display user information
         User user = spm.getUser();
 
-        tvUsername.setText(user.getUsername());
+        tvUsername.setText(StringUtils.capitalize(user.getUsername()));
         tvEmail.setText(user.getEmail());
-        tvRole.setText(user.getRole());
+        tvRole.setText(StringUtils.capitalize(user.getRole()));
 
         // Update Profile
         btnUpdateProfile.setOnClickListener(v -> {

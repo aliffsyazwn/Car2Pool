@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aliffcorp.car2pool.R;
+import com.aliffcorp.car2pool.StringUtils;
 import com.aliffcorp.car2pool.model.Ride;
 
 import java.util.List;
@@ -72,6 +73,12 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         holder.tvOrigin.setText(m.getOrigin());
         holder.tvDestination.setText(m.getDestination());
         holder.tvTime.setText(m.getDeparture_time());
+
+        if (m.getDriver() != null) {
+            holder.tvDriver.setText(StringUtils.capitalize(m.getDriver().getUsername()));
+        } else {
+            holder.tvDriver.setText("Unknown");
+        }
     }
 
     @Override

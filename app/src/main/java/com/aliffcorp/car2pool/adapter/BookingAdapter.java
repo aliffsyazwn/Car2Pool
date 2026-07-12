@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aliffcorp.car2pool.R;
+import com.aliffcorp.car2pool.StringUtils;
 import com.aliffcorp.car2pool.model.Booking;
 
 import java.util.List;
@@ -91,7 +92,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
             if (currentBooking.getRide().getDriver() != null) {
                 driverName = "Driver: " +
-                        currentBooking.getRide().getDriver().getUsername();
+                        StringUtils.capitalize(currentBooking.getRide().getDriver().getUsername());
             }
         }
 

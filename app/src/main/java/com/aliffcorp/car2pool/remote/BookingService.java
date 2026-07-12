@@ -17,8 +17,8 @@ import retrofit2.http.Path;
 
 public interface BookingService {
 
-    @GET("bookings")
-    Call<List<Booking>> getBookings(@Header("api-key") String api_key);
+    @GET("users/{user_id}/bookings")
+    Call<List<Booking>> getUserBookings(@Header("api-key") String api_key, @Path("user_id") int userId);
 
     @GET("bookings/{booking_id}")
     Call<Booking> getBooking(@Header("api-key") String api_key, @Path("booking_id") int bookingId);
