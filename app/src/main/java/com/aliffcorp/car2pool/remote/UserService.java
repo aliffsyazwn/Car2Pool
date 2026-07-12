@@ -18,11 +18,13 @@ public interface UserService {
 
     @FormUrlEncoded
     @POST("users")
-    Call<User> addRider(@Header("api-key") String api_key, @Field("email") String email,
+    Call<User> addUser(@Header("api-key") String api_key, @Field("email") String email,
                         @Field("username") String username, @Field("password") String password,
                         @Field("token") String token, @Field("lease") String lease,
                         @Field("role") String role, @Field("is_active") int is_active,
-                        @Field("secret") String secret, @Field("studID") String studID);
+                        @Field("secret") String secret, @Field("studID") String studID,
+                        @Field("carModel") String carModel, @Field("plateNumber") String plateNumber,
+                        @Field("license") String license);
 
     @FormUrlEncoded
     @POST("users/login")

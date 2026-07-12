@@ -183,8 +183,10 @@ public class RideDetailActivity extends AppCompatActivity {
                             "Booking added successfully.",
                             Toast.LENGTH_LONG).show();
 
-                    // end this activity and go back to previous activity
+                    // end this activity
                     finish();
+                    Intent intent = new Intent(RideDetailActivity.this, BookingList.class);
+                    startActivity(intent);
                 }
                 else if (response.code() == 401) {
                     // invalid token, ask user to relogin
