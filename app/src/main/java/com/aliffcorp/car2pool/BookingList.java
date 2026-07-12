@@ -33,6 +33,7 @@ public class BookingList extends AppCompatActivity implements BookingAdapter.OnB
     private RecyclerView rvBookList;
     private BookingAdapter adapter;
     private String token;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class BookingList extends AppCompatActivity implements BookingAdapter.OnB
 
         if (user != null) {
             token = user.getToken();
+            userId = user.getId();
         }
 
         bookingService = ApiUtils.getBookingService();
@@ -61,7 +63,7 @@ public class BookingList extends AppCompatActivity implements BookingAdapter.OnB
 
         if (token == null) return;
 
-        bookingService.getBookings(token).enqueue(new Callback<List<Booking>>() {
+        bookingService.getUserBookings(token, userId).enqueue(new Callback<List<Booking>>() {
 
             @Override
             public void onResponse(Call<List<Booking>> call,

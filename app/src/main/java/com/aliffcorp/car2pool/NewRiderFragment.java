@@ -56,7 +56,7 @@ public class NewRiderFragment extends Fragment {
     }
 
     private void addNewRider() {
-        String api_key = "3e9d870b-3335-4b02-bd4b-e0ea3263d173";
+        String api_key = "3b191b07-7739-4698-b885-8660b564c963";
         String username = txtUsername.getText().toString();
         String email = txtEmail.getText().toString();
 

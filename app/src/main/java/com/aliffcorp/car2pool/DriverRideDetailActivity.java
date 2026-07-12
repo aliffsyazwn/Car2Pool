@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.aliffcorp.car2pool.model.Ride;
+import com.aliffcorp.car2pool.StringUtils;
 import com.aliffcorp.car2pool.model.User;
 import com.aliffcorp.car2pool.remote.ApiUtils;
 import com.aliffcorp.car2pool.remote.RideService;
@@ -87,7 +88,7 @@ public class DriverRideDetailActivity extends AppCompatActivity {
                                 public void onResponse(Call<User> call, Response<User> response) {
 
                                     if (response.isSuccessful() && response.body() != null) {
-                                        tvDriver.setText(response.body().getUsername());
+                                        tvDriver.setText(StringUtils.capitalize(response.body().getUsername()));
                                     }
                                 }
 
