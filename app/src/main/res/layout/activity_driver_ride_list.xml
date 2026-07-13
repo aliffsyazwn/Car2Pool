@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Rides"
+            android:text="@string/my_rides"
             android:textColor="@android:color/white"
             android:textSize="30sp"
             android:textStyle="bold"/>
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="Manage your created rides"
+            android:text="@string/manage_created_rides"
             android:textColor="#DDEEEE"
             android:textSize="16sp"/>
 
