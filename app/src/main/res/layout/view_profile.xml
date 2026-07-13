@@ -12,7 +12,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/footerCard"
         android:fillViewport="true">
 
         <LinearLayout
@@ -92,6 +91,88 @@
 
             <TextView
                 android:id="@+id/tvRole"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="#FFFFFF"
+                android:elevation="3dp"
+                android:padding="14dp"
+                android:text="-"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="Student ID"
+                android:textColor="#444444"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvStudID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="#FFFFFF"
+                android:elevation="3dp"
+                android:padding="14dp"
+                android:text="-"
+                android:textSize="12sp" />
+
+            <!-- Car Model -->
+            <TextView
+                android:id="@+id/tvModelLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="Car Model"
+                android:textColor="#444444"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvModel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="#FFFFFF"
+                android:elevation="3dp"
+                android:padding="14dp"
+                android:text="-"
+                android:textSize="12sp" />
+
+            <!-- Car Plate -->
+            <TextView
+                android:id="@+id/tvPlateLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="Car Plate"
+                android:textColor="#444444"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvPlate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="#FFFFFF"
+                android:elevation="3dp"
+                android:padding="14dp"
+                android:text="-"
+                android:textSize="12sp" />
+
+            <!-- License -->
+            <TextView
+                android:id="@+id/tvLicenseLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="License Number"
+                android:textColor="#444444"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvLicense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
