@@ -16,6 +16,11 @@ public class SharedPrefManager {
     private static final String KEY_EMAIL = "keyemail";
     private static final String KEY_TOKEN = "keytoken";
     private static final String KEY_ROLE = "keyrole";
+    private static final String KEY_STUDID = "keystudid";
+    private static final String KEY_CARMODEL = "keycarmodel";
+    private static final String KEY_PLATENUMBER = "keyplatenumber";
+    private static final String KEY_LICENSE = "keylicense";
+    private static final String KEY_FULLNAME = "keyfullname";
 
     private final Context mCtx;
 
@@ -36,6 +41,11 @@ public class SharedPrefManager {
         editor.putString(KEY_EMAIL, user.getEmail());
         editor.putString(KEY_TOKEN, user.getToken());
         editor.putString(KEY_ROLE, user.getRole());
+        editor.putString(KEY_STUDID, user.getStudID());
+        editor.putString(KEY_CARMODEL, user.getCarModel());
+        editor.putString(KEY_PLATENUMBER, user.getPlateNumber());
+        editor.putString(KEY_LICENSE, user.getLicense());
+        editor.putString(KEY_FULLNAME, user.getFullName());
         editor.apply();
     }
 
@@ -61,6 +71,11 @@ public class SharedPrefManager {
         user.setEmail(sharedPreferences.getString(KEY_EMAIL, null));
         user.setToken(sharedPreferences.getString(KEY_TOKEN, null));
         user.setRole(sharedPreferences.getString(KEY_ROLE, null));
+        user.setStudID(sharedPreferences.getString(KEY_STUDID, null));
+        user.setCarModel(sharedPreferences.getString(KEY_CARMODEL, null));
+        user.setPlateNumber(sharedPreferences.getString(KEY_PLATENUMBER, null));
+        user.setLicense(sharedPreferences.getString(KEY_LICENSE, null));
+        user.setFullName(sharedPreferences.getString(KEY_FULLNAME, null));
 
         return user;
     }

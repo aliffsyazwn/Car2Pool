@@ -1,6 +1,7 @@
 package com.aliffcorp.car2pool;
 
 import android.content.Intent;
+import android.net.Uri; // <-- ADDED THIS IMPORT
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -57,6 +58,7 @@ public class RideDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int rideId = intent.getIntExtra("ride_id", -1);
+        int bookId = intent.getIntExtra("book_id", -1);
 
         // get references to the view elements
         tvOrigin = findViewById(R.id.tvOrigin);
@@ -68,6 +70,22 @@ public class RideDetailActivity extends AppCompatActivity {
         cbMSeat = findViewById(R.id.cbMSeat);
         cbLSeat = findViewById(R.id.cbLSeat);
 
+        // --- START OF MAPS AUTOFILL IMPLEMENTATION ---
+        tvOrigin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGoogleMapsWithSearch(tvOrigin.getText().toString());
+            }
+        });
+
+        tvDestination.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGoogleMapsWithSearch(tvDestination.getText().toString());
+            }
+        });
+        // --- END OF MAPS AUTOFILL IMPLEMENTATION ---
+
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
         user = spm.getUser();
         token = user.getToken();
@@ -77,52 +95,84 @@ public class RideDetailActivity extends AppCompatActivity {
         userService = ApiUtils.getUserService();
         bookingService = ApiUtils.getBookingService();
 
+        if (bookId != -1) {
+            findViewById(R.id.btnBook).setVisibility(View.GONE);
+            fetchRideByBookingId(bookId);
+        } else if (rideId != -1) {
+            fetchRideDetails(rideId);
+        }
+    }
+
+    // --- ADDED NEW MAPS INTENT METHOD ---
+    private void openGoogleMapsWithSearch(String addressString) {
+        if (addressString == null || addressString.trim().isEmpty()) {
+            Toast.makeText(this, "Address is empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            // URL Encode the address text safely (replaces spaces with %20, etc.)
+            String encodedAddress = Uri.encode(addressString.trim());
+
+            // Prepare geo intent pointing to query 'q'
+            Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + encodedAddress);
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+
+            // Force target explicitly to third party Google Maps App
+            mapIntent.setPackage("com.google.android.apps.maps");
+
+            // Safety validation: verify if Google Maps app exists on system
+            if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(mapIntent);
+            } else {
+                // Fallback route: launch web browser maps search if native app isn't installed
+                Uri webUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" + encodedAddress);
+                Intent webIntent = new Intent(Intent.ACTION_VIEW, webUri);
+                startActivity(webIntent);
+            }
+        } catch (Exception e) {
+            Log.e("MyApp", "Error opening map tool: " + e.getMessage());
+            Toast.makeText(this, "Could not open map utility", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void fetchRideByBookingId(int bookId) {
+        bookingService.getBooking(token, bookId).enqueue(new Callback<Booking>() {
+            @Override
+            public void onResponse(Call<Booking> call, Response<Booking> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Booking booking = response.body();
+                    ride = booking.getRide();
+                    if (ride != null) {
+                        displayRideInfo(ride);
+                    } else {
+                        Toast.makeText(RideDetailActivity.this, "Ride info not found in booking", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(RideDetailActivity.this, "Error loading booking", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Booking> call, Throwable t) {
+                Toast.makeText(RideDetailActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void fetchRideDetails(int rideId) {
         rideService.getRides(token, rideId).enqueue(new Callback<Ride>() {
             @Override
             public void onResponse(Call<Ride> call, Response<Ride> response) {
-                // for debug purpose
                 Log.d("MyApp:", "Response: " + response.raw().toString());
 
                 if (response.code() == 200) {
-                    // server return success
-                    // get ride object from response
                     ride = response.body();
-                    // set values
-                    tvOrigin.setText(ride.getOrigin());
-                    tvTime.setText(ride.getDeparture_time());
-                    tvDestination.setText(ride.getDestination());
-                    cbFSeat.setChecked(ride.getfSeat());
-                    cbRSeat.setChecked(ride.getrSeat());
-                    cbMSeat.setChecked(ride.getmSeat());
-                    cbLSeat.setChecked(ride.getlSeat());
-
-                    setupSeatCheckBox(cbFSeat);
-                    setupSeatCheckBox(cbRSeat);
-                    setupSeatCheckBox(cbMSeat);
-                    setupSeatCheckBox(cbLSeat);
-
-                    // fetch driver username
-                    userService.getUser(token, ride.getDriver_id()).enqueue(new Callback<User>() {
-                        @Override
-                        public void onResponse(Call<User> call, Response<User> response) {
-                            if (response.isSuccessful() && response.body() != null) {
-                                tvDriver.setText(StringUtils.capitalize(response.body().getUsername()));
-                            } else {
-                                tvDriver.setText("Unknown Driver (" + ride.getDriver_id() + ")");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<User> call, Throwable t) {
-                            tvDriver.setText("Error loading driver (" + ride.getDriver_id() + ")");
-                        }
-                    });
+                    displayRideInfo(ride);
                 } else if (response.code() == 401) {
-                    // unauthorized error. invalid token, ask user to relogin
                     Toast.makeText(getApplicationContext(), "Invalid session. Please login again", Toast.LENGTH_LONG).show();
                     clearSessionAndRedirect();
                 } else {
-                    // server return other error
                     Toast.makeText(getApplicationContext(), "Error: " + response.message(), Toast.LENGTH_LONG).show();
                     Log.e("MyApp: ", response.toString());
                 }
@@ -130,16 +180,49 @@ public class RideDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Ride> call, Throwable t) {
-                Toast.makeText(RideDetailActivity.this, "Error connecting", Toast.LENGTH_LONG).show();
+                Toast.makeText(RideDetailActivity.this, "Error connecting", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    private void displayRideInfo(Ride ride) {
+        if (ride == null) {
+            Toast.makeText(this, "Ride data is missing", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        tvOrigin.setText(ride.getOrigin());
+        tvTime.setText(ride.getDeparture_time());
+        tvDestination.setText(ride.getDestination());
+        cbFSeat.setChecked(ride.getfSeat());
+        cbRSeat.setChecked(ride.getrSeat());
+        cbMSeat.setChecked(ride.getmSeat());
+        cbLSeat.setChecked(ride.getlSeat());
+
+        setupSeatCheckBox(cbFSeat);
+        setupSeatCheckBox(cbRSeat);
+        setupSeatCheckBox(cbMSeat);
+        setupSeatCheckBox(cbLSeat);
+
+        userService.getUser(token, ride.getDriver_id()).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    tvDriver.setText(StringUtils.capitalize(response.body().getFullName()));
+                } else {
+                    tvDriver.setText("Unknown Driver (" + ride.getDriver_id() + ")");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                tvDriver.setText("Error loading driver (" + ride.getDriver_id() + ")");
+            }
+        });
     }
 
     private void setupSeatCheckBox(CheckBox cb) {
         cb.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (!isChecked) {
-                // once checked, cannot uncheck
                 buttonView.setChecked(true);
                 Toast.makeText(RideDetailActivity.this, "Cannot uncheck seat", Toast.LENGTH_SHORT).show();
             }
@@ -147,14 +230,9 @@ public class RideDetailActivity extends AppCompatActivity {
     }
 
     public void clearSessionAndRedirect() {
-        // clear the shared preferences
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
         spm.logout();
-
-        // terminate this activity
         finish();
-
-        // forward to Login Page
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
@@ -165,7 +243,6 @@ public class RideDetailActivity extends AppCompatActivity {
             return;
         }
 
-        //update seat based on form content
         int driver_id = ride.getDriver_id();
         String origin = tvOrigin.getText().toString();
         String destination = tvDestination.getText().toString();
@@ -175,7 +252,6 @@ public class RideDetailActivity extends AppCompatActivity {
         int mSeat = cbMSeat.isChecked() ? 1 : 0;
         int lSeat = cbLSeat.isChecked() ? 1 : 0;
 
-        // update all fields excluding the ride_id
         ride.setDriver_id(driver_id);
         ride.setOrigin(origin);
         ride.setDestination(destination);
@@ -191,14 +267,12 @@ public class RideDetailActivity extends AppCompatActivity {
         bookingService.addBooking(user.getToken(), user.getId(), ride.getRide_id()).enqueue(new Callback<Booking>() {
             @Override
             public void onResponse(Call<Booking> call, Response<Booking> response) {
-                // for debug purpose
                 Log.d("MyApp:", "Booking Response: " + response.raw().toString());
 
                 if (response.code() == 201) {
-                    // book added successfully, now update ride seat
                     rideService.updateSeat(user.getToken(), ride.getRide_id(),
                             ride.getDriver_id(), ride.getOrigin(), ride.getDestination(), ride.getDeparture_time(),
-                            fSeat, rSeat, mSeat, lSeat).enqueue(new Callback<Ride>() {
+                            ride.getPrice(), fSeat, rSeat, mSeat, lSeat).enqueue(new Callback<Ride>() {
                         @Override
                         public void onResponse(Call<Ride> callRide, Response<Ride> responseRide) {
                             Log.d("MyApp:", "Ride Update Response: " + responseRide.raw().toString());
@@ -222,26 +296,20 @@ public class RideDetailActivity extends AppCompatActivity {
                     });
                 }
                 else if (response.code() == 401) {
-                    // invalid token, ask user to relogin
                     Toast.makeText(getApplicationContext(), "Invalid session. Please login again", Toast.LENGTH_LONG).show();
                     clearSessionAndRedirect();
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "Error: " + response.message(), Toast.LENGTH_LONG).show();
-                    // server return other error
                     Log.e("MyApp: ", response.toString());
                 }
             }
 
             @Override
             public void onFailure(Call<Booking> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Error [" + t.getMessage() + "]",
-                        Toast.LENGTH_LONG).show();
-                // for debug purpose
+                Toast.makeText(getApplicationContext(),"Error [" + t.getMessage() + "]", Toast.LENGTH_LONG).show();
                 Log.e("MyApp:", "Error: " + t.getMessage(), t);
             }
         });
-
-
     }
 }

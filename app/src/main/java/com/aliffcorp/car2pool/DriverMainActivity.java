@@ -94,12 +94,12 @@ public class DriverMainActivity extends AppCompatActivity {
         // ==========================
         // Update Ride
         // ==========================
-       /* cardUpdateRide.setOnClickListener(v -> {
+       cardUpdateRide.setOnClickListener(v -> {
             Intent intent = new Intent(
                     DriverMainActivity.this,
-                    UpdateRideActivity.class
+                    DriverRideListActivity.class
             );
             startActivity(intent);
-        });*/
+        });
     }
 }

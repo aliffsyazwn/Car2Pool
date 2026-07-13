@@ -27,6 +27,7 @@ import retrofit2.Response;
 
 public class NewRiderFragment extends Fragment {
 
+    private EditText txtFullName;
     private EditText txtEmail;
     private EditText txtUsername;
     private EditText txtPassword;
@@ -39,6 +40,7 @@ public class NewRiderFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_rider, container, false);
 
         // Bind view references
+        txtFullName = view.findViewById(R.id.txtFullName);
         txtUsername = view.findViewById(R.id.txtUsername);
         txtEmail = view.findViewById(R.id.txtEmail);
         txtPassword = view.findViewById(R.id.txtPassword);
@@ -57,6 +59,7 @@ public class NewRiderFragment extends Fragment {
 
     private void addNewRider() {
         String api_key = "3b191b07-7739-4698-b885-8660b564c963";
+        String fullName = txtFullName.getText().toString();
         String username = txtUsername.getText().toString();
         String email = txtEmail.getText().toString();
 
@@ -74,18 +77,18 @@ public class NewRiderFragment extends Fragment {
         String plateNumber = "";
         String license = "";
 
-        if (validateRegister(username, password, email, studId)) {
+        if (validateRegister(fullName, username, password, email, studId)) {
             doNewRider(api_key, email, username, password, token, lease, role, is_active,
-                    secret, studId, carModel, plateNumber, license);
+                    secret, studId, carModel, plateNumber, license, fullName);
         }
     }
 
     private void doNewRider(String api_key, String email, String username, String password, String token,
                             String lease, String role, int is_active, String secret, String studId,
-                            String carModel, String plateNumber, String license) {
+                            String carModel, String plateNumber, String license, String fullName) {
         UserService userService = ApiUtils.getUserService();
         Call<User> call = userService.addUser(api_key, email, username, password, token, lease, role,
-                is_active, secret, studId, carModel, plateNumber, license);
+                is_active, secret, studId, carModel, plateNumber, license, fullName);
 
         call.enqueue(new Callback<User>() {
             @Override
@@ -127,7 +130,12 @@ public class NewRiderFragment extends Fragment {
         });
     }
 
-    private boolean validateRegister(String username, String password, String email, String studId) {
+    private boolean validateRegister(String fullName, String username, String password, String email, String studId) {
+        if (fullName == null || fullName.trim().isEmpty()) {
+            txtFullName.setError("Full Name is required");
+            txtFullName.requestFocus();
+            return false;
+        }
         if (username == null || username.trim().isEmpty()) {
             txtUsername.setError("Username or Email is required");
             txtUsername.requestFocus();

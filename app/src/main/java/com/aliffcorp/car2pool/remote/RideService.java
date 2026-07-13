@@ -37,17 +37,15 @@ public interface RideService {
 
     @FormUrlEncoded
     @POST("rides/{id}")
-    Call<Ride> updateSeat(
-            @Header ("api-key") String apiKey,
-            @Path("id") int ride_id,
-            @Field("driver_id") int driver_id,
-            @Field("origin") String origin,
-            @Field("destination") String destination,
-            @Field("departure_time") String departureTime,
-            @Field("fSeat") int fSeat,
-            @Field("rSeat") int rSeat,
-            @Field("mSeat") int mSeat,
-            @Field("lSeat") int lSeat);
+    Call<Ride> updateSeat(@Header ("api-key") String apiKey, @Path("id") int ride_id,
+                          @Field("driver_id") int driver_id,
+                          @Field("origin") String origin,
+                          @Field("destination") String destination,
+                          @Field("departure_time") String departureTime,
+                          @Field("fSeat") int fSeat,
+                          @Field("rSeat") int rSeat,
+                          @Field("mSeat") int mSeat,
+                          @Field("lSeat") int lSeat);
 
     @GET("locations")
     Call<List<LocationItem>> getAllLocations(@Header("api-key") String api_key);

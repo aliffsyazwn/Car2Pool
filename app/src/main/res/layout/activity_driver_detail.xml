@@ -59,57 +59,51 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Origin"
+                    android:text="Student ID"
                     android:textColor="@color/black"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvOrigin"
+                    android:id="@+id/tvStudID"
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_input"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:gravity="center_vertical"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground" />
+                    android:gravity="center_vertical"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Destination"
+                    android:text="Car Model"
                     android:textColor="@color/black"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvDestination"
+                    android:id="@+id/tvModel"
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_input"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:gravity="center_vertical"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground" />
+                    android:gravity="center_vertical"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Departure time"
+                    android:text="Car Plate"
                     android:textColor="@color/black"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvTime"
+                    android:id="@+id/tvPlate"
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
                     android:layout_marginTop="8dp"
@@ -123,80 +117,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
-                    android:text="Available seats"
+                    android:text="License Number"
                     android:textColor="@color/black"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
-                <FrameLayout
+                <TextView
+                    android:id="@+id/tvLicense"
                     android:layout_width="match_parent"
-                    android:layout_height="213dp"
+                    android:layout_height="54dp"
                     android:layout_marginTop="8dp"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="198dp"
-                        android:contentDescription="@string/desc_car_icon"
-                        android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/iv_create_ride" />
-
-                    <CheckBox
-                        android:id="@+id/cbFSeat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="-12dp"
-                        android:layout_marginTop="29dp"
-                        android:buttonTint="@color/red" />
-
-                    <CheckBox
-                        android:id="@+id/cbRSeat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="69dp"
-                        android:layout_marginTop="-19dp"
-                        android:buttonTint="@color/red" />
-
-                    <CheckBox
-                        android:id="@+id/cbMSeat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="39dp"
-                        android:layout_marginTop="6dp"
-                        android:buttonTint="@color/red" />
-
-                    <CheckBox
-                        android:id="@+id/cbLSeat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="69dp"
-                        android:layout_marginTop="31dp"
-                        android:buttonTint="@color/red" />
-                </FrameLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/btnBook"
-                        android:layout_width="0dp"
-                        android:layout_height="54dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:backgroundTint="@color/btn_color"
-                        android:text="Book"
-                        android:textColor="@color/black"
-                        android:textSize="18dp"
-                        android:textStyle="bold"
-                        android:onClick="bookRide"/>
-                </LinearLayout>
+                    android:background="@drawable/bg_input"
+                    android:inputType="time"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:gravity="center_vertical"/>
 
             </LinearLayout>
 

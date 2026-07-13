@@ -24,7 +24,7 @@ public interface UserService {
                         @Field("role") String role, @Field("is_active") int is_active,
                         @Field("secret") String secret, @Field("studID") String studID,
                         @Field("carModel") String carModel, @Field("plateNumber") String plateNumber,
-                        @Field("license") String license);
+                        @Field("license") String license, @Field("fullName") String fullName);
 
     @FormUrlEncoded
     @POST("users/login")
@@ -33,6 +33,15 @@ public interface UserService {
     @GET("users/{id}")
     Call<User> getUser(@Header("api-key") String api_key, @Path("id") int id);
 
-
+    @FormUrlEncoded
+    @POST("users/{id}")
+    Call<User> updateUser(@Header("api-key") String api_key, @Path("id") int id,
+                          @Field("email") String email, @Field("username") String username,
+                          @Field("password") String password, @Field("token") String token,
+                          @Field("lease") String lease, @Field("role") String role,
+                          @Field("is_active") int is_active, @Field("secret") String secret,
+                          @Field("studID") String studID, @Field("carModel") String carModel,
+                          @Field("plateNumber") String plateNumber, @Field("license") String license,
+                          @Field("fullName") String fullName);
 
 }

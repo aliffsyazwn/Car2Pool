@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5"
-    tools:context=".BookingList">
+    tools:context=".DriverRideListActivity">
 
-    <!-- Header Section -->
+    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="170dp"
         android:background="#0F8F6F"
         android:orientation="vertical"
         android:padding="24dp">
@@ -20,49 +20,53 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Bookings"
+            android:text="My Rides"
             android:textColor="@android:color/white"
-            android:textSize="26sp"
-            android:textStyle="bold" />
+            android:textSize="30sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Manage your booked rides"
-            android:textColor="#E0F2F1"
-            android:textSize="14sp" />
+            android:layout_marginTop="6dp"
+            android:text="Manage your created rides"
+            android:textColor="#DDEEEE"
+            android:textSize="16sp"/>
+
     </LinearLayout>
 
-    <!-- Booking List Container -->
+    <!-- Ride List -->
     <androidx.cardview.widget.CardView
-        android:id="@+id/bookingCard"
+        android:id="@+id/rideCard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/footerCard"
         android:layout_below="@id/header"
-        android:layout_marginHorizontal="16dp"
+        android:layout_above="@id/footerCard"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="-20dp"
-        android:layout_marginBottom="12dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="4dp">
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvBookList"
+            android:id="@+id/rvRideList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:padding="8dp" />
+            android:padding="12dp"/>
+
     </androidx.cardview.widget.CardView>
 
-    <!-- Navigation Footer -->
+    <!-- Reusable Navigation -->
     <include
         android:id="@+id/footerCard"
         layout="@layout/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"/>
 
 </RelativeLayout>

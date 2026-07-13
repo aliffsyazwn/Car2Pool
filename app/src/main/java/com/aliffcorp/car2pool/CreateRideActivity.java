@@ -38,6 +38,7 @@ public class CreateRideActivity extends AppCompatActivity {
     private AutoCompleteTextView etOrigin;
     private AutoCompleteTextView etDestination;
     private EditText etDepTime;
+    private EditText etPrice;
 
     private CheckBox cbFSeat;
     private CheckBox cbRSeat;
@@ -48,6 +49,9 @@ public class CreateRideActivity extends AppCompatActivity {
     private Button btnCancel;
 
     private RideService rideService;
+    private int rideId = -1;
+    private String token;
+    private int userId;
 
 
     @Override
@@ -68,6 +72,7 @@ public class CreateRideActivity extends AppCompatActivity {
         etOrigin = findViewById(R.id.etOrigin);
         etDestination = findViewById(R.id.etDestination);
         etDepTime = findViewById(R.id.etDepTime);
+        etPrice = findViewById(R.id.etPrice);
 
         cbFSeat = findViewById(R.id.cbFSeat);
         cbRSeat = findViewById(R.id.cbRSeat);
@@ -77,6 +82,19 @@ public class CreateRideActivity extends AppCompatActivity {
         btnCreate = findViewById(R.id.btnCreate);
         btnCancel = findViewById(R.id.btnCancel);
 
+        SharedPrefManager spm = new SharedPrefManager(this);
+        User user = spm.getUser();
+        if (user != null) {
+            token = user.getToken();
+            userId = user.getId();
+        }
+
+        rideId = getIntent().getIntExtra("ride_id", -1);
+        if (rideId != -1) {
+            btnCreate.setText("Update Ride");
+            fetchRideDetails();
+        }
+
         etDepTime.setOnClickListener(v -> showTimePicker());
 
         btnCancel.setOnClickListener(v -> finish());
@@ -84,6 +102,30 @@ public class CreateRideActivity extends AppCompatActivity {
         btnCreate.setOnClickListener(v -> createRide());
 
         fetchLocationsFromDatabase();
+    }
+
+    private void fetchRideDetails() {
+        rideService.getRides(token, rideId).enqueue(new Callback<Ride>() {
+            @Override
+            public void onResponse(Call<Ride> call, Response<Ride> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Ride ride = response.body();
+                    etOrigin.setText(ride.getOrigin());
+                    etDestination.setText(ride.getDestination());
+                    etDepTime.setText(ride.getDeparture_time());
+                    etPrice.setText(String.valueOf(ride.getPrice()));
+                    cbFSeat.setChecked(ride.getfSeat());
+                    cbMSeat.setChecked(ride.getmSeat());
+                    cbRSeat.setChecked(ride.getrSeat());
+                    cbLSeat.setChecked(ride.getlSeat());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Ride> call, Throwable t) {
+                Toast.makeText(CreateRideActivity.this, "Error loading ride info", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void fetchLocationsFromDatabase() {
@@ -164,6 +206,7 @@ public class CreateRideActivity extends AppCompatActivity {
         String origin = etOrigin.getText().toString().trim();
         String destination = etDestination.getText().toString().trim();
         String departureTime = etDepTime.getText().toString().trim();
+        String priceStr = etPrice.getText().toString().trim();
 
         if (origin.isEmpty()) {
             etOrigin.setError("Enter origin");
@@ -180,6 +223,21 @@ public class CreateRideActivity extends AppCompatActivity {
             return;
         }
 
+        // --- NEW: Price Validation ---
+        if (priceStr.isEmpty()) {
+            etPrice.setError("Enter price");
+            return;
+        }
+
+        double price = 0.0;
+        try {
+            price = Double.parseDouble(priceStr);
+        } catch (NumberFormatException e) {
+            etPrice.setError("Invalid price format");
+            return;
+        }
+        // -----------------------------
+
         int fSeat = cbFSeat.isChecked() ? 1 : 0;
         int rSeat = cbRSeat.isChecked() ? 1 : 0;
         int mSeat = cbMSeat.isChecked() ? 1 : 0;
@@ -192,57 +250,88 @@ public class CreateRideActivity extends AppCompatActivity {
             return;
         }
 
-        SharedPrefManager spm = new SharedPrefManager(this);
-        User user = spm.getUser();
+        if (rideId == -1) {
+            // Create New Ride
+            rideService.createRide(
+                    token,
+                    userId,
+                    origin,
+                    destination,
+                    departureTime,
+                    price,
+                    fSeat,
+                    rSeat,
+                    mSeat,
+                    lSeat
+            ).enqueue(new Callback<Ride>() {
 
-        rideService.createRide(
-                user.getToken(),
-                user.getId(),
-                origin,
-                destination,
-                departureTime,
-                fSeat,
-                rSeat,
-                mSeat,
-                lSeat
-        ).enqueue(new Callback<Ride>() {
+                @Override
+                public void onResponse(Call<Ride> call, Response<Ride> response) {
 
-            @Override
-            public void onResponse(Call<Ride> call, Response<Ride> response) {
+                    if (response.isSuccessful() && response.body() != null) {
 
-                if (response.isSuccessful() && response.body() != null) {
+                        Ride ride = response.body();
 
-                    Ride ride = response.body();
+                        Toast.makeText(CreateRideActivity.this,
+                                "Ride Created Successfully",
+                                Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(
+                                CreateRideActivity.this,
+                                DriverRideDetailActivity.class
+                        );
+
+                        intent.putExtra("ride_id", ride.getRide_id());
+
+                        startActivity(intent);
+                        finish();
+
+                    } else {
+
+                        Toast.makeText(CreateRideActivity.this,
+                                "Failed to create ride",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Ride> call, Throwable t) {
 
                     Toast.makeText(CreateRideActivity.this,
-                            "Ride Created Successfully",
-                            Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent(
-                            CreateRideActivity.this,
-                            DriverRideDetailActivity.class
-                    );
-
-                    intent.putExtra("ride_id", ride.getRide_id());
-
-                    startActivity(intent);
-                    finish();
-
-                } else {
-
-                    Toast.makeText(CreateRideActivity.this,
-                            "Failed to create ride",
+                            t.getMessage(),
                             Toast.LENGTH_LONG).show();
                 }
-            }
+            });
+        } else {
+            // Update Existing Ride
+            rideService.updateRide(
+                    token,
+                    rideId,
+                    userId,
+                    origin,
+                    destination,
+                    departureTime,
+                    price,
+                    fSeat,
+                    rSeat,
+                    mSeat,
+                    lSeat
+            ).enqueue(new Callback<Ride>() {
+                @Override
+                public void onResponse(Call<Ride> call, Response<Ride> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(CreateRideActivity.this, "Ride Updated Successfully", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(CreateRideActivity.this, "Failed to update ride", Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-            @Override
-            public void onFailure(Call<Ride> call, Throwable t) {
-
-                Toast.makeText(CreateRideActivity.this,
-                        t.getMessage(),
-                        Toast.LENGTH_LONG).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<Ride> call, Throwable t) {
+                    Toast.makeText(CreateRideActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

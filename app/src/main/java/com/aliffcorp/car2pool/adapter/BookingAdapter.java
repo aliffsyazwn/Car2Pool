@@ -22,6 +22,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     private List<Booking> bookingList;
     private Context context;
     private OnBookingActionListener actionListener;
+    private int currentPos = -1;
 
     // Interface
     public interface OnBookingActionListener {
@@ -92,7 +93,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
             if (currentBooking.getRide().getDriver() != null) {
                 driverName = "Driver: " +
-                        StringUtils.capitalize(currentBooking.getRide().getDriver().getUsername());
+                        StringUtils.capitalize(currentBooking.getRide().getDriver().getFullName());
             }
         }
 
@@ -112,7 +113,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
         // Long Press Booking Card
         holder.bookingCard.setOnLongClickListener(v -> {
-
+            currentPos = holder.getBindingAdapterPosition();
             if (actionListener != null) {
                 actionListener.onLongClick(v, currentBooking);
             }
@@ -125,6 +126,14 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     @Override
     public int getItemCount() {
         return bookingList == null ? 0 : bookingList.size();
+    }
+
+    public Booking getSelectedItem() {
+        // return the book record if the current selected position/index is valid
+        if (currentPos >= 0 && bookingList != null && currentPos < bookingList.size()) {
+            return bookingList.get(currentPos);
+        }
+        return null;
     }
 
 }
