@@ -64,6 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:backgroundTint="#FFFFFF"
+                android:layout_marginTop="20dp"
                 android:drawableStart="@android:drawable/ic_dialog_email"
                 android:drawablePadding="10dp"
                 android:hint="Email / Username"
@@ -85,38 +86,13 @@
                 android:textColor="@color/black"
                 android:inputType="textPassword"/>
 
-            <!-- Remember + Forgot -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/cbRemember"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Remember Me"
-                    android:textColor="#0D0000" />
-
-                <TextView
-                    android:id="@+id/txtForgot"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:text="Forgot Password?"
-                    android:textColor="#0D0000" />
-
-            </LinearLayout>
 
             <!-- Login Button -->
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="40dp"
                 android:backgroundTint="@color/light_teal1"
                 android:onClick="loginClicked"
                 android:text="LOGIN"
