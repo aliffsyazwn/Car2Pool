@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ride Details"
+            android:text="Driver Details"
             android:textColor="@color/dark_teal3"
             android:textSize="28dp"
             android:textStyle="bold" />

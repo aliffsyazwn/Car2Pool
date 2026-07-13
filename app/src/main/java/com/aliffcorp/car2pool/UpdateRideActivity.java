@@ -36,6 +36,7 @@ public class UpdateRideActivity extends AppCompatActivity {
     private AutoCompleteTextView etOrigin;
     private AutoCompleteTextView etDestination;
     private EditText etDepTime;
+    private EditText etPrice;
 
     private CheckBox cbFSeat;
     private CheckBox cbRSeat;
@@ -80,6 +81,7 @@ public class UpdateRideActivity extends AppCompatActivity {
         etOrigin = findViewById(R.id.etOrigin);
         etDestination = findViewById(R.id.etDestination);
         etDepTime = findViewById(R.id.etDepTime);
+        etPrice = findViewById(R.id.etPrice);
 
         cbFSeat = findViewById(R.id.cbFSeat);
         cbRSeat = findViewById(R.id.cbRSeat);
@@ -155,6 +157,10 @@ public class UpdateRideActivity extends AppCompatActivity {
 
                             etDepTime.setText(
                                     currentRide.getDeparture_time()
+                            );
+
+                            etPrice.setText(
+                                    String.valueOf(currentRide.getPrice())
                             );
 
                             // Fill Checkboxes
@@ -264,6 +270,8 @@ public class UpdateRideActivity extends AppCompatActivity {
                 etDestination.getText().toString().trim();
         String departureTime =
                 etDepTime.getText().toString().trim();
+        String priceText =
+                etPrice.getText().toString().trim();
 
         if (origin.isEmpty()) {
 
@@ -286,6 +294,23 @@ public class UpdateRideActivity extends AppCompatActivity {
             );
             return;
         }
+        if (priceText.isEmpty()) {
+            etPrice.setError("Price is required");
+            etPrice.requestFocus();
+            return;
+        }
+
+        float price;
+
+        try {
+            price = Float.parseFloat(priceText);
+        }
+        catch (NumberFormatException e) {
+            etPrice.setError("Enter a valid price");
+            etPrice.requestFocus();
+            return;
+        }
+
         if (currentRide == null) {
             Toast.makeText(
                     this,
@@ -308,6 +333,7 @@ public class UpdateRideActivity extends AppCompatActivity {
                 origin,
                 destination,
                 departureTime,
+                price,
                 fSeat,
                 rSeat,
                 mSeat,
