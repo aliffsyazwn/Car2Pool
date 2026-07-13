@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
+import androidx.cardview.widget.CardView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +49,10 @@ public class RideListActivity extends AppCompatActivity {
     private BookingService bookingService;
     private RecyclerView rvRideList;
     private RideAdapter adapter;
+    private CardView cardHome;
+    private CardView cardSearchRide;
+    private CardView cardBooking;
+    private CardView cardProfile;
 
     // UI Elements for Search
     private AutoCompleteTextView etSearchOrigin;
@@ -100,6 +105,7 @@ public class RideListActivity extends AppCompatActivity {
         // get ride service instance
         rideService = ApiUtils.getRideService();
         bookingService = ApiUtils.getBookingService();
+        setupBottomNavigation();
 
         // Fetch locations for the dropdown search bars
         fetchLocations(token);
@@ -253,10 +259,10 @@ public class RideListActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void detailClicked(View view) {
-        RecyclerView rvRideList = findViewById(R.id.rvRideList);
-        int position = rvRideList.getChildAdapterPosition((View) view.getParent());
-        if (position != RecyclerView.NO_POSITION && adapter != null) {
-            Ride selectedRide = adapter.getItemAt(position); // Or however your adapter exposes the list item
+
+        Ride selectedRide = (Ride) view.getTag();
+
+        if (selectedRide != null) {
             doViewDetails(selectedRide);
         }
     }
@@ -266,5 +272,59 @@ public class RideListActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), RideDetailActivity.class);
         intent.putExtra("ride_id", selectedRide.getRide_id());
         startActivity(intent);
+    }
+    private void setupBottomNavigation() {
+
+        cardHome = findViewById(R.id.cardHome);
+        cardSearchRide = findViewById(R.id.cardSearchRide);
+        cardBooking = findViewById(R.id.cardBooking);
+        cardProfile = findViewById(R.id.cardProfile);
+
+        SharedPrefManager spm = new SharedPrefManager(this);
+        User user = spm.getUser();
+
+        // Home
+        cardHome.setOnClickListener(v -> {
+
+            if (user.getRole().equalsIgnoreCase("driver")) {
+
+                startActivity(new Intent(
+                        RideListActivity.this,
+                        DriverMainActivity.class));
+
+            } else {
+
+                startActivity(new Intent(
+                        RideListActivity.this,
+                        MainActivity.class));
+            }
+
+            finish();
+        });
+
+        // Current Page
+        cardSearchRide.setOnClickListener(v -> {
+            // Already here
+        });
+
+        // Booking
+        cardBooking.setOnClickListener(v -> {
+
+            startActivity(new Intent(
+                    RideListActivity.this,
+                    BookingList.class));
+
+            finish();
+        });
+
+        // Profile
+        cardProfile.setOnClickListener(v -> {
+
+            startActivity(new Intent(
+                    RideListActivity.this,
+                    ViewProfileActivity.class));
+
+            finish();
+        });
     }
 }
