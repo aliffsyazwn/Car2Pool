@@ -5,7 +5,7 @@
     android:id="@+id/footerCard"
     android:layout_width="match_parent"
     android:layout_height="74dp"
-    app:cardBackgroundColor="#FFFFFF"
+    app:cardBackgroundColor="@color/bg_teal"
     app:cardCornerRadius="30dp"
     app:cardElevation="12dp">
 
@@ -34,8 +34,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:src="@drawable/home" />
 
                 <TextView
@@ -43,8 +43,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="Home"
-                    android:textColor="#666666"
-                    android:textSize="12sp"/>
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -67,8 +67,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:src="@drawable/booking"/>
 
                 <TextView
@@ -76,8 +76,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="Booking"
-                    android:textColor="#666666"
-                    android:textSize="12sp"/>
+                    android:textColor="@color/black"
+                    android:textSize="15sp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -100,8 +100,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:src="@drawable/add"/>
 
                 <TextView
@@ -109,8 +109,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="Search"
-                    android:textColor="#666666"
-                    android:textSize="12sp"/>
+                    android:textColor="@color/black"
+                    android:textSize="15sp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -133,8 +133,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:src="@drawable/user"/>
 
                 <TextView
@@ -142,8 +142,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="Profile"
-                    android:textColor="#666666"
-                    android:textSize="12sp"/>
+                    android:textColor="@color/black"
+                    android:textSize="15sp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

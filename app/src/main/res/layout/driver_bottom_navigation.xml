@@ -6,7 +6,7 @@
     android:id="@+id/footerCard"
     android:layout_width="match_parent"
     android:layout_height="74dp"
-    app:cardBackgroundColor="#FFFFFF"
+    app:cardBackgroundColor="@color/bg_teal"
     app:cardCornerRadius="30dp"
     app:cardElevation="12dp">
 
