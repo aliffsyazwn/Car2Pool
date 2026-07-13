@@ -13,28 +13,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="16dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Create Ride"
             android:textColor="@color/dark_teal3"
-            android:textSize="28sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
             android:text="Set your route, time, and open seats."
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp">
 
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/bg_teal"
                 android:orientation="vertical"
-                android:padding="22dp">
+                android:padding="16dp">
 
                 <!-- Origin -->
 
@@ -52,78 +52,103 @@
                     android:layout_height="wrap_content"
                     android:text="Origin"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <AutoCompleteTextView
                     android:id="@+id/etOrigin"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="4dp"
                     android:background="@drawable/bg_input"
                     android:hint="Enter origin"
                     android:inputType="textCapWords"
-                    android:padding="15dp" />
+                    android:padding="10dp"
+                    android:textSize="14sp" />
 
                 <!-- Destination -->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="10dp"
                     android:text="Destination"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <AutoCompleteTextView
                     android:id="@+id/etDestination"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="4dp"
                     android:background="@drawable/bg_input"
                     android:hint="Enter destination"
                     android:inputType="textCapWords"
-                    android:padding="15dp" />
+                    android:padding="10dp"
+                    android:textSize="14sp" />
 
                 <!-- Departure Time -->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="10dp"
                     android:text="Departure Time"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/etDepTime"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="4dp"
                     android:background="@drawable/bg_input"
                     android:hint="Select departure time"
                     android:focusable="false"
                     android:clickable="true"
-                    android:padding="15dp" />
+                    android:padding="10dp"
+                    android:textSize="14sp" />
+
+                <!-- Price Section -->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Price (RM)"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_input"
+                    android:hint="Enter price (e.g., 5.00)"
+                    android:inputType="numberDecimal"
+                    android:padding="10dp"
+                    android:textSize="14sp" />
 
                 <!-- Seats -->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="12dp"
                     android:text="Available Seats"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="213dp"
-                    android:layout_marginTop="8dp"
-                    android:padding="8dp">
+                    android:layout_marginTop="4dp"
+                    android:padding="4dp">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -175,31 +200,31 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="12dp"
                     android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/btnCancel"
                         android:layout_width="0dp"
-                        android:layout_height="54dp"
+                        android:layout_height="48dp"
                         android:layout_weight="1"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="6dp"
                         android:backgroundTint="@color/btn_color"
                         android:text="Cancel"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <Button
                         android:id="@+id/btnCreate"
                         android:layout_width="0dp"
-                        android:layout_height="54dp"
+                        android:layout_height="48dp"
                         android:layout_weight="1"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="6dp"
                         android:backgroundTint="@color/btn_color"
                         android:text="Create"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>

@@ -272,7 +272,7 @@ public class RideDetailActivity extends AppCompatActivity {
                 if (response.code() == 201) {
                     rideService.updateSeat(user.getToken(), ride.getRide_id(),
                             ride.getDriver_id(), ride.getOrigin(), ride.getDestination(), ride.getDeparture_time(),
-                            fSeat, rSeat, mSeat, lSeat).enqueue(new Callback<Ride>() {
+                            ride.getPrice(), fSeat, rSeat, mSeat, lSeat).enqueue(new Callback<Ride>() {
                         @Override
                         public void onResponse(Call<Ride> callRide, Response<Ride> responseRide) {
                             Log.d("MyApp:", "Ride Update Response: " + responseRide.raw().toString());
