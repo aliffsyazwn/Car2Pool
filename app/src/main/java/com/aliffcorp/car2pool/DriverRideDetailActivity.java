@@ -28,9 +28,8 @@ import retrofit2.Response;
 public class DriverRideDetailActivity extends AppCompatActivity {
 
     private RideService rideService;
-    private UserService userService;
 
-    private TextView tvOrigin, tvDestination, tvTime, tvDriver;
+    private TextView tvOrigin, tvDestination, tvTime, tvPrice;
     private Button btnBack;
     private CheckBox cbFSeat, cbRSeat, cbMSeat, cbLSeat;
 
@@ -50,11 +49,10 @@ public class DriverRideDetailActivity extends AppCompatActivity {
             return insets;
         });
 
-        /*tvOrigin = findViewById(R.id.tvOrigin);
+        tvOrigin = findViewById(R.id.tvOrigin);
         tvDestination = findViewById(R.id.tvDestination);
         tvTime = findViewById(R.id.tvTime);
-        tvDriver = findViewById(R.id.tvDriver);*/
-
+        tvPrice = findViewById(R.id.tvPrice);
 
         cbFSeat = findViewById(R.id.cbFSeat);
         cbRSeat = findViewById(R.id.cbRSeat);
@@ -76,7 +74,6 @@ public class DriverRideDetailActivity extends AppCompatActivity {
         rideId = getIntent().getIntExtra("ride_id", -1);
 
         rideService = ApiUtils.getRideService();
-        userService = ApiUtils.getUserService();
 
         btnBack.setOnClickListener(v -> finish());
 
@@ -85,7 +82,7 @@ public class DriverRideDetailActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (rideService != null && userService != null && token != null && rideId != -1) {
+        if (rideService != null && token != null && rideId != -1) {
             loadRideDetails();
         }
     }
@@ -120,31 +117,13 @@ public class DriverRideDetailActivity extends AppCompatActivity {
                     tvOrigin.setText(ride.getOrigin());
                     tvDestination.setText(ride.getDestination());
                     tvTime.setText(ride.getDeparture_time());
+                    tvPrice.setText(String.format("RM %.2f", ride.getPrice()));
 
                     showAvailableSeat(cbFSeat, ride.getfSeat());
                     showAvailableSeat(cbRSeat, ride.getrSeat());
                     showAvailableSeat(cbMSeat, ride.getmSeat());
                     showAvailableSeat(cbLSeat, ride.getlSeat());
 
-                    userService.getUser(token, ride.getDriver_id())
-                            .enqueue(new Callback<User>() {
-
-                        @Override
-                        public void onResponse(Call<User> call, Response<User> response) {
-
-                            if (response.isSuccessful() && response.body() != null) {
-                                tvDriver.setText(StringUtils.capitalize(response.body().getUsername()));
-                            }
-                            else {
-                                tvDriver.setText("Unknown");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<User> call, Throwable t) {
-                            tvDriver.setText("Unknown");
-                        }
-                    });
 
                 } else {
                     Toast.makeText(DriverRideDetailActivity.this,
