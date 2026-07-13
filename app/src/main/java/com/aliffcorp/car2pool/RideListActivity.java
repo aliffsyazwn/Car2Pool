@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -48,6 +49,11 @@ public class RideListActivity extends AppCompatActivity {
     private BookingService bookingService;
     private RecyclerView rvRideList;
     private RideAdapter adapter;
+
+    private CardView cardHome;
+    private CardView cardBooking;
+    private CardView cardSearchRide;
+    private CardView cardProfile;
 
     // UI Elements for Search
     private AutoCompleteTextView etSearchOrigin;
@@ -91,6 +97,34 @@ public class RideListActivity extends AppCompatActivity {
 
         etSearchOrigin.addTextChangedListener(searchWatcher);
         etSearchDestination.addTextChangedListener(searchWatcher);
+
+        // Initialize Bottom Navigation Cards
+        cardHome = findViewById(R.id.cardHome);
+        cardBooking = findViewById(R.id.cardBooking);
+        cardSearchRide = findViewById(R.id.cardSearchRide);
+        cardProfile = findViewById(R.id.cardProfile);
+
+        // Setup Bottom Navigation Listeners
+        cardHome.setOnClickListener(v -> {
+            // Already in RideListActivity, just refresh or scroll to top if needed
+            // Intent intent = new Intent(RideListActivity.this, RideListActivity.class);
+            // startActivity(intent);
+        });
+
+        cardBooking.setOnClickListener(v -> {
+            Intent intent = new Intent(RideListActivity.this, BookingList.class);
+            startActivity(intent);
+        });
+
+        cardSearchRide.setOnClickListener(v -> {
+            // Scroll to search card or focus on search origin
+            etSearchOrigin.requestFocus();
+        });
+
+        cardProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(RideListActivity.this, ViewProfileActivity.class);
+            startActivity(intent);
+        });
 
         // get user info from SharedPreferences to get token value
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
@@ -240,6 +274,23 @@ public class RideListActivity extends AppCompatActivity {
         }
     }
 
+    public void detailClicked(View view) {
+        RecyclerView rvRideList = findViewById(R.id.rvRideList);
+        int position = rvRideList.getChildAdapterPosition((View) view.getParent());
+        if (position != RecyclerView.NO_POSITION && adapter != null) {
+            Ride selectedRide = adapter.getItemAt(position);
+            doViewDetails(selectedRide);
+        }
+    }
+
+    private void doViewDetails(Ride selectedRide) {
+        Log.d("MyApp:", "viewing details: " + selectedRide.toString());
+        // forward user to BookDetailsActivity, passing the selected book id
+        Intent intent = new Intent(getApplicationContext(), RideDetailActivity.class);
+        intent.putExtra("ride_id", selectedRide.getRide_id());
+        startActivity(intent);
+    }
+
     public void clearSessionAndRedirect() {
         // clear the shared preferences
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
@@ -250,21 +301,6 @@ public class RideListActivity extends AppCompatActivity {
 
         // forward to Login Page
         Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-    }
-    public void detailClicked(View view) {
-        RecyclerView rvRideList = findViewById(R.id.rvRideList);
-        int position = rvRideList.getChildAdapterPosition((View) view.getParent());
-        if (position != RecyclerView.NO_POSITION && adapter != null) {
-            Ride selectedRide = adapter.getItemAt(position); // Or however your adapter exposes the list item
-            doViewDetails(selectedRide);
-        }
-    }
-    private void doViewDetails(Ride selectedRide) {
-        Log.d("MyApp:", "viewing details: " + selectedRide.toString());
-        // forward user to BookDetailsActivity, passing the selected book id
-        Intent intent = new Intent(getApplicationContext(), RideDetailActivity.class);
-        intent.putExtra("ride_id", selectedRide.getRide_id());
         startActivity(intent);
     }
 }
