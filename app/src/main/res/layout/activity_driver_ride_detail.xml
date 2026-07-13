@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ride Details"
+            android:text="Driver Ride Details"
             android:textColor="@color/dark_teal3"
             android:textSize="28sp"
             android:textStyle="bold" />
@@ -147,10 +147,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Available Seats"
+                android:text="Available Seats (green)"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Red = Not Available"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -172,7 +181,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="-12dp"
                     android:layout_marginTop="29dp"
-                    android:buttonTint="@color/red" />
+                    android:buttonTint="@color/checkbox_color" />
 
                 <CheckBox
                     android:id="@+id/cbRSeat"
@@ -181,7 +190,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="69dp"
                     android:layout_marginTop="-19dp"
-                    android:buttonTint="@color/red" />
+                    android:buttonTint="@color/checkbox_color" />
 
                 <CheckBox
                     android:id="@+id/cbMSeat"
@@ -190,7 +199,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="39dp"
                     android:layout_marginTop="6dp"
-                    android:buttonTint="@color/red" />
+                    android:buttonTint="@color/checkbox_color" />
 
                 <CheckBox
                     android:id="@+id/cbLSeat"
@@ -199,7 +208,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="69dp"
                     android:layout_marginTop="31dp"
-                    android:buttonTint="@color/red" />
+                    android:buttonTint="@color/checkbox_color" />
 
             </FrameLayout>
 

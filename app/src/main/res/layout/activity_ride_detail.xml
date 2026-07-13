@@ -148,7 +148,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="-12dp"
                         android:layout_marginTop="29dp"
-                        android:buttonTint="@color/red" />
+                        android:buttonTint="@color/green" />
 
                     <CheckBox
                         android:id="@+id/cbRSeat"
@@ -157,7 +157,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="69dp"
                         android:layout_marginTop="-19dp"
-                        android:buttonTint="@color/red" />
+                        android:buttonTint="@color/green" />
 
                     <CheckBox
                         android:id="@+id/cbMSeat"
@@ -166,7 +166,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="39dp"
                         android:layout_marginTop="6dp"
-                        android:buttonTint="@color/red" />
+                        android:buttonTint="@color/green" />
 
                     <CheckBox
                         android:id="@+id/cbLSeat"
@@ -175,7 +175,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="69dp"
                         android:layout_marginTop="31dp"
-                        android:buttonTint="@color/red" />
+                        android:buttonTint="@color/green" />
                 </FrameLayout>
 
                 <LinearLayout

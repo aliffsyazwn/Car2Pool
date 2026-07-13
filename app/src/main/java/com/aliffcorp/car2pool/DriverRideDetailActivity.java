@@ -96,7 +96,7 @@ public class DriverRideDetailActivity extends AppCompatActivity {
             checkBox.setVisibility(View.VISIBLE);
         } else {
             checkBox.setChecked(false);
-            checkBox.setVisibility(View.INVISIBLE);
+            checkBox.setVisibility(View.VISIBLE);
         }
     }
 

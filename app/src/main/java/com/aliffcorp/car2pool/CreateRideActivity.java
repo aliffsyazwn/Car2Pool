@@ -243,12 +243,7 @@ public class CreateRideActivity extends AppCompatActivity {
         int mSeat = cbMSeat.isChecked() ? 1 : 0;
         int lSeat = cbLSeat.isChecked() ? 1 : 0;
 
-        if (fSeat + rSeat + mSeat + lSeat == 0) {
-            Toast.makeText(this,
-                    "Please select at least one seat",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
+
 
         if (rideId == -1) {
             // Create New Ride
