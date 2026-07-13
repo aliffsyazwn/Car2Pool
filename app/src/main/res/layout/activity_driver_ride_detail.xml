@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="20dp">
 
         <!-- Title -->
         <TextView
@@ -44,42 +44,24 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
-                <!-- Driver -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Driver"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
-
-                <TextView
-                    android:id="@+id/tvDriver"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/bg_input"
-                    android:padding="12dp"
-                    android:text="-"
-                    android:textSize="14sp"/>
-
                 <!-- Origin -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:text="Origin"
                     android:textStyle="bold"
                     android:textSize="16sp"/>
 
-                <TextView
-                    android:id="@+id/tvOrigin"
+                <AutoCompleteTextView
+                    android:id="@+id/etOrigin"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="54dp"
                     android:layout_marginTop="6dp"
                     android:background="@drawable/bg_input"
+                    android:inputType="textCapWords"
                     android:padding="12dp"
-                    android:text="-"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp"
+                    android:textColor="@color/black"/>
 
                 <!-- Destination -->
                 <TextView
@@ -90,15 +72,16 @@
                     android:textStyle="bold"
                     android:textSize="16sp"/>
 
-                <TextView
-                    android:id="@+id/tvDestination"
+                <AutoCompleteTextView
+                    android:id="@+id/etDestination"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="54dp"
                     android:layout_marginTop="6dp"
                     android:background="@drawable/bg_input"
+                    android:inputType="textCapWords"
                     android:padding="12dp"
-                    android:text="-"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp"
+                    android:textColor="@color/black" />
 
                 <!-- Departure Time -->
                 <TextView
@@ -109,15 +92,36 @@
                     android:textStyle="bold"
                     android:textSize="16sp"/>
 
-                <TextView
-                    android:id="@+id/tvTime"
+                <EditText
+                    android:id="@+id/etDepTime"
                     android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_input"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:padding="12dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Price"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+
+                <EditText
+                    android:id="@+id/etPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
                     android:layout_marginTop="6dp"
                     android:background="@drawable/bg_input"
                     android:padding="12dp"
-                    android:text="-"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/black" />
 
                 <!-- Available Seats -->
                 <TextView
@@ -125,29 +129,61 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Available Seats"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvSeats"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/bg_input"
-                    android:padding="12dp"
-                    android:text="-"
-                    android:textSize="14sp"/>
+                    android:layout_height="213dp"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp">
 
-                <!-- Car Seat Image -->
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_marginTop="20dp"
-                    android:contentDescription="@string/desc_car_icon"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/iv_create_ride" />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="198dp"
+                        android:contentDescription="@string/desc_car_icon"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/iv_create_ride" />
 
-                <!-- Buttons -->
+                    <CheckBox
+                        android:id="@+id/cbFSeat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="-12dp"
+                        android:layout_marginTop="29dp"
+                        android:buttonTint="@color/red" />
+
+                    <CheckBox
+                        android:id="@+id/cbRSeat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="69dp"
+                        android:layout_marginTop="-19dp"
+                        android:buttonTint="@color/red" />
+
+                    <CheckBox
+                        android:id="@+id/cbMSeat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="39dp"
+                        android:layout_marginTop="6dp"
+                        android:buttonTint="@color/red" />
+
+                    <CheckBox
+                        android:id="@+id/cbLSeat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="69dp"
+                        android:layout_marginTop="31dp"
+                        android:buttonTint="@color/red" />
+
+                </FrameLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -166,13 +202,13 @@
                         android:textStyle="bold"/>
 
                     <Button
-                        android:id="@+id/btnEditRide"
+                        android:id="@+id/btnConfirmEdit"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
                         android:layout_weight="1"
                         android:layout_marginStart="8dp"
                         android:backgroundTint="@color/dark_teal3"
-                        android:text="Edit Ride"
+                        android:text="Confirm"
                         android:textColor="@android:color/white"
                         android:textStyle="bold"/>
 
