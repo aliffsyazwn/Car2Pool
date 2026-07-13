@@ -15,6 +15,7 @@ import com.aliffcorp.car2pool.R;
 import com.aliffcorp.car2pool.model.Ride;
 
 import java.util.List;
+import java.util.Locale;
 
 public class DriverRideAdapter extends RecyclerView.Adapter<DriverRideAdapter.ViewHolder> {
 
@@ -67,14 +68,14 @@ public class DriverRideAdapter extends RecyclerView.Adapter<DriverRideAdapter.Vi
         holder.tvOrigin.setText(currentRide.getOrigin());
         holder.tvDestination.setText(currentRide.getDestination());
         holder.tvTime.setText(currentRide.getDeparture_time());
-        holder.priceText.setText("RM " + currentRide.getPrice());
-        
+        holder.priceText.setText(String.format(Locale.getDefault(), "RM %.2f", currentRide.getPrice()));
+
         int availableSeats = 0;
-        if (!currentRide.getfSeat()) availableSeats++;
-        if (!currentRide.getmSeat()) availableSeats++;
-        if (!currentRide.getrSeat()) availableSeats++;
-        if (!currentRide.getlSeat()) availableSeats++;
-        
+        if (currentRide.getfSeat()) availableSeats++;
+        if (currentRide.getmSeat()) availableSeats++;
+        if (currentRide.getrSeat()) availableSeats++;
+        if (currentRide.getlSeat()) availableSeats++;
+
         holder.seatsText.setText("Available Seats: " + availableSeats);
 
         holder.btnEdit.setOnClickListener(v -> {

@@ -12,4 +12,6 @@
     <string name="desc_add_icon">Add icon</string>
     <string name="desc_booking_icon">Booking icon</string>
     <string name="desc_profile_icon">Profile icon</string>
+    <string name="my_rides">My Rides</string>
+    <string name="manage_created_rides">Manage your created rides</string>
 </resources>

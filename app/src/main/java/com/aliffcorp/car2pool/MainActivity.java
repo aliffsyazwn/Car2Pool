@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         cardProfile = findViewById(R.id.cardProfile);
 
         // Check Login
+        // Check Login
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
 
         if (!spm.isLoggedIn()) {
@@ -52,8 +53,24 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Display username
+// Get logged in user
         User user = spm.getUser();
+
+// If driver accidentally opens MainActivity, redirect
+        if (user != null &&
+                user.getRole() != null &&
+                user.getRole().equalsIgnoreCase("driver")) {
+
+            Intent intent = new Intent(
+                    MainActivity.this,
+                    DriverMainActivity.class);
+
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+// Display username
         tvHello.setText("Welcome back, " + user.getUsername() + "!");
 
         // ===========================

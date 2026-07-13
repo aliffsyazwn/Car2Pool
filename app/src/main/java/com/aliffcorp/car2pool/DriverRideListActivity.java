@@ -39,7 +39,19 @@ public class DriverRideListActivity extends AppCompatActivity implements DriverR
     private String token;
     private int userId;
 
-    private CardView cardHome, cardSearchRide, cardBooking, cardProfile;
+    private CardView cardHome;
+    private CardView cardUpdateRide;
+    private CardView cardCreateRide;
+    private CardView cardProfile;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (rideService != null && token != null) {
+            fetchRides();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,54 +77,49 @@ public class DriverRideListActivity extends AppCompatActivity implements DriverR
     }
 
     private void setupBottomNavigation() {
+
         cardHome = findViewById(R.id.cardHome);
-        cardSearchRide = findViewById(R.id.cardSearchRide);
-        cardBooking = findViewById(R.id.cardBooking);
+        cardUpdateRide = findViewById(R.id.cardUpdateRide);
+        cardCreateRide = findViewById(R.id.cardCreateRide);
         cardProfile = findViewById(R.id.cardProfile);
 
+        // Home
         cardHome.setOnClickListener(v -> {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(
+                    DriverRideListActivity.this,
+                    DriverMainActivity.class));
             finish();
         });
 
-        cardSearchRide.setOnClickListener(v -> {
-            startActivity(new Intent(this, RideListActivity.class));
+        // Current Page
+        cardUpdateRide.setOnClickListener(v -> {
+            // Already on My Rides page
+        });
+
+        // Create Ride
+        cardCreateRide.setOnClickListener(v -> {
+            startActivity(new Intent(
+                    DriverRideListActivity.this,
+                    CreateRideActivity.class));
             finish();
         });
 
-        cardBooking.setOnClickListener(v -> {
-            startActivity(new Intent(this, BookingList.class));
-            finish();
-        });
-
+        // Profile
         cardProfile.setOnClickListener(v -> {
-            startActivity(new Intent(this, ViewProfileActivity.class));
+            startActivity(new Intent(
+                    DriverRideListActivity.this,
+                    ViewProfileActivity.class));
             finish();
         });
     }
 
     private void fetchRides() {
-        if (token == null) return;
 
-        // Try to get driver rides. If the endpoint doesn't exist, we'll fall back to filtering all rides.
-        rideService.getDriverRides(token, userId).enqueue(new Callback<List<Ride>>() {
-            @Override
-            public void onResponse(Call<List<Ride>> call, Response<List<Ride>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    displayRides(response.body());
-                } else if (response.code() == 404 || response.code() == 405) {
-                    // Endpoint might not exist, fallback to filtering all rides
-                    fetchAllAndFilter();
-                } else {
-                    Toast.makeText(DriverRideListActivity.this, "Failed to load rides", Toast.LENGTH_SHORT).show();
-                }
-            }
+        if (token == null) {
+            return;
+        }
 
-            @Override
-            public void onFailure(Call<List<Ride>> call, Throwable t) {
-                fetchAllAndFilter();
-            }
-        });
+        fetchAllAndFilter();
     }
 
     private void fetchAllAndFilter() {
@@ -144,8 +151,16 @@ public class DriverRideListActivity extends AppCompatActivity implements DriverR
 
     @Override
     public void onEditClick(Ride ride) {
-        Intent intent = new Intent(this, CreateRideActivity.class);
-        intent.putExtra("ride_id", ride.getRide_id());
+        Intent intent = new Intent(
+                this,
+                UpdateRideActivity.class
+        );
+
+        intent.putExtra(
+                "ride_id",
+                ride.getRide_id()
+        );
+
         startActivity(intent);
     }
 

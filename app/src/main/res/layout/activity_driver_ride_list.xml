@@ -20,18 +20,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Rides"
+            android:text="@string/my_rides"
             android:textColor="@android:color/white"
             android:textSize="30sp"
+            android:layout_marginTop="15dp"
             android:textStyle="bold"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="Manage your created rides"
-            android:textColor="#DDEEEE"
-            android:textSize="16sp"/>
+            android:text="@string/manage_created_rides"
+            android:textColor="@color/white"
+            android:textSize="20sp"/>
 
     </LinearLayout>
 
@@ -41,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/header"
-        android:layout_above="@id/footerCard"
+        android:layout_above="@id/dFooterCard"
         android:layout_marginStart="16dp"
         android:layout_marginTop="-20dp"
         android:layout_marginEnd="16dp"
@@ -60,8 +61,8 @@
 
     <!-- Reusable Navigation -->
     <include
-        android:id="@+id/footerCard"
-        layout="@layout/bottom_navigation"
+        android:id="@+id/dFooterCard"
+        layout="@layout/driver_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

@@ -2,6 +2,8 @@ package com.aliffcorp.car2pool;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,7 +15,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.aliffcorp.car2pool.model.Ride;
-import com.aliffcorp.car2pool.StringUtils;
 import com.aliffcorp.car2pool.model.User;
 import com.aliffcorp.car2pool.remote.ApiUtils;
 import com.aliffcorp.car2pool.remote.RideService;
@@ -30,7 +31,11 @@ public class DriverRideDetailActivity extends AppCompatActivity {
     private UserService userService;
 
     private TextView tvOrigin, tvDestination, tvTime, tvDriver;
-    private Button btnBack, btnEditRide;
+    private Button btnBack;
+    private CheckBox cbFSeat, cbRSeat, cbMSeat, cbLSeat;
+
+    private int rideId;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +50,18 @@ public class DriverRideDetailActivity extends AppCompatActivity {
             return insets;
         });
 
-        tvOrigin = findViewById(R.id.tvOrigin);
+        /*tvOrigin = findViewById(R.id.tvOrigin);
         tvDestination = findViewById(R.id.tvDestination);
         tvTime = findViewById(R.id.tvTime);
-        tvDriver = findViewById(R.id.tvDriver);
+        tvDriver = findViewById(R.id.tvDriver);*/
+
+
+        cbFSeat = findViewById(R.id.cbFSeat);
+        cbRSeat = findViewById(R.id.cbRSeat);
+        cbMSeat = findViewById(R.id.cbMSeat);
+        cbLSeat = findViewById(R.id.cbLSeat);
 
         btnBack = findViewById(R.id.btnBack);
-        btnEditRide = findViewById(R.id.btnEditRide);
 
         SharedPrefManager spm = new SharedPrefManager(this);
 
@@ -62,14 +72,44 @@ public class DriverRideDetailActivity extends AppCompatActivity {
         }
 
         User user = spm.getUser();
-        String token = user.getToken();
-
-        int rideId = getIntent().getIntExtra("ride_id", -1);
+        token = user.getToken();
+        rideId = getIntent().getIntExtra("ride_id", -1);
 
         rideService = ApiUtils.getRideService();
         userService = ApiUtils.getUserService();
 
+        btnBack.setOnClickListener(v -> finish());
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (rideService != null && userService != null && token != null && rideId != -1) {
+            loadRideDetails();
+        }
+    }
+
+    private void showAvailableSeat(CheckBox checkBox, boolean available) {
+        checkBox.setClickable(false);
+        checkBox.setFocusable(false);
+
+        if (available) {
+            checkBox.setChecked(true);
+            checkBox.setVisibility(View.VISIBLE);
+        } else {
+            checkBox.setChecked(false);
+            checkBox.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void loadRideDetails() {
+        if (rideId == -1 || token == null) {
+            return;
+        }
+
         rideService.getRides(token, rideId).enqueue(new Callback<Ride>() {
+
             @Override
             public void onResponse(Call<Ride> call, Response<Ride> response) {
 
@@ -81,21 +121,30 @@ public class DriverRideDetailActivity extends AppCompatActivity {
                     tvDestination.setText(ride.getDestination());
                     tvTime.setText(ride.getDeparture_time());
 
+                    showAvailableSeat(cbFSeat, ride.getfSeat());
+                    showAvailableSeat(cbRSeat, ride.getrSeat());
+                    showAvailableSeat(cbMSeat, ride.getmSeat());
+                    showAvailableSeat(cbLSeat, ride.getlSeat());
+
                     userService.getUser(token, ride.getDriver_id())
                             .enqueue(new Callback<User>() {
-                                @Override
-                                public void onResponse(Call<User> call, Response<User> response) {
 
-                                    if (response.isSuccessful() && response.body() != null) {
-                                        tvDriver.setText(StringUtils.capitalize(response.body().getUsername()));
-                                    }
-                                }
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
 
-                                @Override
-                                public void onFailure(Call<User> call, Throwable t) {
-                                    tvDriver.setText("Unknown");
-                                }
-                            });
+                            if (response.isSuccessful() && response.body() != null) {
+                                tvDriver.setText(StringUtils.capitalize(response.body().getUsername()));
+                            }
+                            else {
+                                tvDriver.setText("Unknown");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+                            tvDriver.setText("Unknown");
+                        }
+                    });
 
                 } else {
                     Toast.makeText(DriverRideDetailActivity.this,
@@ -107,21 +156,9 @@ public class DriverRideDetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Ride> call, Throwable t) {
                 Toast.makeText(DriverRideDetailActivity.this,
-                        "Connection Error",
+                        "Connection error",
                         Toast.LENGTH_SHORT).show();
             }
         });
-
-        btnBack.setOnClickListener(v -> finish());
-
-      /*  btnEditRide.setOnClickListener(v -> {
-            Intent intent = new Intent(
-                    DriverRideDetailActivity.this,
-                    UpdateRideActivity.class
-            );
-
-            intent.putExtra("ride_id", rideId);
-            startActivity(intent);
-        });*/
     }
 }

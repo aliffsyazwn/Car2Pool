@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="20dp">
 
         <!-- Title -->
         <TextView
@@ -44,42 +44,14 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
-                <!-- Driver -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Driver"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
-
-                <TextView
-                    android:id="@+id/tvDriver"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/bg_input"
-                    android:padding="12dp"
-                    android:text="-"
-                    android:textSize="14sp"/>
 
                 <!-- Origin -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:text="Origin"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
-
-                <TextView
-                    android:id="@+id/tvOrigin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/bg_input"
-                    android:padding="12dp"
-                    android:text="-"
-                    android:textSize="14sp"/>
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <!-- Destination -->
                 <TextView
@@ -87,18 +59,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Destination"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
-
-                <TextView
-                    android:id="@+id/tvDestination"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/bg_input"
-                    android:padding="12dp"
-                    android:text="-"
-                    android:textSize="14sp"/>
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <!-- Departure Time -->
                 <TextView
@@ -106,29 +68,78 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Departure Time"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvTime"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/bg_input"
-                    android:padding="12dp"
-                    android:text="-"
-                    android:textSize="14sp"/>
+                    android:layout_marginTop="16dp"
+                    android:text="Price"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                <!-- Car Seat Image -->
-                <ImageView
+                <!-- Available Seats -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Available Seats"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_marginTop="20dp"
-                    android:contentDescription="@string/desc_car_icon"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/iv_create_ride" />
+                    android:layout_height="213dp"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp">
 
-                <!-- Buttons -->
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="198dp"
+                        android:contentDescription="@string/desc_car_icon"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/iv_create_ride" />
+
+                    <CheckBox
+                        android:id="@+id/cbFSeat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="-12dp"
+                        android:layout_marginTop="29dp"
+                        android:buttonTint="@color/red" />
+
+                    <CheckBox
+                        android:id="@+id/cbRSeat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="69dp"
+                        android:layout_marginTop="-19dp"
+                        android:buttonTint="@color/red" />
+
+                    <CheckBox
+                        android:id="@+id/cbMSeat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="39dp"
+                        android:layout_marginTop="6dp"
+                        android:buttonTint="@color/red" />
+
+                    <CheckBox
+                        android:id="@+id/cbLSeat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="69dp"
+                        android:layout_marginTop="31dp"
+                        android:buttonTint="@color/red" />
+
+                </FrameLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -139,23 +150,12 @@
                         android:id="@+id/btnBack"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:layout_weight="1"
                         android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
                         android:backgroundTint="@color/btn_color"
                         android:text="Back"
                         android:textColor="@android:color/black"
-                        android:textStyle="bold"/>
-
-                    <Button
-                        android:id="@+id/btnEditRide"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="1"
-                        android:layout_marginStart="8dp"
-                        android:backgroundTint="@color/dark_teal3"
-                        android:text="Edit Ride"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 

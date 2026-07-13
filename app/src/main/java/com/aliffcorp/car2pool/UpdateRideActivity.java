@@ -1,9 +1,8 @@
 package com.aliffcorp.car2pool;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,16 +15,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.aliffcorp.car2pool.model.LocationItem;
 import com.aliffcorp.car2pool.model.Ride;
 import com.aliffcorp.car2pool.model.User;
 import com.aliffcorp.car2pool.remote.ApiUtils;
 import com.aliffcorp.car2pool.remote.RideService;
 import com.aliffcorp.car2pool.sharedpref.SharedPrefManager;
 
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Date;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -44,28 +43,40 @@ public class UpdateRideActivity extends AppCompatActivity {
     private CheckBox cbMSeat;
     private CheckBox cbLSeat;
 
-    private Button btnUpdate;
-    private Button btnCancel;
+    private Button btnBack;
+    private Button btnConfirmEdit;
 
     private RideService rideService;
-    private int rideId = -1;
+    private Ride currentRide;
+
+    private int rideId;
     private String token;
-    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_create_ride); // Reusing the same layout
+        setContentView(R.layout.activity_update_ride);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top,
-                    systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        ViewCompat.setOnApplyWindowInsetsListener(
+                findViewById(R.id.main),
+                (view, insets) -> {
 
-        rideService = ApiUtils.getRideService();
+                    Insets systemBars = insets.getInsets(
+                            WindowInsetsCompat.Type.systemBars()
+                    );
+
+                    view.setPadding(
+                            systemBars.left,
+                            systemBars.top,
+                            systemBars.right,
+                            systemBars.bottom
+                    );
+
+                    return insets;
+                }
+        );
 
         etOrigin = findViewById(R.id.etOrigin);
         etDestination = findViewById(R.id.etDestination);
@@ -77,95 +88,161 @@ public class UpdateRideActivity extends AppCompatActivity {
         cbMSeat = findViewById(R.id.cbMSeat);
         cbLSeat = findViewById(R.id.cbLSeat);
 
-        btnUpdate = findViewById(R.id.btnCreate); // Reusing the ID from layout
-        btnCancel = findViewById(R.id.btnCancel);
+        btnBack = findViewById(R.id.btnBack);
+        btnConfirmEdit = findViewById(R.id.btnConfirmEdit);
 
-        btnUpdate.setText("Update Ride");
+        // Prevent updating before the previous ride data loads
+        btnConfirmEdit.setEnabled(false);
 
         SharedPrefManager spm = new SharedPrefManager(this);
-        User user = spm.getUser();
-        if (user != null) {
-            token = user.getToken();
-            userId = user.getId();
+
+        if (!spm.isLoggedIn()) {
+
+            Intent intent = new Intent(
+                    UpdateRideActivity.this,
+                    LoginActivity.class
+            );
+
+            startActivity(intent);
+            finish();
+            return;
         }
+
+        User user = spm.getUser();
+        token = user.getToken();
 
         rideId = getIntent().getIntExtra("ride_id", -1);
-        if (rideId != -1) {
-            fetchRideDetails();
-        } else {
-            Toast.makeText(this, "Invalid ride ID", Toast.LENGTH_SHORT).show();
+
+        if (rideId == -1) {
+
+            Toast.makeText(
+                    this,
+                    "Invalid ride ID",
+                    Toast.LENGTH_SHORT
+            ).show();
+
             finish();
+            return;
         }
 
+        rideService = ApiUtils.getRideService();
+
+        loadExistingRide();
+
         etDepTime.setOnClickListener(v -> showTimePicker());
-        btnCancel.setOnClickListener(v -> finish());
-        btnUpdate.setOnClickListener(v -> updateRide());
-
-        fetchLocationsFromDatabase();
+        btnBack.setOnClickListener(v -> finish());
+        btnConfirmEdit.setOnClickListener(v -> updateRide());
     }
 
-    private void fetchRideDetails() {
-        rideService.getRides(token, rideId).enqueue(new Callback<Ride>() {
-            @Override
-            public void onResponse(Call<Ride> call, Response<Ride> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Ride ride = response.body();
-                    etOrigin.setText(ride.getOrigin());
-                    etDestination.setText(ride.getDestination());
-                    etDepTime.setText(ride.getDeparture_time());
-                    etPrice.setText(String.valueOf(ride.getPrice()));
-                    cbFSeat.setChecked(ride.getfSeat());
-                    cbMSeat.setChecked(ride.getmSeat());
-                    cbRSeat.setChecked(ride.getrSeat());
-                    cbLSeat.setChecked(ride.getlSeat());
-                }
-            }
+    private void loadExistingRide() {
 
-            @Override
-            public void onFailure(Call<Ride> call, Throwable t) {
-                Toast.makeText(UpdateRideActivity.this, "Error loading ride info", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+        rideService.getRides(token, rideId)
+                .enqueue(new Callback<Ride>() {
 
-    private void fetchLocationsFromDatabase() {
-        rideService.getAllLocations(token).enqueue(new Callback<List<LocationItem>>() {
-            @Override
-            public void onResponse(Call<List<LocationItem>> call, Response<List<LocationItem>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<LocationItem> locationItems = response.body();
-                    List<String> locationNames = new ArrayList<>();
-                    for (LocationItem item : locationItems) {
-                        locationNames.add(item.getLocationName());
+                    @Override
+                    public void onResponse(Call<Ride> call, Response<Ride> response) {
+                        if (response.isSuccessful()
+                                && response.body() != null) {
+
+                            currentRide = response.body();
+
+                            // Show previous details
+                            etOrigin.setText(
+                                    currentRide.getOrigin()
+                            );
+
+                            etDestination.setText(
+                                    currentRide.getDestination()
+                            );
+
+                            etDepTime.setText(
+                                    currentRide.getDeparture_time()
+                            );
+
+                            etPrice.setText(
+                                    String.valueOf(currentRide.getPrice())
+                            );
+
+                            // Fill Checkboxes
+                            cbFSeat.setChecked(
+                                    currentRide.getfSeat()
+                            );
+
+                            cbRSeat.setChecked(
+                                    currentRide.getrSeat()
+                            );
+
+                            cbMSeat.setChecked(
+                                    currentRide.getmSeat()
+                            );
+
+                            cbLSeat.setChecked(
+                                    currentRide.getlSeat()
+                            );
+
+                            btnConfirmEdit.setEnabled(true);
+
+                        } else {
+
+                            Toast.makeText(
+                                    UpdateRideActivity.this,
+                                    "Unable to load ride. Code: "
+                                            + response.code(),
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        }
                     }
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                            UpdateRideActivity.this,
-                            android.R.layout.simple_dropdown_item_1line,
-                            locationNames
-                    );
-                    etOrigin.setAdapter(adapter);
-                    etDestination.setAdapter(adapter);
-                }
-            }
 
-            @Override
-            public void onFailure(Call<List<LocationItem>> call, Throwable t) {
-                Log.e("UpdateRide", "Error fetching locations", t);
-            }
-        });
+                    @Override
+                    public void onFailure(Call<Ride> call, Throwable t) {
+                        Toast.makeText(
+                                UpdateRideActivity.this,
+                                "Connection error: "
+                                        + t.getMessage(),
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
+                });
     }
 
     private void showTimePicker() {
+
         Calendar calendar = Calendar.getInstance();
+
+        String existingDateTime =
+                etDepTime.getText().toString().trim();
+
+        SimpleDateFormat format = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss",
+                Locale.getDefault()
+        );
+
+        format.setLenient(false);
+
+        try {
+            Date existingDate =
+                    format.parse(existingDateTime);
+
+            if (existingDate != null) {
+                calendar.setTime(existingDate);
+            }
+
+        }
+        catch (ParseException ignored) {
+            // Uses the current date and time if parsing fails
+        }
+
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
+
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
         TimePickerDialog dialog = new TimePickerDialog(
                 this,
-                (view, hourOfDay, minute1) -> {
+                (view, hourOfDay, selectedMinute) -> {
+
                     String dateTime = String.format(
                             Locale.getDefault(),
                             "%04d-%02d-%02d %02d:%02d:00",
@@ -173,33 +250,73 @@ public class UpdateRideActivity extends AppCompatActivity {
                             month + 1,
                             day,
                             hourOfDay,
-                            minute1
+                            selectedMinute
                     );
+
                     etDepTime.setText(dateTime);
                 },
                 hour,
                 minute,
                 true
         );
+
         dialog.show();
     }
 
     private void updateRide() {
-        String origin = etOrigin.getText().toString().trim();
-        String destination = etDestination.getText().toString().trim();
-        String departureTime = etDepTime.getText().toString().trim();
-        String priceStr = etPrice.getText().toString().trim();
+        String origin =
+                etOrigin.getText().toString().trim();
+        String destination =
+                etDestination.getText().toString().trim();
+        String departureTime =
+                etDepTime.getText().toString().trim();
+        String priceText =
+                etPrice.getText().toString().trim();
 
-        if (origin.isEmpty()) { etOrigin.setError("Enter origin"); return; }
-        if (destination.isEmpty()) { etDestination.setError("Enter destination"); return; }
-        if (departureTime.isEmpty()) { etDepTime.setError("Select departure time"); return; }
-        if (priceStr.isEmpty()) { etPrice.setError("Enter price"); return; }
+        if (origin.isEmpty()) {
 
-        double price = 0.0;
+            etOrigin.setError("Origin is required");
+            etOrigin.requestFocus();
+            return;
+        }
+        if (destination.isEmpty()) {
+
+            etDestination.setError(
+                    "Destination is required"
+            );
+
+            etDestination.requestFocus();
+            return;
+        }
+        if (departureTime.isEmpty()) {
+            etDepTime.setError(
+                    "Departure time is required"
+            );
+            return;
+        }
+        if (priceText.isEmpty()) {
+            etPrice.setError("Price is required");
+            etPrice.requestFocus();
+            return;
+        }
+
+        float price;
+
         try {
-            price = Double.parseDouble(priceStr);
-        } catch (NumberFormatException e) {
-            etPrice.setError("Invalid price format");
+            price = Float.parseFloat(priceText);
+        }
+        catch (NumberFormatException e) {
+            etPrice.setError("Enter a valid price");
+            etPrice.requestFocus();
+            return;
+        }
+
+        if (currentRide == null) {
+            Toast.makeText(
+                    this,
+                    "Ride data has not finished loading",
+                    Toast.LENGTH_SHORT
+            ).show();
             return;
         }
 
@@ -208,10 +325,11 @@ public class UpdateRideActivity extends AppCompatActivity {
         int mSeat = cbMSeat.isChecked() ? 1 : 0;
         int lSeat = cbLSeat.isChecked() ? 1 : 0;
 
-        rideService.updateRide(
+        btnConfirmEdit.setEnabled(false);
+        rideService.updateSeat(
                 token,
                 rideId,
-                userId,
+                currentRide.getDriver_id(),
                 origin,
                 destination,
                 departureTime,
@@ -221,19 +339,38 @@ public class UpdateRideActivity extends AppCompatActivity {
                 mSeat,
                 lSeat
         ).enqueue(new Callback<Ride>() {
+
             @Override
             public void onResponse(Call<Ride> call, Response<Ride> response) {
+                btnConfirmEdit.setEnabled(true);
                 if (response.isSuccessful()) {
-                    Toast.makeText(UpdateRideActivity.this, "Ride Updated Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(
+                            UpdateRideActivity.this,
+                            "Ride updated successfully",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                    setResult(RESULT_OK);
                     finish();
-                } else {
-                    Toast.makeText(UpdateRideActivity.this, "Failed to update ride", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(
+                            UpdateRideActivity.this,
+                            "Unable to update ride. Code: "
+                                    + response.code(),
+                            Toast.LENGTH_SHORT
+                    ).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Ride> call, Throwable t) {
-                Toast.makeText(UpdateRideActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
+                btnConfirmEdit.setEnabled(true);
+                Toast.makeText(
+                        UpdateRideActivity.this,
+                        "Connection error: "
+                                + t.getMessage(),
+                        Toast.LENGTH_SHORT
+                ).show();
             }
         });
     }

@@ -49,8 +49,10 @@ public class CreateRideActivity extends AppCompatActivity {
     private Button btnCancel;
 
     private RideService rideService;
+    private int rideId = -1;
     private String token;
     private int userId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,32 +89,72 @@ public class CreateRideActivity extends AppCompatActivity {
             userId = user.getId();
         }
 
+        rideId = getIntent().getIntExtra("ride_id", -1);
+        if (rideId != -1) {
+            btnCreate.setText("Update Ride");
+            fetchRideDetails();
+        }
+
         etDepTime.setOnClickListener(v -> showTimePicker());
+
         btnCancel.setOnClickListener(v -> finish());
+
         btnCreate.setOnClickListener(v -> createRide());
 
         fetchLocationsFromDatabase();
     }
 
-    private void fetchLocationsFromDatabase() {
-        if (token == null) return;
+    private void fetchRideDetails() {
+        rideService.getRides(token, rideId).enqueue(new Callback<Ride>() {
+            @Override
+            public void onResponse(Call<Ride> call, Response<Ride> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Ride ride = response.body();
+                    etOrigin.setText(ride.getOrigin());
+                    etDestination.setText(ride.getDestination());
+                    etDepTime.setText(ride.getDeparture_time());
+                    etPrice.setText(String.valueOf(ride.getPrice()));
+                    cbFSeat.setChecked(ride.getfSeat());
+                    cbMSeat.setChecked(ride.getmSeat());
+                    cbRSeat.setChecked(ride.getrSeat());
+                    cbLSeat.setChecked(ride.getlSeat());
+                }
+            }
 
-        rideService.getAllLocations(token).enqueue(new Callback<List<LocationItem>>() {
+            @Override
+            public void onFailure(Call<Ride> call, Throwable t) {
+                Toast.makeText(CreateRideActivity.this, "Error loading ride info", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void fetchLocationsFromDatabase() {
+        SharedPrefManager spm = new SharedPrefManager(this);
+        User user = spm.getUser();
+        if (user == null || user.getToken() == null) return;
+
+        rideService.getAllLocations(user.getToken()).enqueue(new Callback<List<LocationItem>>() {
             @Override
             public void onResponse(Call<List<LocationItem>> call, Response<List<LocationItem>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<LocationItem> locationItems = response.body();
                     List<String> locationNames = new ArrayList<>();
+
                     for (LocationItem item : locationItems) {
                         locationNames.add(item.getLocationName());
                     }
+
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(
                             CreateRideActivity.this,
                             android.R.layout.simple_dropdown_item_1line,
                             locationNames
                     );
+
+                    // Set the adapter to both origin and destination fields
                     etOrigin.setAdapter(adapter);
                     etDestination.setAdapter(adapter);
+                } else {
+                    Toast.makeText(CreateRideActivity.this, "Failed to load locations", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -124,16 +166,20 @@ public class CreateRideActivity extends AppCompatActivity {
     }
 
     private void showTimePicker() {
+
         Calendar calendar = Calendar.getInstance();
+
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
+
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
         TimePickerDialog dialog = new TimePickerDialog(
                 this,
                 (view, hourOfDay, minute1) -> {
+
                     String dateTime = String.format(
                             Locale.getDefault(),
                             "%04d-%02d-%02d %02d:%02d:00",
@@ -143,25 +189,45 @@ public class CreateRideActivity extends AppCompatActivity {
                             hourOfDay,
                             minute1
                     );
+
                     etDepTime.setText(dateTime);
+
                 },
                 hour,
                 minute,
                 true
         );
+
         dialog.show();
     }
 
     private void createRide() {
+
         String origin = etOrigin.getText().toString().trim();
         String destination = etDestination.getText().toString().trim();
         String departureTime = etDepTime.getText().toString().trim();
         String priceStr = etPrice.getText().toString().trim();
 
-        if (origin.isEmpty()) { etOrigin.setError("Enter origin"); return; }
-        if (destination.isEmpty()) { etDestination.setError("Enter destination"); return; }
-        if (departureTime.isEmpty()) { etDepTime.setError("Select departure time"); return; }
-        if (priceStr.isEmpty()) { etPrice.setError("Enter price"); return; }
+        if (origin.isEmpty()) {
+            etOrigin.setError("Enter origin");
+            return;
+        }
+
+        if (destination.isEmpty()) {
+            etDestination.setError("Enter destination");
+            return;
+        }
+
+        if (departureTime.isEmpty()) {
+            etDepTime.setError("Select departure time");
+            return;
+        }
+
+        // --- NEW: Price Validation ---
+        if (priceStr.isEmpty()) {
+            etPrice.setError("Enter price");
+            return;
+        }
 
         double price = 0.0;
         try {
@@ -169,43 +235,73 @@ public class CreateRideActivity extends AppCompatActivity {
         } catch (NumberFormatException e) {
             etPrice.setError("Invalid price format");
             return;
-        }
+            }
+            // -----------------------------
 
         int fSeat = cbFSeat.isChecked() ? 1 : 0;
         int rSeat = cbRSeat.isChecked() ? 1 : 0;
         int mSeat = cbMSeat.isChecked() ? 1 : 0;
         int lSeat = cbLSeat.isChecked() ? 1 : 0;
 
-        rideService.createRide(
-                token,
-                userId,
-                origin,
-                destination,
-                departureTime,
-                price,
-                fSeat,
-                rSeat,
-                mSeat,
-                lSeat
-        ).enqueue(new Callback<Ride>() {
-            @Override
-            public void onResponse(Call<Ride> call, Response<Ride> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Ride ride = response.body();
-                    Toast.makeText(CreateRideActivity.this, "Ride Created Successfully", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(CreateRideActivity.this, DriverRideDetailActivity.class);
-                    intent.putExtra("ride_id", ride.getRide_id());
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast.makeText(CreateRideActivity.this, "Failed to create ride", Toast.LENGTH_LONG).show();
-                }
-            }
+        if (fSeat + rSeat + mSeat + lSeat == 0) {
+            Toast.makeText(this,
+                    "Please select at least one seat",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-            @Override
-            public void onFailure(Call<Ride> call, Throwable t) {
-                Toast.makeText(CreateRideActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+        if (rideId == -1) {
+            // Create New Ride
+            rideService.createRide(
+                    token,
+                    userId,
+                    origin,
+                    destination,
+                    departureTime,
+                    (float) price,
+                    fSeat,
+                    rSeat,
+                    mSeat,
+                    lSeat
+            ).enqueue(new Callback<Ride>() {
+
+                @Override
+                public void onResponse(Call<Ride> call, Response<Ride> response) {
+
+                    if (response.isSuccessful() && response.body() != null) {
+
+                        Ride ride = response.body();
+
+                        Toast.makeText(CreateRideActivity.this,
+                                "Ride Created Successfully",
+                                Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(
+                                CreateRideActivity.this,
+                                DriverRideDetailActivity.class
+                        );
+
+                        intent.putExtra("ride_id", ride.getRide_id());
+
+                        startActivity(intent);
+                        finish();
+
+                    } else {
+
+                        Toast.makeText(CreateRideActivity.this,
+                                "Failed to create ride",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Ride> call, Throwable t) {
+
+                    Toast.makeText(CreateRideActivity.this,
+                            t.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 }

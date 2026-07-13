@@ -1,241 +1,355 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="#F4F7F9"
     tools:context=".ViewProfileActivity">
 
-    <!-- Scrollable Content -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/footerCard"
         android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:orientation="vertical">
 
-            <!-- Profile Image -->
-            <ImageView
-                android:id="@+id/imgProfile"
-                android:layout_width="89dp"
-                android:layout_height="67dp"
+            <!-- Header -->
+
+            <!-- Avatar Card -->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:background="#0F8F6F"
+                android:paddingTop="55dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="40dp"
+                    android:text="My Profile"
+                    android:textColor="@android:color/white"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:text="Manage your personal information"
+                    android:textColor="#DDEEEE"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="130dp"
+                android:layout_height="130dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/user" />
+                android:layout_marginTop="-65dp"
+                app:cardCornerRadius="65dp"
+                app:cardElevation="10dp">
 
-            <!-- Full Name Display instead of Title -->
+                <ImageView
+                    android:id="@+id/imgProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="18dp"
+                    android:src="@drawable/user"/>
+
+            </androidx.cardview.widget.CardView>
+
             <TextView
                 android:id="@+id/tvHeaderFullName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:text="User Name"
-                android:textColor="#2E7D32"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <!-- Full Name Field -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="18dp"
                 android:text="Full Name"
-                android:textColor="#444444"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvFullName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:background="#FFFFFF"
-                android:elevation="3dp"
-                android:padding="14dp"
-                android:text="-"
-                android:textSize="12sp" />
-
-            <!-- Username -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:text="Username"
-                android:textColor="#444444"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvUsername"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:background="#FFFFFF"
-                android:elevation="3dp"
-                android:padding="14dp"
-                android:text="-"
-                android:textSize="12sp" />
-
-            <!-- Email -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:text="Email"
-                android:textColor="#444444"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:background="#FFFFFF"
-                android:elevation="3dp"
-                android:padding="14dp"
-                android:text="-"
-                android:textSize="12sp" />
-
-            <!-- Role -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:text="Role"
-                android:textColor="#444444"
-                android:textStyle="bold" />
+                android:textColor="#222222"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/tvRole"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:background="#FFFFFF"
-                android:elevation="3dp"
-                android:padding="14dp"
-                android:text="-"
-                android:textSize="12sp" />
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:text="Student ID"
-                android:textColor="#444444"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvStudID"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:background="#FFFFFF"
-                android:elevation="3dp"
-                android:padding="14dp"
-                android:text="-"
-                android:textSize="12sp" />
-
-            <!-- Car Model -->
-            <TextView
-                android:id="@+id/tvModelLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:text="Car Model"
-                android:textColor="#444444"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvModel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:background="#FFFFFF"
-                android:elevation="3dp"
-                android:padding="14dp"
-                android:text="-"
-                android:textSize="12sp" />
-
-            <!-- Car Plate -->
-            <TextView
-                android:id="@+id/tvPlateLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:text="Car Plate"
-                android:textColor="#444444"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvPlate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:background="#FFFFFF"
-                android:elevation="3dp"
-                android:padding="14dp"
-                android:text="-"
-                android:textSize="12sp" />
-
-            <!-- License -->
-            <TextView
-                android:id="@+id/tvLicenseLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:text="License Number"
-                android:textColor="#444444"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvLicense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:background="#FFFFFF"
-                android:elevation="3dp"
-                android:padding="14dp"
-                android:text="-"
-                android:textSize="12sp" />
-
-            <!-- Update Profile -->
-            <Button
-                android:id="@+id/btnUpdateProfile"
-                android:layout_width="198dp"
-                android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="32dp"
-                android:backgroundTint="#2E7D32"
-                android:text="Update Profile"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="6dp"
+                android:text="Role"
+                android:textColor="#666666"
+                android:textSize="16sp"/>
 
-            <!-- Logout -->
-            <Button
-                android:id="@+id/btnLogout"
-                android:layout_width="198dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
+            <!-- Personal Information Card -->
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="22dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Personal Information"
+                        android:textColor="#0F8F6F"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+                    <!-- Username -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:text="Username"
+                        android:textColor="#555555"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tvUsername"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_input"
+                        android:padding="14dp"
+                        android:text="-"
+                        android:textSize="15sp"/>
+
+                    <!-- Full Name -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:text="Full Name"
+                        android:textColor="#555555"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tvFullName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_input"
+                        android:padding="14dp"
+                        android:text="-"
+                        android:textSize="15sp"/>
+
+                    <!-- Student ID -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:text="Student ID"
+                        android:textColor="#555555"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tvStudID"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_input"
+                        android:padding="14dp"
+                        android:text="-"
+                        android:textSize="15sp"/>
+
+                    <!-- Email -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:text="Email"
+                        android:textColor="#555555"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tvEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_input"
+                        android:padding="14dp"
+                        android:text="-"
+                        android:textSize="15sp"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Vehicle Information -->
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardVehicleInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="22dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Vehicle Information"
+                        android:textColor="#0F8F6F"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+
+                    <!-- Car Model -->
+
+                    <TextView
+                        android:id="@+id/tvModelLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:text="Car Model"
+                        android:textColor="#555555"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tvModel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_input"
+                        android:padding="14dp"
+                        android:text="-"
+                        android:textSize="15sp"/>
+
+                    <!-- Plate Number -->
+
+                    <TextView
+                        android:id="@+id/tvPlateLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:text="Plate Number"
+                        android:textColor="#555555"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tvPlate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_input"
+                        android:padding="14dp"
+                        android:text="-"
+                        android:textSize="15sp"/>
+
+                    <!-- Driving License -->
+
+                    <TextView
+                        android:id="@+id/tvLicenseLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:text="Driving License"
+                        android:textColor="#555555"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tvLicense"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_input"
+                        android:padding="14dp"
+                        android:text="-"
+                        android:textSize="15sp"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Buttons -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginBottom="30dp"
-                android:backgroundTint="#D32F2F"
-                android:text="Logout"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btnUpdateProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:backgroundTint="#0F8F6F"
+                    android:text="Update Profile"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:id="@+id/btnLogout"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="#D32F2F"
+                    android:text="Logout"
+                    android:layout_marginBottom="60dp"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
 
+    <!-- Rider Navigation -->
+    <include
+        android:id="@+id/footerCard"
+        layout="@layout/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp" />
 
+    <!-- Driver Navigation -->
+    <include
+        android:id="@+id/dFooterCard"
+        layout="@layout/driver_bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone" />
 
 </RelativeLayout>
