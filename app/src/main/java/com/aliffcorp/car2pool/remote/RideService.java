@@ -29,6 +29,7 @@ public interface RideService {
             @Field("origin") String origin,
             @Field("destination") String destination,
             @Field("departure_time") String departureTime,
+            @Field("price") double price, // <-- NEW: Added price here
             @Field("fSeat") int fSeat,
             @Field("rSeat") int rSeat,
             @Field("mSeat") int mSeat,
@@ -42,6 +43,7 @@ public interface RideService {
                           @Field("origin") String origin,
                           @Field("destination") String destination,
                           @Field("departure_time") String departureTime,
+                          @Field("price") double price, // <-- NEW: Added price here too
                           @Field("fSeat") int fSeat,
                           @Field("rSeat") int rSeat,
                           @Field("mSeat") int mSeat,
