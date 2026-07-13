@@ -4,12 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aliffcorp.car2pool.R;
-import com.aliffcorp.car2pool.StringUtils;
 import com.aliffcorp.car2pool.model.Ride;
 
 import java.util.List;
@@ -17,93 +18,96 @@ import java.util.List;
 public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+
         public TextView tvOrigin;
         public TextView tvDestination;
         public TextView tvTime;
-
-
+        public TextView tvPrice;
+        public Button btnDetail;
         public ViewHolder(View itemView) {
             super(itemView);
+
             tvOrigin = itemView.findViewById(R.id.tvOrigin);
             tvDestination = itemView.findViewById(R.id.tvDestination);
             tvTime = itemView.findViewById(R.id.tvTime);
+            tvPrice = itemView.findViewById(R.id.tvPrice);
+            btnDetail = itemView.findViewById(R.id.btnDetail);
 
-
-            itemView.setOnLongClickListener(this);  //register long click action to this viewholder instance
+            itemView.setOnLongClickListener(this);
         }
 
+        @Override
         public boolean onLongClick(View v) {
-            currentPos = getAdapterPosition(); //key point, record the position here
+            currentPos = getAdapterPosition();
             return false;
         }
     }
 
-    // adapter class definitions
-
-    private List<Ride> rideListData;   // list of ride objects
-    private Context mContext;       // activity context
-    private int currentPos = -1;         // currently selected item (long press)
+    private List<Ride> rideListData;
+    private Context mContext;
+    private int currentPos = -1;
 
     public RideAdapter(Context context, List<Ride> listData) {
-        rideListData = listData;
-        mContext = context;
+        this.mContext = context;
+        this.rideListData = listData;
     }
 
-    private Context getmContext() {
-        return mContext;
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.ride_list_item, parent, false);
+
+        return new ViewHolder(view);
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
-        // Inflate layout using the single item layout
-        View view = inflater.inflate(R.layout.ride_list_item, parent, false);
-        // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
-    }
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        // bind data to the view holder instance
-        Ride m = rideListData.get(position);
-        holder.tvOrigin.setText(m.getOrigin());
-        holder.tvDestination.setText(m.getDestination());
-        holder.tvTime.setText(m.getDeparture_time());
+        Ride ride = rideListData.get(position);
+
+        holder.tvOrigin.setText(ride.getOrigin());
+        holder.tvDestination.setText(ride.getDestination());
+        holder.tvTime.setText(ride.getDeparture_time());
+
+        // Show price
+        holder.tvPrice.setText(String.format("RM %.2f", ride.getPrice()));
+
+        // Store Ride object inside Book button
+        holder.btnDetail.setTag(ride);
     }
 
     @Override
     public int getItemCount() {
         return rideListData.size();
     }
-    /**
-     * return ride object for currently selected ride (index already set by long press in viewholder)
-     * @return
-     */
+
     public Ride getSelectedItem() {
-        // return the ride record if the current selected position/index is valid
-        if(currentPos>=0 && rideListData !=null && currentPos<rideListData.size()) {
+        if (currentPos >= 0 &&
+                rideListData != null &&
+                currentPos < rideListData.size()) {
+
             return rideListData.get(currentPos);
         }
+
         return null;
     }
 
     public Ride getItemAt(int position) {
-        if (rideListData != null && position >= 0 && position < rideListData.size()) {
+
+        if (rideListData != null &&
+                position >= 0 &&
+                position < rideListData.size()) {
+
             return rideListData.get(position);
         }
+
         return null;
     }
 
-    /**
-     * return driver object for currently selected ride (index already set by long press in viewholder)
-     * @return
-     */
-
-    // NEW: Added this method to allow filtering for the search bars
     public void filterList(List<Ride> filteredList) {
-        this.rideListData = filteredList;
-        notifyDataSetChanged(); // Tells the RecyclerView to redraw the screen with the new list
+        rideListData = filteredList;
+        notifyDataSetChanged();
     }
 }
