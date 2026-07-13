@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="2dp"
@@ -14,6 +13,7 @@
         android:text="Origin"
         android:textSize="17sp"
         android:textStyle="bold" />
+
     <TextView
         android:id="@+id/tvDestination"
         android:layout_width="wrap_content"
@@ -22,7 +22,6 @@
         android:text="Destination"
         android:textSize="17sp"
         android:textStyle="bold" />
-
 
     <TextView
         android:id="@+id/tvTime"
@@ -33,12 +32,34 @@
         android:textSize="17sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/tvDriver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTime"
+        android:text="Driver"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <!-- NEW: Price TextView placed at the top right -->
+    <TextView
+        android:id="@+id/tvPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:text="RM 0.00"
+        android:textColor="#D84315"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
     <Button
         android:id="@+id/btnDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Book"
         android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@id/tvTime"
+        android:layout_alignBottom="@id/tvDriver"
         android:onClick="detailClicked"/>
+
 </RelativeLayout>
