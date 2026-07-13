@@ -1,7 +1,9 @@
 package com.aliffcorp.car2pool;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -20,12 +22,16 @@ public class DriverDetailActivity extends AppCompatActivity {
     private UserService userService;
     private User user;
     private String token;
+
     TextView tvDriver;
     TextView tvStudID;
     TextView tvModel;
     TextView tvPlate;
     TextView tvLicense;
 
+    private Button btnBack;
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +51,8 @@ public class DriverDetailActivity extends AppCompatActivity {
         tvModel = findViewById(R.id.tvModel);
         tvPlate = findViewById(R.id.tvPlate);
         tvLicense = findViewById(R.id.tvLicense);
+
+        btnBack = findViewById(R.id.btnBack);
 
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
         user = spm.getUser();
@@ -73,5 +81,7 @@ public class DriverDetailActivity extends AppCompatActivity {
                 }
             });
         }
+
+        btnBack.setOnClickListener(v -> finish());
     }
 }

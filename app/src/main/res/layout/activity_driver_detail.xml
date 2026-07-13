@@ -53,6 +53,7 @@
                     android:background="@drawable/bg_input"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
+                    android:textColor="@color/black"
                     android:gravity="center_vertical" />
 
                 <TextView
@@ -72,6 +73,7 @@
                     android:background="@drawable/bg_input"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
+                    android:textColor="@color/black"
                     android:gravity="center_vertical"/>
 
                 <TextView
@@ -91,6 +93,7 @@
                     android:background="@drawable/bg_input"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
+                    android:textColor="@color/black"
                     android:gravity="center_vertical"/>
 
                 <TextView
@@ -111,6 +114,7 @@
                     android:inputType="time"
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
+                    android:textColor="@color/black"
                     android:gravity="center_vertical"/>
 
                 <TextView
@@ -131,11 +135,23 @@
                     android:inputType="time"
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
+                    android:textColor="@color/black"
                     android:gravity="center_vertical"/>
 
             </LinearLayout>
 
+
+
         </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/btn_color"
+            android:textSize="18sp"
+            android:text="Back" />
 
     </LinearLayout>
 
