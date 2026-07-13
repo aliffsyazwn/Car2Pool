@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Car2Pool</string>
-    <string name="slogan">Ride Together • Save Together</string>
-    <string name="welcome_morning">Good Morning 👋</string>
+    <string name="slogan">Ride Together • Share Together</string>
+    <string name="welcome_morning">Good Day 👋</string>
+    <string name="wise_words">Ready for another ride? 🚗</string>
     <string name="search_ride">Search Ride</string>
     <string name="create_ride">Create Ride</string>
     <string name="my_booking">My Booking</string>

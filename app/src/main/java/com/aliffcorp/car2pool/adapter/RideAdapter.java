@@ -13,6 +13,7 @@ import com.aliffcorp.car2pool.StringUtils;
 import com.aliffcorp.car2pool.model.Ride;
 
 import java.util.List;
+import java.util.Locale;
 
 public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
 
@@ -20,6 +21,8 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         public TextView tvOrigin;
         public TextView tvDestination;
         public TextView tvTime;
+        public TextView tvPrice;
+
 
 
         public ViewHolder(View itemView) {
@@ -27,7 +30,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
             tvOrigin = itemView.findViewById(R.id.tvOrigin);
             tvDestination = itemView.findViewById(R.id.tvDestination);
             tvTime = itemView.findViewById(R.id.tvTime);
-
+            tvPrice = itemView.findViewById(R.id.tvPrice);
 
             itemView.setOnLongClickListener(this);  //register long click action to this viewholder instance
         }
@@ -71,6 +74,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         holder.tvOrigin.setText(m.getOrigin());
         holder.tvDestination.setText(m.getDestination());
         holder.tvTime.setText(m.getDeparture_time());
+        holder.tvPrice.setText(String.format(Locale.getDefault(), "RM %.2f", m.getPrice()));
     }
 
     @Override
