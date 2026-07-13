@@ -30,12 +30,11 @@
             <!-- Profile -->
             <ImageView
                 android:id="@+id/imgLogo"
-                android:layout_width="103dp"
-                android:layout_height="97dp"
+                android:layout_width="112dp"
+                android:layout_height="104dp"
                 android:layout_gravity="center"
-                android:background="@drawable/circle_profile"
-                android:padding="24dp"
-                android:src="@drawable/user" />
+                android:background="@color/white"
+                android:src="@drawable/app_icon" />
 
             <!-- App Name -->
             <TextView
@@ -43,7 +42,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="15dp"
                 android:fontFamily="@font/agbalumo"
                 android:text="Car2Pool"
                 android:textColor="@color/dark_teal1"
@@ -55,6 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="25dp"
                 android:text="Ride Together • Save Together"
                 android:textColor="#0D0000" />
@@ -69,7 +68,7 @@
                 android:drawablePadding="10dp"
                 android:hint="Email / Username"
                 android:textColorHint="#646262"
-                android:textColor="#070202"
+                android:textColor="@color/black"
                 android:inputType="textEmailAddress"/>
 
             <!-- Password -->
@@ -83,7 +82,7 @@
                 android:drawablePadding="10dp"
                 android:hint="Password"
                 android:textColorHint="#646262"
-                android:textColor="#070202"
+                android:textColor="@color/black"
                 android:inputType="textPassword"/>
 
             <!-- Remember + Forgot -->
