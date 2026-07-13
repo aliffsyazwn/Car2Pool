@@ -195,8 +195,13 @@ public class DriverRideListActivity extends AppCompatActivity implements DriverR
 
     @Override
     public void onLongClick(View view, Ride ride) {
-        registerForContextMenu(view);
-        openContextMenu(view);
+        Intent intent = new Intent(
+                DriverRideListActivity.this,
+                DriverRideDetailActivity.class
+        );
+
+        intent.putExtra("ride_id", ride.getRide_id());
+        startActivity(intent);
     }
 
     @Override
