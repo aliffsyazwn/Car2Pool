@@ -12,7 +12,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/footerCard"
         android:fillViewport="true">
 
         <LinearLayout
@@ -57,9 +56,7 @@
                 android:background="#FFFFFF"
                 android:elevation="3dp"
                 android:padding="14dp"
-                android:text="-"
-                android:textSize="12sp"
-                android:inputType="textPersonName"/>
+                android:textSize="12sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -77,9 +74,7 @@
                 android:background="#FFFFFF"
                 android:elevation="3dp"
                 android:padding="14dp"
-                android:text="-"
-                android:textSize="12sp"
-                android:inputType="textEmailAddress"/>
+                android:textSize="12sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -97,9 +92,7 @@
                 android:background="#FFFFFF"
                 android:elevation="3dp"
                 android:padding="14dp"
-                android:text="-"
-                android:textSize="12sp"
-                android:inputType="textPassword"/>
+                android:textSize="12sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -117,9 +110,7 @@
                 android:background="#FFFFFF"
                 android:elevation="3dp"
                 android:padding="14dp"
-                android:text="-"
-                android:textSize="12sp"
-                android:inputType="text"/>
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/tvModelLabel"
@@ -138,9 +129,7 @@
                 android:background="#FFFFFF"
                 android:elevation="3dp"
                 android:padding="14dp"
-                android:text="-"
-                android:textSize="12sp"
-                android:inputType="text"/>
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/tvPlateLabel"
@@ -159,9 +148,7 @@
                 android:background="#FFFFFF"
                 android:elevation="3dp"
                 android:padding="14dp"
-                android:text="-"
-                android:textSize="12sp"
-                android:inputType="textCapCharacters"/>
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/tvLicenseLabel"
@@ -180,9 +167,7 @@
                 android:background="#FFFFFF"
                 android:elevation="3dp"
                 android:padding="14dp"
-                android:text="-"
-                android:textSize="12sp"
-                android:inputType="text"/>
+                android:textSize="12sp"/>
 
             <!-- Update Profile -->
             <Button

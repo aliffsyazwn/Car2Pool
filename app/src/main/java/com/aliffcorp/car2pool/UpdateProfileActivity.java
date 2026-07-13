@@ -21,6 +21,9 @@ import com.aliffcorp.car2pool.remote.ApiUtils;
 import com.aliffcorp.car2pool.remote.UserService;
 import com.aliffcorp.car2pool.sharedpref.SharedPrefManager;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,7 +66,6 @@ public class UpdateProfileActivity extends AppCompatActivity {
         etModel = findViewById(R.id.etModel);
         etPlate = findViewById(R.id.etPlate);
         etLicense = findViewById(R.id.etLicense);
-
         tvModelLabel = findViewById(R.id.tvModelLabel);
         tvPlateLabel = findViewById(R.id.tvPlateLabel);
         tvLicenseLabel = findViewById(R.id.tvLicenseLabel);
@@ -142,23 +144,43 @@ public class UpdateProfileActivity extends AppCompatActivity {
     }
 
     public void doUpdateProfile(View view) {
-        String username = etUsername.getText().toString();
-        String email = etEmail.getText().toString();
-        String password = etPassword.getText().toString();
-        String studID = etStudID.getText().toString();
-        String carModel = etModel.getText().toString();
-        String plateNumber = etPlate.getText().toString();
-        String license = etLicense.getText().toString();
-
         if (user == null) {
             Toast.makeText(this, "User data not loaded", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        String api_key = "3b191b07-7739-4698-b885-8660b564c963";
+        String username = etUsername.getText().toString();
+        String email = etEmail.getText().toString();
+        String password = etPassword.getText().toString();
+        String token = "00000000-00000-0000-0000-000000000000";
+        String lease = "1970-01-01 00:00:00";
+        String role = user.getRole();
+        int is_active = 1;
+        String secret = "206b2dbe-ecc9-490b-b81b-83767288bc5e";
+        String studID = etStudID.getText().toString();
+        String carModel = etModel.getText().toString();
+        String plateNumber = etPlate.getText().toString();
+        String license = etLicense.getText().toString();
+
         Log.d("MyApp:", "Updating User info: " + user.toString());
 
-        Call<User> call = userService.updateUser(spm.getUser().getToken(), user.getId(), email, username, password,
-                studID, carModel, plateNumber, license);
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setToken(token);
+        user.setLease(lease);
+        user.setRole(role);
+        user.setIs_active(is_active);
+        user.setSecret(secret);
+        user.setStudID(studID);
+        user.setCarModel(carModel);
+        user.setPlateNumber(plateNumber);
+        user.setLicense(license);
+
+        Call<User> call = userService.updateUser(spm.getUser().getToken(), user.getId(), email,
+                username, password, token, lease, role, is_active,
+                secret, studID, carModel, plateNumber, license);
 
         call.enqueue(new Callback<User>() {
             @Override
@@ -222,5 +244,26 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    public String md5(String s) {
+        try {
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : messageDigest) {
+                String h = Integer.toHexString(0xFF & b);
+                while (h.length() < 2)
+                    h = "0" + h;
+                hexString.append(h);
+            }
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
