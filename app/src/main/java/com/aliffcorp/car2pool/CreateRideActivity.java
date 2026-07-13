@@ -235,8 +235,8 @@ public class CreateRideActivity extends AppCompatActivity {
         } catch (NumberFormatException e) {
             etPrice.setError("Invalid price format");
             return;
-        }
-        // -----------------------------
+            }
+            // -----------------------------
 
         int fSeat = cbFSeat.isChecked() ? 1 : 0;
         int rSeat = cbRSeat.isChecked() ? 1 : 0;
@@ -258,7 +258,7 @@ public class CreateRideActivity extends AppCompatActivity {
                     origin,
                     destination,
                     departureTime,
-                    price,
+                    (float) price,
                     fSeat,
                     rSeat,
                     mSeat,
@@ -300,36 +300,6 @@ public class CreateRideActivity extends AppCompatActivity {
                     Toast.makeText(CreateRideActivity.this,
                             t.getMessage(),
                             Toast.LENGTH_LONG).show();
-                }
-            });
-        } else {
-            // Update Existing Ride
-            rideService.updateRide(
-                    token,
-                    rideId,
-                    userId,
-                    origin,
-                    destination,
-                    departureTime,
-                    price,
-                    fSeat,
-                    rSeat,
-                    mSeat,
-                    lSeat
-            ).enqueue(new Callback<Ride>() {
-                @Override
-                public void onResponse(Call<Ride> call, Response<Ride> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(CreateRideActivity.this, "Ride Updated Successfully", Toast.LENGTH_SHORT).show();
-                        finish();
-                    } else {
-                        Toast.makeText(CreateRideActivity.this, "Failed to update ride", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Ride> call, Throwable t) {
-                    Toast.makeText(CreateRideActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
                 }
             });
         }
