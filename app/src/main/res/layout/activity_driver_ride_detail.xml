@@ -44,24 +44,14 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
+
                 <!-- Origin -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Origin"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
-
-                <AutoCompleteTextView
-                    android:id="@+id/etOrigin"
-                    android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/bg_input"
-                    android:inputType="textCapWords"
-                    android:padding="12dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/black"/>
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <!-- Destination -->
                 <TextView
@@ -69,19 +59,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Destination"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
-
-                <AutoCompleteTextView
-                    android:id="@+id/etDestination"
-                    android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/bg_input"
-                    android:inputType="textCapWords"
-                    android:padding="12dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/black" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <!-- Departure Time -->
                 <TextView
@@ -89,39 +68,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Departure Time"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
-
-                <EditText
-                    android:id="@+id/etDepTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/bg_input"
-                    android:clickable="true"
-                    android:focusable="false"
-                    android:padding="12dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/black" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Price"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
-
-                <EditText
-                    android:id="@+id/etPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/bg_input"
-                    android:padding="12dp"
-                    android:textSize="14sp"
-                    android:inputType="numberDecimal"
-                    android:textColor="@color/black" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <!-- Available Seats -->
                 <TextView
@@ -194,23 +150,12 @@
                         android:id="@+id/btnBack"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:layout_weight="1"
                         android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
                         android:backgroundTint="@color/btn_color"
                         android:text="Back"
                         android:textColor="@android:color/black"
-                        android:textStyle="bold"/>
-
-                    <Button
-                        android:id="@+id/btnConfirmEdit"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="1"
-                        android:layout_marginStart="8dp"
-                        android:backgroundTint="@color/dark_teal3"
-                        android:text="Confirm"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 

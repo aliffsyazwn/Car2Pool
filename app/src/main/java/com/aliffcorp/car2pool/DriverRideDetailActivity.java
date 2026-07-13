@@ -15,7 +15,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.aliffcorp.car2pool.model.Ride;
-import com.aliffcorp.car2pool.StringUtils;
 import com.aliffcorp.car2pool.model.User;
 import com.aliffcorp.car2pool.remote.ApiUtils;
 import com.aliffcorp.car2pool.remote.RideService;
@@ -32,7 +31,7 @@ public class DriverRideDetailActivity extends AppCompatActivity {
     private UserService userService;
 
     private TextView tvOrigin, tvDestination, tvTime, tvDriver;
-    private Button btnBack, btnEditRide;
+    private Button btnBack;
     private CheckBox cbFSeat, cbRSeat, cbMSeat, cbLSeat;
 
     private int rideId;
@@ -51,10 +50,11 @@ public class DriverRideDetailActivity extends AppCompatActivity {
             return insets;
         });
 
-        tvOrigin = findViewById(R.id.tvOrigin);
+        /*tvOrigin = findViewById(R.id.tvOrigin);
         tvDestination = findViewById(R.id.tvDestination);
         tvTime = findViewById(R.id.tvTime);
-        tvDriver = findViewById(R.id.tvDriver);
+        tvDriver = findViewById(R.id.tvDriver);*/
+
 
         cbFSeat = findViewById(R.id.cbFSeat);
         cbRSeat = findViewById(R.id.cbRSeat);
@@ -62,7 +62,6 @@ public class DriverRideDetailActivity extends AppCompatActivity {
         cbLSeat = findViewById(R.id.cbLSeat);
 
         btnBack = findViewById(R.id.btnBack);
-        btnEditRide = findViewById(R.id.btnEditRide);
 
         SharedPrefManager spm = new SharedPrefManager(this);
 
@@ -80,16 +79,7 @@ public class DriverRideDetailActivity extends AppCompatActivity {
         userService = ApiUtils.getUserService();
 
         btnBack.setOnClickListener(v -> finish());
-        btnEditRide.setOnClickListener(v -> {
 
-            Intent intent = new Intent(
-                    DriverRideDetailActivity.this,
-                    UpdateRideActivity.class
-            );
-
-            intent.putExtra("ride_id", rideId);
-            startActivity(intent);
-        });
     }
     @Override
     protected void onResume() {
