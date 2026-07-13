@@ -23,6 +23,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         public TextView tvDestination;
         public TextView tvTime;
         public TextView tvPrice;
+        public TextView tvDriver;
 
         public Button btnDetail;
 
@@ -33,7 +34,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
             tvDestination = itemView.findViewById(R.id.tvDestination);
             tvTime = itemView.findViewById(R.id.tvTime);
             tvPrice = itemView.findViewById(R.id.tvPrice);
-
+            tvDriver = itemView.findViewById(R.id.tvDriver);
             btnDetail = itemView.findViewById(R.id.btnDetail);
 
             itemView.setOnLongClickListener(this);
@@ -74,10 +75,17 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         holder.tvDestination.setText(ride.getDestination());
         holder.tvTime.setText(ride.getDeparture_time());
 
-        // Show price
+        // Price
         holder.tvPrice.setText(String.format("RM %.2f", ride.getPrice()));
 
-        // Store Ride object inside Book button
+        // Driver Name
+        if (ride.getDriver() != null) {
+            holder.tvDriver.setText(ride.getDriver().getUsername());
+        } else {
+            holder.tvDriver.setText("Unknown Driver");
+        }
+
+        // Book button
         holder.btnDetail.setTag(ride);
     }
 
