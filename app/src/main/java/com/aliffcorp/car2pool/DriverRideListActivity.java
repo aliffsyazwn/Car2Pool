@@ -39,7 +39,10 @@ public class DriverRideListActivity extends AppCompatActivity implements DriverR
     private String token;
     private int userId;
 
-    private CardView cardHome, cardSearchRide, cardBooking, cardProfile;
+    private CardView cardHome;
+    private CardView cardUpdateRide;
+    private CardView cardCreateRide;
+    private CardView cardProfile;
 
     @Override
     protected void onResume() {
@@ -74,28 +77,38 @@ public class DriverRideListActivity extends AppCompatActivity implements DriverR
     }
 
     private void setupBottomNavigation() {
+
         cardHome = findViewById(R.id.cardHome);
-        cardSearchRide = findViewById(R.id.cardSearchRide);
-        cardBooking = findViewById(R.id.cardBooking);
+        cardUpdateRide = findViewById(R.id.cardUpdateRide);
+        cardCreateRide = findViewById(R.id.cardCreateRide);
         cardProfile = findViewById(R.id.cardProfile);
 
+        // Home
         cardHome.setOnClickListener(v -> {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(
+                    DriverRideListActivity.this,
+                    DriverMainActivity.class));
             finish();
         });
 
-        cardSearchRide.setOnClickListener(v -> {
-            startActivity(new Intent(this, RideListActivity.class));
+        // Current Page
+        cardUpdateRide.setOnClickListener(v -> {
+            // Already on My Rides page
+        });
+
+        // Create Ride
+        cardCreateRide.setOnClickListener(v -> {
+            startActivity(new Intent(
+                    DriverRideListActivity.this,
+                    CreateRideActivity.class));
             finish();
         });
 
-        cardBooking.setOnClickListener(v -> {
-            startActivity(new Intent(this, BookingList.class));
-            finish();
-        });
-
+        // Profile
         cardProfile.setOnClickListener(v -> {
-            startActivity(new Intent(this, ViewProfileActivity.class));
+            startActivity(new Intent(
+                    DriverRideListActivity.this,
+                    ViewProfileActivity.class));
             finish();
         });
     }

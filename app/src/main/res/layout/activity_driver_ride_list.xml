@@ -61,7 +61,7 @@
     <!-- Reusable Navigation -->
     <include
         android:id="@+id/footerCard"
-        layout="@layout/bottom_navigation"
+        layout="@layout/driver_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
