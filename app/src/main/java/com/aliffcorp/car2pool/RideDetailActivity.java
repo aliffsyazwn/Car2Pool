@@ -57,6 +57,7 @@ public class RideDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int rideId = intent.getIntExtra("ride_id", -1);
+        int bookId = intent.getIntExtra("book_id", -1);
 
         // get references to the view elements
         tvOrigin = findViewById(R.id.tvOrigin);
@@ -77,6 +78,39 @@ public class RideDetailActivity extends AppCompatActivity {
         userService = ApiUtils.getUserService();
         bookingService = ApiUtils.getBookingService();
 
+        if (bookId != -1) {
+            findViewById(R.id.btnBook).setVisibility(View.GONE);
+            fetchRideByBookingId(bookId);
+        } else if (rideId != -1) {
+            fetchRideDetails(rideId);
+        }
+    }
+
+    private void fetchRideByBookingId(int bookId) {
+        bookingService.getBooking(token, bookId).enqueue(new Callback<Booking>() {
+            @Override
+            public void onResponse(Call<Booking> call, Response<Booking> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Booking booking = response.body();
+                    ride = booking.getRide();
+                    if (ride != null) {
+                        displayRideInfo(ride);
+                    } else {
+                        Toast.makeText(RideDetailActivity.this, "Ride info not found in booking", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(RideDetailActivity.this, "Error loading booking", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Booking> call, Throwable t) {
+                Toast.makeText(RideDetailActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void fetchRideDetails(int rideId) {
         rideService.getRides(token, rideId).enqueue(new Callback<Ride>() {
             @Override
             public void onResponse(Call<Ride> call, Response<Ride> response) {
@@ -87,36 +121,7 @@ public class RideDetailActivity extends AppCompatActivity {
                     // server return success
                     // get ride object from response
                     ride = response.body();
-                    // set values
-                    tvOrigin.setText(ride.getOrigin());
-                    tvTime.setText(ride.getDeparture_time());
-                    tvDestination.setText(ride.getDestination());
-                    cbFSeat.setChecked(ride.getfSeat());
-                    cbRSeat.setChecked(ride.getrSeat());
-                    cbMSeat.setChecked(ride.getmSeat());
-                    cbLSeat.setChecked(ride.getlSeat());
-
-                    setupSeatCheckBox(cbFSeat);
-                    setupSeatCheckBox(cbRSeat);
-                    setupSeatCheckBox(cbMSeat);
-                    setupSeatCheckBox(cbLSeat);
-
-                    // fetch driver username
-                    userService.getUser(token, ride.getDriver_id()).enqueue(new Callback<User>() {
-                        @Override
-                        public void onResponse(Call<User> call, Response<User> response) {
-                            if (response.isSuccessful() && response.body() != null) {
-                                tvDriver.setText(StringUtils.capitalize(response.body().getUsername()));
-                            } else {
-                                tvDriver.setText("Unknown Driver (" + ride.getDriver_id() + ")");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<User> call, Throwable t) {
-                            tvDriver.setText("Error loading driver (" + ride.getDriver_id() + ")");
-                        }
-                    });
+                    displayRideInfo(ride);
                 } else if (response.code() == 401) {
                     // unauthorized error. invalid token, ask user to relogin
                     Toast.makeText(getApplicationContext(), "Invalid session. Please login again", Toast.LENGTH_LONG).show();
@@ -130,10 +135,46 @@ public class RideDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Ride> call, Throwable t) {
-                Toast.makeText(RideDetailActivity.this, "Error connecting", Toast.LENGTH_LONG).show();
+                Toast.makeText(RideDetailActivity.this, "Error connecting", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    private void displayRideInfo(Ride ride) {
+        if (ride == null) {
+            Toast.makeText(this, "Ride data is missing", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // set values
+        tvOrigin.setText(ride.getOrigin());
+        tvTime.setText(ride.getDeparture_time());
+        tvDestination.setText(ride.getDestination());
+        cbFSeat.setChecked(ride.getfSeat());
+        cbRSeat.setChecked(ride.getrSeat());
+        cbMSeat.setChecked(ride.getmSeat());
+        cbLSeat.setChecked(ride.getlSeat());
+
+        setupSeatCheckBox(cbFSeat);
+        setupSeatCheckBox(cbRSeat);
+        setupSeatCheckBox(cbMSeat);
+        setupSeatCheckBox(cbLSeat);
+
+        // fetch driver username
+        userService.getUser(token, ride.getDriver_id()).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    tvDriver.setText(StringUtils.capitalize(response.body().getUsername()));
+                } else {
+                    tvDriver.setText("Unknown Driver (" + ride.getDriver_id() + ")");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                tvDriver.setText("Error loading driver (" + ride.getDriver_id() + ")");
+            }
+        });
     }
 
     private void setupSeatCheckBox(CheckBox cb) {

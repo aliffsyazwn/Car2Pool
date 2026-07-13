@@ -1,11 +1,12 @@
 package com.aliffcorp.car2pool;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 import androidx.cardview.widget.CardView;
 
@@ -28,8 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BookingList extends AppCompatActivity
-        implements BookingAdapter.OnBookingActionListener {
+public class BookingList extends AppCompatActivity implements BookingAdapter.OnBookingActionListener {
 
     private BookingService bookingService;
     private RecyclerView rvBookList;
@@ -175,53 +175,13 @@ public class BookingList extends AppCompatActivity
                 .show();
     }
 
-    // Long Press Context Menu
     @Override
     public void onLongClick(View view, Booking booking) {
-
-        PopupMenu popup = new PopupMenu(this, view);
-
-        popup.getMenu().add(0, 1, 0, "View Booking Detail");
-        popup.getMenu().add(0, 2, 1, "View Driver Detail");
-
-        popup.setOnMenuItemClickListener(item -> {
-
-            switch (item.getItemId()) {
-
-                case 1:
-
-                    Toast.makeText(
-                            BookingList.this,
-                            "Booking ID : " + booking.getBooking_id(),
-                            Toast.LENGTH_SHORT
-                    ).show();
-
-
-                    return true;
-
-                case 2:
-
-                    if (booking.getRide() != null) {
-
-                        Intent intent = new Intent(
-                                BookingList.this,
-                                RideDetailActivity.class);
-
-                        intent.putExtra(
-                                "ride_id",
-                                booking.getRide().getRide_id());
-
-                        startActivity(intent);
-                    }
-
-                    return true;
-            }
-
-            return false;
-        });
-
-        popup.show();
+        registerForContextMenu(view);
+        openContextMenu(view);
     }
+
+
     private void executeCancel(int bookingId) {
 
         bookingService.cancelBooking(token, bookingId)
@@ -272,5 +232,51 @@ public class BookingList extends AppCompatActivity
         startActivity(new Intent(
                 BookingList.this,
                 LoginActivity.class));
+    }
+
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.ride_context_menu, menu);
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        Booking selectedBooking = adapter.getSelectedItem();
+
+        if (selectedBooking == null) {
+            return super.onContextItemSelected(item);
+        }
+
+        Log.d("MyApp", "selected "+ selectedBooking.toString());    // debug purpose
+
+        if (item.getItemId() == R.id.ride_details) {
+            // user clicked details contextual menu
+            doRideDetails(selectedBooking);
+        }
+        else if (item.getItemId() == R.id.driver_details) {
+            // user clicked the delete contextual menu
+            doDriverDetails(selectedBooking);
+        }
+
+        return super.onContextItemSelected(item);
+    }
+
+    private void doRideDetails(Booking selectedBooking) {
+        Log.d("MyApp:", "viewing details: " + selectedBooking.toString());
+        // forward user to RideDetailsActivity, passing the selected book id
+        Intent intent = new Intent(getApplicationContext(), RideDetailActivity.class);
+        intent.putExtra("book_id", selectedBooking.getBooking_id());
+        startActivity(intent);
+    }
+
+    private void doDriverDetails(Booking selectedBooking) {
+        Log.d("MyApp:", "viewing details: " + selectedBooking.toString());
+        // forward user to DriverDetailActivity, passing the driver_id
+        Intent intent = new Intent(getApplicationContext(), DriverDetailActivity.class);
+        if (selectedBooking.getRide() != null) {
+            intent.putExtra("user_id", selectedBooking.getRide().getDriver_id());
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "Driver info not available", Toast.LENGTH_SHORT).show();
+        }
     }
 }

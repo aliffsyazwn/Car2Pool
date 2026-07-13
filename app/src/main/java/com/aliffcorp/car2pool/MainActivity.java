@@ -19,7 +19,6 @@ import com.aliffcorp.car2pool.sharedpref.SharedPrefManager;
 public class MainActivity extends AppCompatActivity {
 
     private TextView tvHello;
-
     private CardView cardSearchRide;
     private CardView cardBooking;
     private CardView cardProfile;

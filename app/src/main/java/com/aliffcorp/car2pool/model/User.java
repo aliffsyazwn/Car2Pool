@@ -11,8 +11,11 @@ public class User {
     private int is_active;
     private String secret;
     private String studID;
+    private String carModel;
+    private String plateNumber;
+    private String license;
 
-    public User(int id, String email, String username, String password, String lease, String token, String role, int is_active, String secret, String studID) {
+    public User(int id, String email, String username, String password, String lease, String token, String role, int is_active, String secret, String studID, String carModel, String plateNumber, String license) {
         this.id = id;
         this.email = email;
         this.username = username;
@@ -23,6 +26,9 @@ public class User {
         this.is_active = is_active;
         this.secret = secret;
         this.studID = studID;
+        this.carModel = carModel;
+        this.plateNumber = plateNumber;
+        this.license = license;
     }
 
     public User() {}
@@ -107,6 +113,30 @@ public class User {
         this.studID = studID;
     }
 
+    public String getCarModel() {
+        return carModel;
+    }
+
+    public void setCarModel(String carModel) {
+        this.carModel = carModel;
+    }
+
+    public String getPlateNumber() {
+        return plateNumber;
+    }
+
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
+    }
+
+    public String getLicense() {
+        return license;
+    }
+
+    public void setLicense(String license) {
+        this.license = license;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -120,6 +150,9 @@ public class User {
                 ", is_active=" + is_active +
                 ", secret='" + secret + '\'' +
                 ", studID='" + studID + '\'' +
+                ", carModel='" + carModel + '\'' +
+                ", plateNumber='" + plateNumber + '\'' +
+                ", license='" + license + '\'' +
                 '}';
     }
 }
