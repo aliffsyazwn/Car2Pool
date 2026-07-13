@@ -30,9 +30,15 @@ public interface UserService {
     @POST("users/login")
     Call<User> loginEmail(@Field("email") String username, @Field("password") String password);
 
-    @GET("users/{id}")
+    @GET("users/")
     Call<User> getUser(@Header("api-key") String api_key, @Path("id") int id);
 
-
+    @FormUrlEncoded
+    @POST("users/{id}")
+    Call<User> updateUser(@Header("api-key") String api_key, @Path("id") int id,
+                          @Field("email") String email, @Field("username") String username,
+                          @Field("password") String password, @Field("studID") String studID,
+                          @Field("carModel") String carModel, @Field("plateNumber") String plateNumber,
+                          @Field("license") String license);
 
 }
