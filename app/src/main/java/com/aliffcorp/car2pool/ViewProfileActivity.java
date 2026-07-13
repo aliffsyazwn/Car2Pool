@@ -240,7 +240,7 @@ public class ViewProfileActivity extends AppCompatActivity {
             name = user.getUsername();
         }
 
-        tvHeaderFullName.setText(StringUtils.capitalize(name));
+        tvHeaderFullName.setText(name);
         tvUsername.setText(user.getUsername());
         tvFullName.setText(user.getFullName());
         tvEmail.setText(user.getEmail());

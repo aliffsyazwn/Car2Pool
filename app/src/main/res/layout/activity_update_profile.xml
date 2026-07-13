@@ -155,35 +155,50 @@
                         android:paddingHorizontal="10dp"
                         android:textSize="13sp" />
 
-                    <!-- Password -->
+                    <!-- Role Selection -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Password"
+                        android:text="User Role"
                         android:textColor="#444444"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
-                    <EditText
-                        android:id="@+id/etPassword"
+                    <RadioGroup
+                        android:id="@+id/rgRole"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:background="@drawable/bg_input"
-                        android:inputType="textPassword"
-                        android:paddingHorizontal="10dp"
-                        android:textSize="13sp" />
+                        android:orientation="horizontal">
 
-                    <!-- Car Details Divider -->
+                        <RadioButton
+                            android:id="@+id/rbRider"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"
+                            android:text="Rider"
+                            android:textSize="13sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbDriver"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Driver"
+                            android:textSize="13sp" />
+                    </RadioGroup>
+
+                    <!-- Divider -->
                     <View
+                        android:id="@+id/dividerCar"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginVertical="10dp"
                         android:background="#E0E0E0" />
 
-                    <!-- Car Model & Plate -->
+                    <!-- Driver-only Details (Car Model & Plate) -->
                     <LinearLayout
+                        android:id="@+id/layoutCarDetails"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
