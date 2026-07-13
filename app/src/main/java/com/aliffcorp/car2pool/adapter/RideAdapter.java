@@ -109,4 +109,9 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
      * @return
      */
 
+    // NEW: Added this method to allow filtering for the search bars
+    public void filterList(List<Ride> filteredList) {
+        this.rideListData = filteredList;
+        notifyDataSetChanged(); // Tells the RecyclerView to redraw the screen with the new list
+    }
 }
