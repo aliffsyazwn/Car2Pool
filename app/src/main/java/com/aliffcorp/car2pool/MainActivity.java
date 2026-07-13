@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 // Display username
-        tvHello.setText("Welcome back, " + user.getFullName() + "!");
+        tvHello.setText("Welcome back, " + user.getUsername() + "!");
 
         // ===========================
         // Bottom Navigation

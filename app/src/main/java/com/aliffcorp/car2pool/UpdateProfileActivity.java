@@ -30,8 +30,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class UpdateProfileActivity extends AppCompatActivity {
 
+    private View footerCard;
+    private View dFooterCard;
     private EditText etUsername;
     private EditText etFullName;
     private EditText etEmail;
@@ -80,6 +83,8 @@ public class UpdateProfileActivity extends AppCompatActivity {
         rbDriver = findViewById(R.id.rbDriver);
         dividerCar = findViewById(R.id.dividerCar);
         layoutCarDetails = findViewById(R.id.layoutCarDetails);
+        footerCard = findViewById(R.id.footerCard);
+        dFooterCard = findViewById(R.id.dFooterCard);
 
         rgRole.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rbDriver) {
@@ -90,6 +95,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         });
 
         spm = new SharedPrefManager(getApplicationContext());
+        setupBottomNavigation();
         User currentUser = spm.getUser();
         userService = ApiUtils.getUserService();
 
@@ -259,5 +265,59 @@ public class UpdateProfileActivity extends AppCompatActivity {
         // but we ensure labels are consistent
         tvModelLabel.setVisibility(visibility);
         tvPlateLabel.setVisibility(visibility);
+    }
+    private void setupBottomNavigation() {
+
+        User currentUser = spm.getUser();
+
+        if (currentUser == null) return;
+
+        // ===========================
+        // Show correct navigation
+        // ===========================
+
+        if ("driver".equalsIgnoreCase(currentUser.getRole())) {
+
+            footerCard.setVisibility(View.GONE);
+            dFooterCard.setVisibility(View.VISIBLE);
+
+            findViewById(R.id.cardHome).setOnClickListener(v -> {
+                startActivity(new Intent(this, DriverMainActivity.class));
+                finish();
+            });
+
+            findViewById(R.id.cardUpdateRide).setOnClickListener(v -> {
+                startActivity(new Intent(this, DriverRideListActivity.class));
+                finish();
+            });
+
+            findViewById(R.id.cardCreateRide).setOnClickListener(v -> {
+                startActivity(new Intent(this, CreateRideActivity.class));
+                finish();
+            });
+
+            findViewById(R.id.cardProfile).setOnClickListener(v -> {
+                // Current page
+            });
+
+        } else {
+
+            dFooterCard.setVisibility(View.GONE);
+            footerCard.setVisibility(View.VISIBLE);
+
+            findViewById(R.id.cardSearchRide).setOnClickListener(v -> {
+                startActivity(new Intent(this, RideListActivity.class));
+                finish();
+            });
+
+            findViewById(R.id.cardBooking).setOnClickListener(v -> {
+                startActivity(new Intent(this, BookingList.class));
+                finish();
+            });
+
+            findViewById(R.id.cardProfile).setOnClickListener(v -> {
+                // Current page
+            });
+        }
     }
 }
