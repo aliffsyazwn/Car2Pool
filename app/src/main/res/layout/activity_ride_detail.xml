@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/light_teal3"
     android:fillViewport="true"
-    tools:context=".RideDetailActivity">
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -196,18 +196,6 @@
                         android:textSize="18dp"
                         android:textStyle="bold"
                         android:onClick="bookRide"/>
-                    <Button
-                        android:id="@+id/btnBack"
-                        android:layout_width="0dp"
-                        android:layout_height="54dp"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="8dp"
-                        android:backgroundTint="#BDBDBD"
-                        android:text="Back"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:onClick="backToRideList"/>
                 </LinearLayout>
 
             </LinearLayout>
