@@ -311,5 +311,9 @@ public class RideDetailActivity extends AppCompatActivity {
                 Log.e("MyApp:", "Error: " + t.getMessage(), t);
             }
         });
+
+    }
+    public void backToRideList(View view) {
+        finish();
     }
 }

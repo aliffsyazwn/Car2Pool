@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +35,6 @@ public class UpdateProfileActivity extends AppCompatActivity {
     private EditText etUsername;
     private EditText etFullName;
     private EditText etEmail;
-    private EditText etPassword;
     private EditText etStudID;
     private EditText etModel;
     private EditText etPlate;
@@ -41,6 +42,9 @@ public class UpdateProfileActivity extends AppCompatActivity {
     private TextView tvModelLabel;
     private TextView tvPlateLabel;
     private TextView tvLicenseLabel;
+    private RadioGroup rgRole;
+    private RadioButton rbRider, rbDriver;
+    private View dividerCar, layoutCarDetails;
     private User user;
     private SharedPrefManager spm;
     private UserService userService;
@@ -63,7 +67,6 @@ public class UpdateProfileActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etFullName = findViewById(R.id.etFullName);
         etEmail = findViewById(R.id.etEmail);
-        etPassword = findViewById(R.id.etPassword);
         etStudID = findViewById(R.id.etStudID);
         etModel = findViewById(R.id.etModel);
         etPlate = findViewById(R.id.etPlate);
@@ -71,6 +74,20 @@ public class UpdateProfileActivity extends AppCompatActivity {
         tvModelLabel = findViewById(R.id.tvModelLabel);
         tvPlateLabel = findViewById(R.id.tvPlateLabel);
         tvLicenseLabel = findViewById(R.id.tvLicenseLabel);
+
+        rgRole = findViewById(R.id.rgRole);
+        rbRider = findViewById(R.id.rbRider);
+        rbDriver = findViewById(R.id.rbDriver);
+        dividerCar = findViewById(R.id.dividerCar);
+        layoutCarDetails = findViewById(R.id.layoutCarDetails);
+
+        rgRole.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rbDriver) {
+                showDriverFields(true);
+            } else {
+                showDriverFields(false);
+            }
+        });
 
         spm = new SharedPrefManager(getApplicationContext());
         User currentUser = spm.getUser();
@@ -91,7 +108,6 @@ public class UpdateProfileActivity extends AppCompatActivity {
                             etFullName.setText(user.getFullName());
                             etUsername.setText(user.getUsername());
                             etEmail.setText(user.getEmail());
-                            etPassword.setText(""); // Keep password empty for security
                             etStudID.setText(user.getStudID());
                             etModel.setText(user.getCarModel());
                             etPlate.setText(user.getPlateNumber());
@@ -99,19 +115,11 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
                             // Handle visibility based on role
                             if ("driver".equalsIgnoreCase(user.getRole())) {
-                                etModel.setVisibility(View.VISIBLE);
-                                tvModelLabel.setVisibility(View.VISIBLE);
-                                etPlate.setVisibility(View.VISIBLE);
-                                tvPlateLabel.setVisibility(View.VISIBLE);
-                                etLicense.setVisibility(View.VISIBLE);
-                                tvLicenseLabel.setVisibility(View.VISIBLE);
+                                rbDriver.setChecked(true);
+                                showDriverFields(true);
                             } else {
-                                etModel.setVisibility(View.GONE);
-                                tvModelLabel.setVisibility(View.GONE);
-                                etPlate.setVisibility(View.GONE);
-                                tvPlateLabel.setVisibility(View.GONE);
-                                etLicense.setVisibility(View.GONE);
-                                tvLicenseLabel.setVisibility(View.GONE);
+                                rbRider.setChecked(true);
+                                showDriverFields(false);
                             }
                         }
                     } else if (response.code() == 401) {
@@ -152,40 +160,28 @@ public class UpdateProfileActivity extends AppCompatActivity {
             return;
         }
 
-        String api_key = "3b191b07-7739-4698-b885-8660b564c963";
         String username = etUsername.getText().toString();
         String fullName = etFullName.getText().toString();
         String email = etEmail.getText().toString();
-        String password = etPassword.getText().toString();
-        String token = "00000000-00000-0000-0000-000000000000";
-        String lease = "1970-01-01 00:00:00";
-        String role = user.getRole();
-        int is_active = 1;
-        String secret = "206b2dbe-ecc9-490b-b81b-83767288bc5e";
         String studID = etStudID.getText().toString();
         String carModel = etModel.getText().toString();
         String plateNumber = etPlate.getText().toString();
         String license = etLicense.getText().toString();
+        String role = rbDriver.isChecked() ? "driver" : "rider";
 
         Log.d("MyApp:", "Updating User info: " + user.toString());
 
         user.setUsername(username);
         user.setFullName(fullName);
         user.setEmail(email);
-        user.setPassword(password);
-        user.setToken(token);
-        user.setLease(lease);
-        user.setRole(role);
-        user.setIs_active(is_active);
-        user.setSecret(secret);
         user.setStudID(studID);
         user.setCarModel(carModel);
         user.setPlateNumber(plateNumber);
         user.setLicense(license);
+        user.setRole(role);
 
         Call<User> call = userService.updateUser(spm.getUser().getToken(), user.getId(), email,
-                username, password, token, lease, role, is_active,
-                secret, studID, carModel, plateNumber, license, fullName);
+                username, studID, carModel, plateNumber, license, fullName, role);
 
         call.enqueue(new Callback<User>() {
             @Override
@@ -199,6 +195,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
                         }
                         spm.storeUser(updatedUser);
                         displayUpdateSuccess(updatedUser.getUsername() + " updated successfully.");
+                        clearSessionAndRedirect();
                     }
                 } else if (response.code() == 401) {
                     // unauthorized error
@@ -251,24 +248,16 @@ public class UpdateProfileActivity extends AppCompatActivity {
         alert.show();
     }
 
-    public String md5(String s) {
-        try {
-            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-            digest.update(s.getBytes());
-            byte messageDigest[] = digest.digest();
+    private void showDriverFields(boolean show) {
+        int visibility = show ? View.VISIBLE : View.GONE;
+        dividerCar.setVisibility(visibility);
+        layoutCarDetails.setVisibility(visibility);
+        tvLicenseLabel.setVisibility(visibility);
+        etLicense.setVisibility(visibility);
 
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : messageDigest) {
-                String h = Integer.toHexString(0xFF & b);
-                while (h.length() < 2)
-                    h = "0" + h;
-                hexString.append(h);
-            }
-            return hexString.toString();
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return "";
+        // Sub-elements of layoutCarDetails are handled by their parent visibility,
+        // but we ensure labels are consistent
+        tvModelLabel.setVisibility(visibility);
+        tvPlateLabel.setVisibility(visibility);
     }
 }

@@ -70,13 +70,13 @@ public class DriverRideAdapter extends RecyclerView.Adapter<DriverRideAdapter.Vi
         holder.tvTime.setText(currentRide.getDeparture_time());
         holder.priceText.setText(String.format(Locale.getDefault(), "RM %.2f", currentRide.getPrice()));
 
-        int availableSeats = 0;
-        if (currentRide.getfSeat()) availableSeats++;
-        if (currentRide.getmSeat()) availableSeats++;
-        if (currentRide.getrSeat()) availableSeats++;
-        if (currentRide.getlSeat()) availableSeats++;
+        int seatsBook = 0;
+        if (currentRide.getfSeat()) seatsBook++;
+        if (currentRide.getmSeat()) seatsBook++;
+        if (currentRide.getrSeat()) seatsBook++;
+        if (currentRide.getlSeat()) seatsBook++;
 
-        holder.seatsText.setText("Available Seats: " + availableSeats);
+        holder.seatsText.setText("Seats Booked: " + seatsBook);
 
         holder.btnEdit.setOnClickListener(v -> {
             if (actionListener != null) actionListener.onEditClick(currentRide);

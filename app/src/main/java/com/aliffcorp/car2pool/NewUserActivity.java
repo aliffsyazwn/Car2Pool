@@ -1,19 +1,35 @@
 package com.aliffcorp.car2pool;
 
 import android.os.Bundle;
-import android.widget.RadioGroup;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.Fragment;
+
+import com.aliffcorp.car2pool.model.User;
+import com.aliffcorp.car2pool.remote.ApiUtils;
+import com.aliffcorp.car2pool.remote.UserService;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import okhttp3.ResponseBody;
+
 public class NewUserActivity extends AppCompatActivity {
+
+    private EditText txtEmail, txtPassword, txtConfirmPassword;
+    private Button btnRegister;
+    private UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,57 +43,66 @@ public class NewUserActivity extends AppCompatActivity {
             return insets;
         });
 
-        RadioGroup rgUserType = findViewById(R.id.rgUserType);
+        // Initialize UI elements
+        txtEmail = findViewById(R.id.txtEmail);
+        txtPassword = findViewById(R.id.txtPassword);
+        txtConfirmPassword = findViewById(R.id.txtConfirmPassword);
+        btnRegister = findViewById(R.id.btnRegister);
 
-        // Load the initial default Fragment (Rider) when Activity creates
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.fragment_container, NewRiderFragment.class, null)
-                    .commit();
-        }
+        userService = ApiUtils.getUserService();
 
-        // Listener to swap fragments contextually
-        rgUserType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                Fragment selectedFragment;
+            public void onClick(View v) {
+                String email = txtEmail.getText().toString().trim();
+                String password = txtPassword.getText().toString().trim();
+                String confirmPassword = txtConfirmPassword.getText().toString().trim();
 
-                if (checkedId == R.id.rbDriver) {
-                    selectedFragment = new NewDriverFragment();
-                } else {
-                    selectedFragment = new NewRiderFragment();
+                if (email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(NewUserActivity.this, "Email and Password are required", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
-                // Perform fragment switch transaction
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, selectedFragment)
-                        .commit();
+                if (!password.equals(confirmPassword)) {
+                    Toast.makeText(NewUserActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                register(email, password);
             }
         });
+
+        findViewById(R.id.tvBackToLogin).setOnClickListener(v -> finish());
     }
 
-    /**
-     * Kept here as a centralized utility function for fragments to hash passwords.
-     */
-    public String md5(String s) {
-        try {
-            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-            digest.update(s.getBytes());
-            byte messageDigest[] = digest.digest();
-
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : messageDigest) {
-                String h = Integer.toHexString(0xFF & b);
-                while (h.length() < 2)
-                    h = "0" + h;
-                hexString.append(h);
+    private void register(String email, String password) {
+        userService.registerUser(email, password).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(NewUserActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+                    finish(); // Go back to login
+                } else {
+                    try (ResponseBody errorBody = response.errorBody()) {
+                        if (errorBody != null) {
+                            String errorMsg = errorBody.string();
+                            Log.e("NewUserActivity", "Error Body: " + errorMsg);
+                            Toast.makeText(NewUserActivity.this, "Error: " + errorMsg, Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(NewUserActivity.this, "Error: " + response.code() + " " + response.message(), Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        Log.e("NewUserActivity", "Error parsing error body", e);
+                        Toast.makeText(NewUserActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
-            return hexString.toString();
 
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return "";
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e("NewUserActivity", "Error: " + t.getMessage());
+                Toast.makeText(NewUserActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

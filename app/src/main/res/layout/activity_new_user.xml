@@ -1,64 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:text="Registration"
-        android:textColor="#2E7D32"
-        android:textSize="28sp"
-        android:textStyle="bold" />
-
-    <!-- Selection Card -->
-    <androidx.cardview.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="2dp">
+        android:orientation="vertical"
+        android:padding="24dp">
 
-        <RadioGroup
-            android:id="@+id/rgUserType"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:text="Create Account"
+            android:textColor="#2E7D32"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="12dp">
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
 
-            <RadioButton
-                android:id="@+id/rbRider"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
-                android:checked="true"
-                android:text="Rider"
-                android:textSize="16sp" />
+                android:orientation="vertical"
+                android:padding="20dp">
 
-            <RadioButton
-                android:id="@+id/rbDriver"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Driver"
-                android:textSize="16sp" />
-        </RadioGroup>
-    </androidx.cardview.widget.CardView>
+                <!-- Email -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textColor="#444444"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
-    <!-- Fragment Container -->
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+                <EditText
+                    android:id="@+id/txtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_input"
+                    android:hint="name@example.com"
+                    android:inputType="textEmailAddress"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="16sp" />
 
-</LinearLayout>
+                <!-- Password -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+                    android:textColor="#444444"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/txtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_input"
+                    android:hint="••••••••"
+                    android:inputType="textPassword"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="16sp" />
+
+                <!-- Confirm Password -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Confirm Password"
+                    android:textColor="#444444"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/txtConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_input"
+                    android:hint="••••••••"
+                    android:inputType="textPassword"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="32dp"
+            android:backgroundTint="#2E7D32"
+            android:text="Register"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvBackToLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:padding="8dp"
+            android:text="Already have an account? Log In"
+            android:textColor="#2E7D32"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+</ScrollView>
