@@ -79,21 +79,4 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-    public void logoutClicked(View view) {
-
-        SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
-        spm.logout();
-
-        Toast.makeText(
-                this,
-                "You have successfully logged out.",
-                Toast.LENGTH_LONG
-        ).show();
-
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-    }
 }
