@@ -18,7 +18,6 @@ import com.aliffcorp.car2pool.model.Ride;
 import com.aliffcorp.car2pool.model.User;
 import com.aliffcorp.car2pool.remote.ApiUtils;
 import com.aliffcorp.car2pool.remote.RideService;
-import com.aliffcorp.car2pool.remote.UserService;
 import com.aliffcorp.car2pool.sharedpref.SharedPrefManager;
 
 import retrofit2.Call;
