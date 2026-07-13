@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize Views
         tvHello = findViewById(R.id.tvHello);
-
         cardSearchRide = findViewById(R.id.cardSearchRide);
         cardBooking = findViewById(R.id.cardBooking);
         cardProfile = findViewById(R.id.cardProfile);
@@ -71,29 +70,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
 // Display username
-        tvHello.setText("Welcome back, " + user.getUsername() + "!");
+        tvHello.setText("Welcome back, " + user.getFullName() + "!");
 
         // ===========================
         // Bottom Navigation
         // ===========================
-
         // Search Ride
         cardSearchRide.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, RideListActivity.class);
             startActivity(intent);
         });
-
-
         // My Booking
         cardBooking.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, BookingList.class);
             startActivity(intent);
         });
-
         cardProfile.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ViewProfileActivity.class);
             startActivity(intent);
         });
-
     }
 }
