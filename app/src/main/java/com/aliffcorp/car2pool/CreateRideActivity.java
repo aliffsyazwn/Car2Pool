@@ -223,7 +223,6 @@ public class CreateRideActivity extends AppCompatActivity {
             return;
         }
 
-        // --- NEW: Price Validation ---
         if (priceStr.isEmpty()) {
             etPrice.setError("Enter price");
             return;
@@ -232,21 +231,23 @@ public class CreateRideActivity extends AppCompatActivity {
         double price = 0.0;
         try {
             price = Double.parseDouble(priceStr);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) {
             etPrice.setError("Invalid price format");
             return;
-            }
-            // -----------------------------
+        }
 
         int fSeat = cbFSeat.isChecked() ? 1 : 0;
         int rSeat = cbRSeat.isChecked() ? 1 : 0;
         int mSeat = cbMSeat.isChecked() ? 1 : 0;
         int lSeat = cbLSeat.isChecked() ? 1 : 0;
 
-
+        if (fSeat == 1 && rSeat == 1 && mSeat == 1 && lSeat == 1) {
+            Toast.makeText(CreateRideActivity.this, "At least one seat must be available", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (rideId == -1) {
-            // Create New Ride
             rideService.createRide(
                     token,
                     userId,
