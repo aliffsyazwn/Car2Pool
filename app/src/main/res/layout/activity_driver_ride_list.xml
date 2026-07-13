@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/header"
-        android:layout_above="@id/footerCard"
+        android:layout_above="@id/dFooterCard"
         android:layout_marginStart="16dp"
         android:layout_marginTop="-20dp"
         android:layout_marginEnd="16dp"
@@ -61,7 +61,7 @@
 
     <!-- Reusable Navigation -->
     <include
-        android:id="@+id/footerCard"
+        android:id="@+id/dFooterCard"
         layout="@layout/driver_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

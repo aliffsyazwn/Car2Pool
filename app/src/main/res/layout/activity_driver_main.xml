@@ -11,7 +11,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/footerCard"
+        android:layout_above="@id/dFooterCard"
         android:fillViewport="true">
 
         <LinearLayout
@@ -81,7 +81,7 @@
     </ScrollView>
 
     <include
-        android:id="@+id/footerCard"
+        android:id="@+id/dFooterCard"
         layout="@layout/driver_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
