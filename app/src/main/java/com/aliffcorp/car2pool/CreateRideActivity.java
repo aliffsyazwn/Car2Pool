@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.app.DatePickerDialog;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -95,7 +96,7 @@ public class CreateRideActivity extends AppCompatActivity {
             fetchRideDetails();
         }
 
-        etDepTime.setOnClickListener(v -> showTimePicker());
+        etDepTime.setOnClickListener(v -> showDateTimePicker());
 
         btnCancel.setOnClickListener(v -> finish());
 
@@ -165,42 +166,72 @@ public class CreateRideActivity extends AppCompatActivity {
         });
     }
 
-    private void showTimePicker() {
+    private void showDateTimePicker() {
 
-        Calendar calendar = Calendar.getInstance();
+        Calendar now = Calendar.getInstance();
 
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-
-        TimePickerDialog dialog = new TimePickerDialog(
+        DatePickerDialog datePicker = new DatePickerDialog(
                 this,
-                (view, hourOfDay, minute1) -> {
+                (view, year, month, dayOfMonth) -> {
 
-                    String dateTime = String.format(
-                            Locale.getDefault(),
-                            "%04d-%02d-%02d %02d:%02d:00",
-                            year,
-                            month + 1,
-                            day,
-                            hourOfDay,
-                            minute1
+                    Calendar selected = Calendar.getInstance();
+                    selected.set(year, month, dayOfMonth);
+
+                    TimePickerDialog timePicker = new TimePickerDialog(
+                            CreateRideActivity.this,
+                            (timeView, hourOfDay, minute) -> {
+
+                                selected.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                selected.set(Calendar.MINUTE, minute);
+                                selected.set(Calendar.SECOND, 0);
+
+                                // Prevent past date/time
+                                if (selected.before(Calendar.getInstance())) {
+                                    Toast.makeText(
+                                            CreateRideActivity.this,
+                                            "Please select a future date and time.",
+                                            Toast.LENGTH_SHORT
+                                    ).show();
+                                    return;
+                                }
+
+                                String dateTime = String.format(
+                                        Locale.getDefault(),
+                                        "%04d-%02d-%02d %02d:%02d:00",
+                                        year,
+                                        month + 1,
+                                        dayOfMonth,
+                                        hourOfDay,
+                                        minute
+                                );
+
+                                etDepTime.setText(dateTime);
+
+                            },
+                            now.get(Calendar.HOUR_OF_DAY),
+                            now.get(Calendar.MINUTE),
+                            true
                     );
 
-                    etDepTime.setText(dateTime);
+                    timePicker.show();
 
                 },
-                hour,
-                minute,
-                true
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH)
         );
 
-        dialog.show();
-    }
+        Calendar minDate = Calendar.getInstance();
+        minDate.add(Calendar.DAY_OF_MONTH, 1);   // Move to tomorrow
+        minDate.set(Calendar.HOUR_OF_DAY, 0);
+        minDate.set(Calendar.MINUTE, 0);
+        minDate.set(Calendar.SECOND, 0);
+        minDate.set(Calendar.MILLISECOND, 0);
 
+        datePicker.getDatePicker().setMinDate(minDate.getTimeInMillis());
+
+        datePicker.show();
+    }
     private void createRide() {
 
         String origin = etOrigin.getText().toString().trim();
