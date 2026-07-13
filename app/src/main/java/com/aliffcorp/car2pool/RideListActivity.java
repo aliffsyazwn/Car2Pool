@@ -54,12 +54,23 @@ public class RideListActivity extends AppCompatActivity {
     private CardView cardBooking;
     private CardView cardProfile;
 
+    private String token;
+
     // UI Elements for Search
     private AutoCompleteTextView etSearchOrigin;
     private AutoCompleteTextView etSearchDestination;
 
     // Master list to hold all rides for filtering
     private List<Ride> allRidesList = new ArrayList<>();
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (rideService != null && token != null) {
+            fetchRides();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +82,7 @@ public class RideListActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
 
         // get reference to the RecyclerView rideList
         rvRideList = findViewById(R.id.rvRideList);
@@ -100,7 +112,7 @@ public class RideListActivity extends AppCompatActivity {
         // get user info from SharedPreferences to get token value
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
         User user = spm.getUser();
-        String token = user.getToken();
+        token = user.getToken();
 
         // get ride service instance
         rideService = ApiUtils.getRideService();
@@ -110,36 +122,41 @@ public class RideListActivity extends AppCompatActivity {
         // Fetch locations for the dropdown search bars
         fetchLocations(token);
 
-        // execute the call. send the user token when sending the query
+    }
+
+    private void fetchRides() {
         rideService.getAllRides(token).enqueue(new Callback<List<Ride>>() {
             @Override
             public void onResponse(Call<List<Ride>> call, Response<List<Ride>> response) {
-                // for debug purpose
                 Log.d("MyApp:", "Response: " + response.raw().toString());
 
                 if (response.code() == 200) {
-                    // Get list of ride object from response
                     List<Ride> rides = response.body();
 
-                    // filter out rides where all four seats are taken (checked)
                     if (rides != null) {
-                        rides.removeIf(ride -> ride.getfSeat() && ride.getmSeat() && ride.getrSeat() && ride.getlSeat());
+                        rides.removeIf(ride ->
+                                ride.getfSeat() &&
+                                        ride.getmSeat() &&
+                                        ride.getrSeat() &&
+                                        ride.getlSeat()
+                        );
 
-                        // --- NEW: Time Filtering & Sorting ---
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                        SimpleDateFormat sdf = new SimpleDateFormat(
+                                "yyyy-MM-dd HH:mm:ss",
+                                Locale.getDefault()
+                        );
+
                         Date currentDate = new Date();
 
-                        // Remove rides that have already departed
                         rides.removeIf(ride -> {
                             try {
                                 Date rideDate = sdf.parse(ride.getDeparture_time());
                                 return rideDate != null && rideDate.before(currentDate);
                             } catch (Exception e) {
-                                return false; // If date parsing fails, keep it in the list
+                                return false;
                             }
                         });
 
-                        // Sort the remaining rides from nearest to furthest time
                         Collections.sort(rides, new Comparator<Ride>() {
                             @Override
                             public int compare(Ride r1, Ride r2) {
@@ -152,42 +169,49 @@ public class RideListActivity extends AppCompatActivity {
                                 }
                             }
                         });
-                        // --- END NEW ---
 
-                        // Save to our master list for the search filter
                         allRidesList.clear();
                         allRidesList.addAll(rides);
                     }
 
-                    // initialize adapter (using allRidesList now)
-                    adapter = new RideAdapter(getApplicationContext(), allRidesList);
+                    adapter = new RideAdapter(
+                            getApplicationContext(),
+                            allRidesList
+                    );
 
-                    // set adapter to the RecyclerView
                     rvRideList.setAdapter(adapter);
+                    rvRideList.setLayoutManager(
+                            new LinearLayoutManager(getApplicationContext())
+                    );
 
-                    // set layout to recycler view
-                    rvRideList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                } else if (response.code() == 401) {
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "Invalid session. Please login again",
+                            Toast.LENGTH_LONG
+                    ).show();
 
-                    // add separator between item in the list
-                    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvRideList.getContext(),
-                            DividerItemDecoration.VERTICAL);
-                    rvRideList.addItemDecoration(dividerItemDecoration);
-                }
-                else if (response.code() == 401) {
-                    // invalid token, ask user to relogin
-                    Toast.makeText(getApplicationContext(), "Invalid session. Please login again", Toast.LENGTH_LONG).show();
                     clearSessionAndRedirect();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Error: " + response.message(), Toast.LENGTH_LONG).show();
-                    // server return other error
+
+                } else {
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "Error: " + response.message(),
+                            Toast.LENGTH_LONG
+                    ).show();
+
                     Log.e("MyApp: ", response.toString());
                 }
             }
 
             @Override
             public void onFailure(Call<List<Ride>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Error connecting to the server", Toast.LENGTH_LONG).show();
+                Toast.makeText(
+                        getApplicationContext(),
+                        "Error connecting to the server",
+                        Toast.LENGTH_LONG
+                ).show();
+
                 Log.e("MyApp:", t.toString());
             }
         });
@@ -223,7 +247,6 @@ public class RideListActivity extends AppCompatActivity {
             }
         });
     }
-    // ----------------------------------------------------
 
     // New method to handle the filtering logic
     private void filterRides() {
