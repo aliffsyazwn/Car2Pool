@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,11 +32,7 @@ public class ViewProfileActivity extends AppCompatActivity {
     private TextView tvModel;
     private TextView tvPlate;
     private TextView tvLicense;
-    private TextView tvModelLabel;
-    private TextView tvPlateLabel;
-    private TextView tvLicenseLabel;
 
-    // Vehicle Information Card
     private CardView cardVehicleInfo;
 
     private Button btnUpdateProfile;
@@ -49,7 +46,18 @@ public class ViewProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_profile);
 
-        // Initialize Views
+        spm = new SharedPrefManager(this);
+
+        if (!spm.isLoggedIn()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+
+        //==========================
+        // TextViews
+        //==========================
+
         tvUsername = findViewById(R.id.tvUsername);
         tvFullName = findViewById(R.id.tvFullName);
         tvHeaderFullName = findViewById(R.id.tvHeaderFullName);
@@ -61,44 +69,82 @@ public class ViewProfileActivity extends AppCompatActivity {
         tvPlate = findViewById(R.id.tvPlate);
         tvLicense = findViewById(R.id.tvLicense);
 
-        tvModelLabel = findViewById(R.id.tvModelLabel);
-        tvPlateLabel = findViewById(R.id.tvPlateLabel);
-        tvLicenseLabel = findViewById(R.id.tvLicenseLabel);
-
         cardVehicleInfo = findViewById(R.id.cardVehicleInfo);
 
         btnUpdateProfile = findViewById(R.id.btnUpdateProfile);
         btnLogout = findViewById(R.id.btnLogout);
 
-        spm = new SharedPrefManager(this);
+        User user = spm.getUser();
 
-        // Check Login
-        if (!spm.isLoggedIn()) {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-            return;
+        //==========================
+        // Navigation
+        //==========================
+
+        View riderNav = findViewById(R.id.footerCard);
+        View driverNav = findViewById(R.id.dFooterCard);
+
+        if ("driver".equalsIgnoreCase(user.getRole())) {
+
+            riderNav.setVisibility(View.GONE);
+            driverNav.setVisibility(View.VISIBLE);
+
+            CardView cardHome = driverNav.findViewById(R.id.cardHome);
+            CardView cardUpdateRide = driverNav.findViewById(R.id.cardUpdateRide);
+            CardView cardCreateRide = driverNav.findViewById(R.id.cardCreateRide);
+            CardView cardProfile = driverNav.findViewById(R.id.cardProfile);
+
+            cardHome.setOnClickListener(v ->
+                    startActivity(new Intent(this, DriverMainActivity.class)));
+
+            cardUpdateRide.setOnClickListener(v ->
+                    startActivity(new Intent(this, DriverRideListActivity.class)));
+
+            cardCreateRide.setOnClickListener(v ->
+                    startActivity(new Intent(this, CreateRideActivity.class)));
+
+            cardProfile.setOnClickListener(v -> {
+                // Current Page
+            });
+
+        } else {
+
+            riderNav.setVisibility(View.VISIBLE);
+            driverNav.setVisibility(View.GONE);
+
+            CardView cardHome = riderNav.findViewById(R.id.cardHome);
+            CardView cardSearchRide = riderNav.findViewById(R.id.cardSearchRide);
+            CardView cardBooking = riderNav.findViewById(R.id.cardBooking);
+            CardView cardProfile = riderNav.findViewById(R.id.cardProfile);
+
+            cardHome.setOnClickListener(v ->
+                    startActivity(new Intent(this, MainActivity.class)));
+
+            cardSearchRide.setOnClickListener(v ->
+                    startActivity(new Intent(this, RideListActivity.class)));
+
+            cardBooking.setOnClickListener(v ->
+                    startActivity(new Intent(this, BookingList.class)));
+
+            cardProfile.setOnClickListener(v -> {
+                // Current Page
+            });
         }
 
-        // Display cached data first
-        displayUserData(spm.getUser());
+        displayUserData(user);
 
-        // Refresh latest data from server
         fetchLatestUserData();
 
-        // Update Profile
         btnUpdateProfile.setOnClickListener(v -> {
+
             Intent intent = new Intent(
                     ViewProfileActivity.this,
                     UpdateProfileActivity.class);
 
-            intent.putExtra(
-                    "user_id",
-                    spm.getUser().getId());
+            intent.putExtra("user_id", user.getId());
 
             startActivity(intent);
         });
 
-        // Logout
         btnLogout.setOnClickListener(v -> {
 
             spm.logout();
@@ -107,9 +153,8 @@ public class ViewProfileActivity extends AppCompatActivity {
                     ViewProfileActivity.this,
                     LoginActivity.class);
 
-            intent.setFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK |
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             startActivity(intent);
             finish();
@@ -133,89 +178,80 @@ public class ViewProfileActivity extends AppCompatActivity {
         User currentUser = spm.getUser();
 
         userService.getUser(
-                currentUser.getToken(),
-                currentUser.getId()
-        ).enqueue(new Callback<User>() {
+                        currentUser.getToken(),
+                        currentUser.getId())
+                .enqueue(new Callback<User>() {
 
-            @Override
-            public void onResponse(Call<User> call,
-                                   Response<User> response) {
+                    @Override
+                    public void onResponse(Call<User> call,
+                                           Response<User> response) {
 
-                if (response.isSuccessful()
-                        && response.body() != null) {
+                        if (response.isSuccessful() &&
+                                response.body() != null) {
 
-                    User updatedUser = response.body();
+                            User updatedUser = response.body();
 
-                    if (updatedUser.getToken() == null) {
-                        updatedUser.setToken(currentUser.getToken());
-                    }
+                            if (updatedUser.getToken() == null) {
+                                updatedUser.setToken(currentUser.getToken());
+                            }
 
-                    spm.storeUser(updatedUser);
+                            spm.storeUser(updatedUser);
 
-                    displayUserData(updatedUser);
+                            displayUserData(updatedUser);
 
-                } else if (response.code() == 401) {
+                        } else if (response.code() == 401) {
 
-                    Toast.makeText(
-                            ViewProfileActivity.this,
-                            "Session expired. Please login again.",
-                            Toast.LENGTH_LONG
-                    ).show();
+                            Toast.makeText(
+                                    ViewProfileActivity.this,
+                                    "Session expired",
+                                    Toast.LENGTH_LONG).show();
 
-                    spm.logout();
+                            spm.logout();
 
-                    finish();
-
-                    startActivity(
-                            new Intent(
+                            startActivity(new Intent(
                                     ViewProfileActivity.this,
                                     LoginActivity.class));
-                }
-            }
 
-            @Override
-            public void onFailure(Call<User> call,
-                                  Throwable t) {
+                            finish();
+                        }
+                    }
 
-                Log.e(
-                        "ViewProfileActivity",
-                        "Error fetching user data : "
-                                + t.getMessage());
-            }
-        });
+                    @Override
+                    public void onFailure(Call<User> call,
+                                          Throwable t) {
+
+                        Log.e("PROFILE",
+                                t.getMessage());
+                    }
+                });
     }
 
     private void displayUserData(User user) {
 
-        String nameToShow;
+        String name;
 
         if (user.getFullName() != null &&
                 !user.getFullName().isEmpty()) {
 
-            nameToShow = user.getFullName();
+            name = user.getFullName();
 
         } else {
 
-            nameToShow = user.getUsername();
+            name = user.getUsername();
         }
 
-        tvHeaderFullName.setText(
-                StringUtils.capitalize(nameToShow));
-
-        tvFullName.setText(user.getFullName());
+        tvHeaderFullName.setText(StringUtils.capitalize(name));
         tvUsername.setText(user.getUsername());
+        tvFullName.setText(user.getFullName());
         tvEmail.setText(user.getEmail());
-        tvRole.setText(
-                StringUtils.capitalize(user.getRole()));
+        tvRole.setText(StringUtils.capitalize(user.getRole()));
         tvStudID.setText(user.getStudID());
 
         tvModel.setText(user.getCarModel());
         tvPlate.setText(user.getPlateNumber());
         tvLicense.setText(user.getLicense());
 
-        // ==========================
-        // Show Vehicle Card Only for Driver
-        // ==========================
+        // Vehicle Card
 
         if ("driver".equalsIgnoreCase(user.getRole())) {
 
@@ -224,7 +260,6 @@ public class ViewProfileActivity extends AppCompatActivity {
         } else {
 
             cardVehicleInfo.setVisibility(View.GONE);
-
         }
     }
 }
