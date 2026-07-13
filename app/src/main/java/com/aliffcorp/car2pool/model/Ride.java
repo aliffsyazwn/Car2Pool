@@ -81,7 +81,6 @@ public class Ride {
         this.departure_time = departure_time;
     }
 
-    // --- NEW: Getter and Setter for Price ---
     public double getPrice() {
         return price;
     }
@@ -89,10 +88,9 @@ public class Ride {
     public void setPrice(double price) {
         this.price = price;
     }
-    // ----------------------------------------
 
     public boolean getfSeat() {
-        return fSeat == 1;
+        return fSeat != 0;
     }
 
     public void setfSeat(int fSeat) {
@@ -100,7 +98,7 @@ public class Ride {
     }
 
     public boolean getrSeat() {
-        return rSeat == 1;
+        return rSeat != 0;
     }
 
     public void setrSeat(int rSeat) {
@@ -108,15 +106,13 @@ public class Ride {
     }
 
     public boolean getmSeat() {
-        return mSeat == 1;
+        return mSeat != 0;
     }
 
-    public void setmSeat(int mSeat) {
-        this.mSeat = mSeat;
-    }
+    public void setmSeat(int mSeat) { this.mSeat = mSeat; }
 
     public boolean getlSeat() {
-        return lSeat == 1;
+        return lSeat != 0;
     }
 
     public void setlSeat(int lSeat) {
@@ -125,6 +121,22 @@ public class Ride {
 
     public void setDriver(User driver) {
         this.driver = driver;
+    }
+
+    public int getfSeatStatus() {
+        return fSeat;
+    }
+
+    public int getrSeatStatus() {
+        return rSeat;
+    }
+
+    public int getmSeatStatus() {
+        return mSeat;
+    }
+
+    public int getlSeatStatus() {
+        return lSeat;
     }
 
     @Override

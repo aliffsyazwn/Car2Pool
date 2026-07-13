@@ -87,16 +87,20 @@ public class DriverRideDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void showAvailableSeat(CheckBox checkBox, boolean available) {
+    private void showAvailableSeat(CheckBox checkBox, int status) {
+        checkBox.setVisibility(View.VISIBLE);
         checkBox.setClickable(false);
         checkBox.setFocusable(false);
 
-        if (available) {
+        if (status == 0) {
+            checkBox.setChecked(false);
+            checkBox.setEnabled(true);
+        } else if (status == 1) {
             checkBox.setChecked(true);
-            checkBox.setVisibility(View.VISIBLE);
+            checkBox.setEnabled(true);
         } else {
             checkBox.setChecked(false);
-            checkBox.setVisibility(View.VISIBLE);
+            checkBox.setEnabled(false);
         }
     }
 
@@ -119,10 +123,10 @@ public class DriverRideDetailActivity extends AppCompatActivity {
                     tvTime.setText(ride.getDeparture_time());
                     tvPrice.setText(String.format("RM %.2f", ride.getPrice()));
 
-                    showAvailableSeat(cbFSeat, ride.getfSeat());
-                    showAvailableSeat(cbRSeat, ride.getrSeat());
-                    showAvailableSeat(cbMSeat, ride.getmSeat());
-                    showAvailableSeat(cbLSeat, ride.getlSeat());
+                    showAvailableSeat(cbFSeat, ride.getfSeatStatus());
+                    showAvailableSeat(cbRSeat, ride.getrSeatStatus());
+                    showAvailableSeat(cbMSeat, ride.getmSeatStatus());
+                    showAvailableSeat(cbLSeat, ride.getlSeatStatus());
 
 
                 } else {

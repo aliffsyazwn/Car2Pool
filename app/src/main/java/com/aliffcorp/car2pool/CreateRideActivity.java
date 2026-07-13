@@ -115,10 +115,11 @@ public class CreateRideActivity extends AppCompatActivity {
                     etDestination.setText(ride.getDestination());
                     etDepTime.setText(ride.getDeparture_time());
                     etPrice.setText(String.valueOf(ride.getPrice()));
-                    cbFSeat.setChecked(ride.getfSeat());
-                    cbMSeat.setChecked(ride.getmSeat());
-                    cbRSeat.setChecked(ride.getrSeat());
-                    cbLSeat.setChecked(ride.getlSeat());
+
+                    cbFSeat.setChecked(ride.getfSeatStatus() == 2);
+                    cbMSeat.setChecked(ride.getmSeatStatus() == 2);
+                    cbRSeat.setChecked(ride.getrSeatStatus() == 2);
+                    cbLSeat.setChecked(ride.getlSeatStatus() == 2);
                 }
             }
 
@@ -268,12 +269,12 @@ public class CreateRideActivity extends AppCompatActivity {
             return;
         }
 
-        int fSeat = cbFSeat.isChecked() ? 1 : 0;
-        int rSeat = cbRSeat.isChecked() ? 1 : 0;
-        int mSeat = cbMSeat.isChecked() ? 1 : 0;
-        int lSeat = cbLSeat.isChecked() ? 1 : 0;
+        int fSeat = cbFSeat.isChecked() ? 2 : 0;
+        int rSeat = cbRSeat.isChecked() ? 2 : 0;
+        int mSeat = cbMSeat.isChecked() ? 2 : 0;
+        int lSeat = cbLSeat.isChecked() ? 2 : 0;
 
-        if (fSeat == 1 && rSeat == 1 && mSeat == 1 && lSeat == 1) {
+        if (fSeat == 2 && rSeat == 2 && mSeat == 2 && lSeat == 2) {
             Toast.makeText(CreateRideActivity.this, "At least one seat must be available", Toast.LENGTH_SHORT).show();
             return;
         }

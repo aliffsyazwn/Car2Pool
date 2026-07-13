@@ -5,6 +5,7 @@ import android.net.Uri; // <-- ADDED THIS IMPORT
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,10 +37,15 @@ public class RideDetailActivity extends AppCompatActivity {
     private Ride ride;
     private User user;
     private String token;
+    private Button btnBook;
+    private Button btnBack;
+
     TextView tvOrigin;
     TextView tvDestination;
     TextView tvDriver;
     TextView tvTime;
+    TextView tvPrice;
+
     CheckBox cbFSeat;
     CheckBox cbRSeat;
     CheckBox cbMSeat;
@@ -65,10 +71,15 @@ public class RideDetailActivity extends AppCompatActivity {
         tvDestination = findViewById(R.id.tvDestination);
         tvDriver = findViewById(R.id.tvDriver);
         tvTime = findViewById(R.id.tvTime);
+        tvPrice = findViewById(R.id.tvPrice);
+
         cbFSeat = findViewById(R.id.cbFSeat);
         cbRSeat = findViewById(R.id.cbRSeat);
         cbMSeat = findViewById(R.id.cbMSeat);
         cbLSeat = findViewById(R.id.cbLSeat);
+
+        btnBook = findViewById(R.id.btnBook);
+        btnBack = findViewById(R.id.btnBack);
 
         // --- START OF MAPS AUTOFILL IMPLEMENTATION ---
         tvOrigin.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +112,10 @@ public class RideDetailActivity extends AppCompatActivity {
         } else if (rideId != -1) {
             fetchRideDetails(rideId);
         }
+
+        btnBook.setOnClickListener(v -> bookRide(v));
+        btnBack.setOnClickListener(v -> finish());
+
     }
 
     // --- ADDED NEW MAPS INTENT METHOD ---
@@ -193,15 +208,17 @@ public class RideDetailActivity extends AppCompatActivity {
         tvOrigin.setText(ride.getOrigin());
         tvTime.setText(ride.getDeparture_time());
         tvDestination.setText(ride.getDestination());
-        cbFSeat.setChecked(ride.getfSeat());
-        cbRSeat.setChecked(ride.getrSeat());
-        cbMSeat.setChecked(ride.getmSeat());
-        cbLSeat.setChecked(ride.getlSeat());
+        tvPrice.setText(String.format("RM %.2f", ride.getPrice()));
 
-        setupSeatCheckBox(cbFSeat);
-        setupSeatCheckBox(cbRSeat);
-        setupSeatCheckBox(cbMSeat);
-        setupSeatCheckBox(cbLSeat);
+        cbFSeat = findViewById(R.id.cbFSeat);
+        cbRSeat = findViewById(R.id.cbRSeat);
+        cbMSeat = findViewById(R.id.cbMSeat);
+        cbLSeat = findViewById(R.id.cbLSeat);
+
+        showAvailableSeat(cbFSeat, ride.getfSeatStatus());
+        showAvailableSeat(cbRSeat, ride.getrSeatStatus());
+        showAvailableSeat(cbMSeat, ride.getmSeatStatus());
+        showAvailableSeat(cbLSeat, ride.getlSeatStatus());
 
         userService.getUser(token, ride.getDriver_id()).enqueue(new Callback<User>() {
             @Override
@@ -220,14 +237,7 @@ public class RideDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void setupSeatCheckBox(CheckBox cb) {
-        cb.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (!isChecked) {
-                buttonView.setChecked(true);
-                Toast.makeText(RideDetailActivity.this, "Cannot uncheck seat", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+
 
     public void clearSessionAndRedirect() {
         SharedPrefManager spm = new SharedPrefManager(getApplicationContext());
@@ -247,10 +257,35 @@ public class RideDetailActivity extends AppCompatActivity {
         String origin = tvOrigin.getText().toString();
         String destination = tvDestination.getText().toString();
         String departure_time = tvTime.getText().toString();
-        int fSeat = cbFSeat.isChecked() ? 1 : 0;
-        int rSeat = cbRSeat.isChecked() ? 1 : 0;
-        int mSeat = cbMSeat.isChecked() ? 1 : 0;
-        int lSeat = cbLSeat.isChecked() ? 1 : 0;
+
+        boolean selectedFSeat =
+                ride.getfSeatStatus() == 0 && cbFSeat.isChecked();
+
+        boolean selectedRSeat =
+                ride.getrSeatStatus() == 0 && cbRSeat.isChecked();
+
+        boolean selectedMSeat =
+                ride.getmSeatStatus() == 0 && cbMSeat.isChecked();
+
+        boolean selectedLSeat =
+                ride.getlSeatStatus() == 0 && cbLSeat.isChecked();
+
+        if (!selectedFSeat && !selectedRSeat &&
+                !selectedMSeat && !selectedLSeat) {
+
+            Toast.makeText(
+                    this,
+                    "Please select at least one available seat",
+                    Toast.LENGTH_SHORT
+            ).show();
+
+            return;
+        }
+
+        int fSeat = selectedFSeat ? 1 : ride.getfSeatStatus();
+        int rSeat = selectedRSeat ? 1 : ride.getrSeatStatus();
+        int mSeat = selectedMSeat ? 1 : ride.getmSeatStatus();
+        int lSeat = selectedLSeat ? 1 : ride.getlSeatStatus();
 
         ride.setDriver_id(driver_id);
         ride.setOrigin(origin);
@@ -312,6 +347,28 @@ public class RideDetailActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void showAvailableSeat(CheckBox checkBox, int status) {
+        checkBox.setVisibility(View.VISIBLE);
+
+        if (status == 0) {
+            checkBox.setChecked(false);
+            checkBox.setEnabled(true);
+            checkBox.setClickable(true);
+            checkBox.setFocusable(true);
+        }
+        else if (status == 1) {
+            checkBox.setChecked(true);
+            checkBox.setEnabled(true);
+            checkBox.setClickable(false);
+            checkBox.setFocusable(false);
+        }
+        else if (status == 2) {
+            checkBox.setChecked(false);
+            checkBox.setEnabled(false);
+            checkBox.setClickable(false);
+            checkBox.setFocusable(false);
+        }
     }
     public void backToRideList(View view) {
         finish();
