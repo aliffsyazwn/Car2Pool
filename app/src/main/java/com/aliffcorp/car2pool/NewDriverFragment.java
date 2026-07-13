@@ -27,7 +27,7 @@ import retrofit2.Response;
 
 public class NewDriverFragment extends Fragment {
 
-    private EditText txtEmail, txtUsername, txtPassword, txtID, txtCarModel, txtPlateNumber, txtLicense;
+    private EditText txtFullName, txtEmail, txtUsername, txtPassword, txtID, txtCarModel, txtPlateNumber, txtLicense;
     private Button btnNewDriver;
 
     @Nullable
@@ -36,6 +36,7 @@ public class NewDriverFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_driver, container, false);
 
         // Bind unique Driver field view references
+        txtFullName = view.findViewById(R.id.txtDriverFullName);
         txtUsername = view.findViewById(R.id.txtDriverUsername);
         txtEmail = view.findViewById(R.id.txtDriverEmail);
         txtPassword = view.findViewById(R.id.txtDriverPassword);
@@ -57,6 +58,7 @@ public class NewDriverFragment extends Fragment {
 
     private void addNewDriver() {
         String api_key = "3b191b07-7739-4698-b885-8660b564c963";
+        String fullName = txtFullName.getText().toString();
         String username = txtUsername.getText().toString();
         String email = txtEmail.getText().toString();
 
@@ -74,20 +76,20 @@ public class NewDriverFragment extends Fragment {
         String plateNumber = txtPlateNumber.getText().toString();
         String license = txtLicense.getText().toString();
 
-        if (validateRegister(username, password, email, studId, carModel, plateNumber, license)) {
+        if (validateRegister(fullName, username, password, email, studId, carModel, plateNumber, license)) {
             doNewDriver(api_key, email, username, password, token, lease, role, is_active,
-                    secret, studId, carModel, plateNumber, license);
+                    secret, studId, carModel, plateNumber, license, fullName);
         }
     }
 
     private void doNewDriver(String api_key, String email, String username, String password, String token,
                              String lease, String role, int is_active, String secret, String studId,
-                             String carModel, String plateNumber, String license) {
+                             String carModel, String plateNumber, String license, String fullName) {
         UserService userService = ApiUtils.getUserService();
 
         // Ensure you adapt this to your actual backend signature within your UserService interface
         Call<User> call = userService.addUser(api_key, email, username, password, token, lease, role,
-                is_active, secret, studId, carModel, plateNumber, license);
+                is_active, secret, studId, carModel, plateNumber, license, fullName);
 
         call.enqueue(new Callback<User>() {
             @Override
@@ -129,7 +131,12 @@ public class NewDriverFragment extends Fragment {
         });
     }
 
-    private boolean validateRegister(String username, String password, String email, String studId, String carModel, String plateNumber, String license) {
+    private boolean validateRegister(String fullName, String username, String password, String email, String studId, String carModel, String plateNumber, String license) {
+        if (fullName == null || fullName.trim().isEmpty()) {
+            txtFullName.setError("Full Name is required");
+            txtFullName.requestFocus();
+            return false;
+        }
         if (username == null || username.trim().isEmpty()) {
             txtUsername.setError("Username is required");
             txtUsername.requestFocus();

@@ -21,6 +21,8 @@ import retrofit2.Response;
 public class ViewProfileActivity extends AppCompatActivity {
 
     private TextView tvUsername;
+    private TextView tvFullName;
+    private TextView tvHeaderFullName;
     private TextView tvEmail;
     private TextView tvRole;
     private TextView tvStudID;
@@ -43,6 +45,8 @@ public class ViewProfileActivity extends AppCompatActivity {
 
         // Initialize Views
         tvUsername = findViewById(R.id.tvUsername);
+        tvFullName = findViewById(R.id.tvFullName);
+        tvHeaderFullName = findViewById(R.id.tvHeaderFullName);
         tvEmail = findViewById(R.id.tvEmail);
         tvRole = findViewById(R.id.tvRole);
         tvStudID = findViewById(R.id.tvStudID);
@@ -130,7 +134,10 @@ public class ViewProfileActivity extends AppCompatActivity {
     }
 
     private void displayUserData(User user) {
-        tvUsername.setText(StringUtils.capitalize(user.getUsername()));
+        String nameToShow = user.getFullName() != null && !user.getFullName().isEmpty() ? user.getFullName() : user.getUsername();
+        tvHeaderFullName.setText(StringUtils.capitalize(nameToShow));
+        tvFullName.setText(user.getFullName());
+        tvUsername.setText(user.getUsername());
         tvEmail.setText(user.getEmail());
         tvRole.setText(StringUtils.capitalize(user.getRole()));
         tvStudID.setText(user.getStudID());

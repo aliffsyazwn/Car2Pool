@@ -13,7 +13,6 @@ import com.aliffcorp.car2pool.StringUtils;
 import com.aliffcorp.car2pool.model.Ride;
 
 import java.util.List;
-import java.util.Locale; // <-- NEW: Imported for String formatting
 
 public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
 
@@ -21,8 +20,6 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         public TextView tvOrigin;
         public TextView tvDestination;
         public TextView tvTime;
-        public TextView tvDriver;
-        public TextView tvPrice;
 
 
         public ViewHolder(View itemView) {
@@ -30,8 +27,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
             tvOrigin = itemView.findViewById(R.id.tvOrigin);
             tvDestination = itemView.findViewById(R.id.tvDestination);
             tvTime = itemView.findViewById(R.id.tvTime);
-            tvDriver = itemView.findViewById(R.id.tvDriver);
-            tvPrice = itemView.findViewById(R.id.tvPrice);
+
 
             itemView.setOnLongClickListener(this);  //register long click action to this viewholder instance
         }
@@ -75,23 +71,12 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         holder.tvOrigin.setText(m.getOrigin());
         holder.tvDestination.setText(m.getDestination());
         holder.tvTime.setText(m.getDeparture_time());
-
-        // -- Format and display the price  ---
-        // This takes m.getPrice() (e.g., 5.0) and turns it into "RM 5.00"
-        holder.tvPrice.setText(String.format(Locale.getDefault(), "RM %.2f", m.getPrice()));
-
-        if (m.getDriver() != null) {
-            holder.tvDriver.setText(StringUtils.capitalize(m.getDriver().getUsername()));
-        } else {
-            holder.tvDriver.setText("Unknown");
-        }
     }
 
     @Override
     public int getItemCount() {
         return rideListData.size();
     }
-
     /**
      * return ride object for currently selected ride (index already set by long press in viewholder)
      * @return
@@ -111,8 +96,14 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         return null;
     }
 
+    /**
+     * return driver object for currently selected ride (index already set by long press in viewholder)
+     * @return
+     */
+
+    // NEW: Added this method to allow filtering for the search bars
     public void filterList(List<Ride> filteredList) {
         this.rideListData = filteredList;
-        notifyDataSetChanged();
+        notifyDataSetChanged(); // Tells the RecyclerView to redraw the screen with the new list
     }
 }

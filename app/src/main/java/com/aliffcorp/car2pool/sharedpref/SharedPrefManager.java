@@ -20,6 +20,7 @@ public class SharedPrefManager {
     private static final String KEY_CARMODEL = "keycarmodel";
     private static final String KEY_PLATENUMBER = "keyplatenumber";
     private static final String KEY_LICENSE = "keylicense";
+    private static final String KEY_FULLNAME = "keyfullname";
 
     private final Context mCtx;
 
@@ -44,6 +45,7 @@ public class SharedPrefManager {
         editor.putString(KEY_CARMODEL, user.getCarModel());
         editor.putString(KEY_PLATENUMBER, user.getPlateNumber());
         editor.putString(KEY_LICENSE, user.getLicense());
+        editor.putString(KEY_FULLNAME, user.getFullName());
         editor.apply();
     }
 
@@ -73,6 +75,7 @@ public class SharedPrefManager {
         user.setCarModel(sharedPreferences.getString(KEY_CARMODEL, null));
         user.setPlateNumber(sharedPreferences.getString(KEY_PLATENUMBER, null));
         user.setLicense(sharedPreferences.getString(KEY_LICENSE, null));
+        user.setFullName(sharedPreferences.getString(KEY_FULLNAME, null));
 
         return user;
     }

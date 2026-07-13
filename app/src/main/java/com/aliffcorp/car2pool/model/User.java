@@ -14,8 +14,9 @@ public class User {
     private String carModel;
     private String plateNumber;
     private String license;
+    private String fullName;
 
-    public User(int id, String email, String username, String password, String lease, String token, String role, int is_active, String secret, String studID, String carModel, String plateNumber, String license) {
+    public User(int id, String email, String username, String password, String lease, String token, String role, int is_active, String secret, String studID, String carModel, String plateNumber, String license, String fullName) {
         this.id = id;
         this.email = email;
         this.username = username;
@@ -29,6 +30,7 @@ public class User {
         this.carModel = carModel;
         this.plateNumber = plateNumber;
         this.license = license;
+        this.fullName = fullName;
     }
 
     public User() {}
@@ -137,6 +139,14 @@ public class User {
         this.license = license;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -153,6 +163,7 @@ public class User {
                 ", carModel='" + carModel + '\'' +
                 ", plateNumber='" + plateNumber + '\'' +
                 ", license='" + license + '\'' +
+                ", fullName='" + fullName + '\'' +
                 '}';
     }
 }

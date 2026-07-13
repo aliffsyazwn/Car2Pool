@@ -29,7 +29,7 @@ public class DriverRideDetailActivity extends AppCompatActivity {
     private RideService rideService;
     private UserService userService;
 
-    private TextView tvOrigin, tvDestination, tvTime, tvSeats, tvDriver;
+    private TextView tvOrigin, tvDestination, tvTime, tvDriver;
     private Button btnBack, btnEditRide;
 
     @Override
@@ -48,7 +48,6 @@ public class DriverRideDetailActivity extends AppCompatActivity {
         tvOrigin = findViewById(R.id.tvOrigin);
         tvDestination = findViewById(R.id.tvDestination);
         tvTime = findViewById(R.id.tvTime);
-        tvSeats = findViewById(R.id.tvSeats);
         tvDriver = findViewById(R.id.tvDriver);
 
         btnBack = findViewById(R.id.btnBack);

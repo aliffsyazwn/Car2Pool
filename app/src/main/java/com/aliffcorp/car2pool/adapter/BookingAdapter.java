@@ -93,7 +93,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
             if (currentBooking.getRide().getDriver() != null) {
                 driverName = "Driver: " +
-                        StringUtils.capitalize(currentBooking.getRide().getDriver().getUsername());
+                        StringUtils.capitalize(currentBooking.getRide().getDriver().getFullName());
             }
         }
 
