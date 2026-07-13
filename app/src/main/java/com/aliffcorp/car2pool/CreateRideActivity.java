@@ -38,6 +38,7 @@ public class CreateRideActivity extends AppCompatActivity {
     private AutoCompleteTextView etOrigin;
     private AutoCompleteTextView etDestination;
     private EditText etDepTime;
+    private EditText etPrice;
 
     private CheckBox cbFSeat;
     private CheckBox cbRSeat;
@@ -68,6 +69,7 @@ public class CreateRideActivity extends AppCompatActivity {
         etOrigin = findViewById(R.id.etOrigin);
         etDestination = findViewById(R.id.etDestination);
         etDepTime = findViewById(R.id.etDepTime);
+        etPrice = findViewById(R.id.etPrice);
 
         cbFSeat = findViewById(R.id.cbFSeat);
         cbRSeat = findViewById(R.id.cbRSeat);
@@ -164,6 +166,7 @@ public class CreateRideActivity extends AppCompatActivity {
         String origin = etOrigin.getText().toString().trim();
         String destination = etDestination.getText().toString().trim();
         String departureTime = etDepTime.getText().toString().trim();
+        String priceStr = etPrice.getText().toString().trim();
 
         if (origin.isEmpty()) {
             etOrigin.setError("Enter origin");
@@ -179,6 +182,21 @@ public class CreateRideActivity extends AppCompatActivity {
             etDepTime.setError("Select departure time");
             return;
         }
+
+        // --- NEW: Price Validation ---
+        if (priceStr.isEmpty()) {
+            etPrice.setError("Enter price");
+            return;
+        }
+
+        double price = 0.0;
+        try {
+            price = Double.parseDouble(priceStr);
+        } catch (NumberFormatException e) {
+            etPrice.setError("Invalid price format");
+            return;
+        }
+        // -----------------------------
 
         int fSeat = cbFSeat.isChecked() ? 1 : 0;
         int rSeat = cbRSeat.isChecked() ? 1 : 0;
@@ -201,6 +219,7 @@ public class CreateRideActivity extends AppCompatActivity {
                 origin,
                 destination,
                 departureTime,
+                price,
                 fSeat,
                 rSeat,
                 mSeat,
