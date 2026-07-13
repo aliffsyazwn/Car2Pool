@@ -1,43 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:id="@+id/main">
+    android:padding="16dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
         android:text="Registration"
-        android:textSize="32sp"
-        android:layout_marginTop="20dp" />
+        android:textColor="#2E7D32"
+        android:textSize="28sp"
+        android:textStyle="bold" />
 
-    <RadioGroup
-        android:id="@+id/rgUserType"
+    <!-- Selection Card -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginVertical="16dp">
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp">
 
-        <RadioButton
-            android:id="@+id/rbRider"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/rgUserType"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Rider"
-            android:checked="true"
-            android:layout_marginEnd="20dp" />
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="12dp">
 
-        <RadioButton
-            android:id="@+id/rbDriver"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Driver" />
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/rbRider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:checked="true"
+                android:text="Rider"
+                android:textSize="16sp" />
 
+            <RadioButton
+                android:id="@+id/rbDriver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Driver"
+                android:textSize="16sp" />
+        </RadioGroup>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Fragment Container -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
