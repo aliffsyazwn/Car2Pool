@@ -9,7 +9,8 @@ public class Ride {
     private String origin;
     private String destination;
     private String departure_time;
-    
+    private double price;
+
     @SerializedName("fSeat")
     private int fSeat;
     @SerializedName("rSeat")
@@ -25,12 +26,14 @@ public class Ride {
 
     public Ride(){}
 
-    public Ride(int ride_id, int driver_id, String origin, String destination, String departure_time, int fSeat, int mSeat, int rSeat, int lSeat, User driver) {
+    // NEW: Added double price to the constructor
+    public Ride(int ride_id, int driver_id, String origin, String destination, String departure_time, double price, int fSeat, int mSeat, int rSeat, int lSeat, User driver) {
         this.ride_id = ride_id;
         this.driver_id = driver_id;
         this.origin = origin;
         this.destination = destination;
         this.departure_time = departure_time;
+        this.price = price;
         this.fSeat = fSeat;
         this.mSeat = mSeat;
         this.rSeat = rSeat;
@@ -78,6 +81,16 @@ public class Ride {
         this.departure_time = departure_time;
     }
 
+    // --- NEW: Getter and Setter for Price ---
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+    // ----------------------------------------
+
     public boolean getfSeat() {
         return fSeat == 1;
     }
@@ -122,6 +135,7 @@ public class Ride {
                 ", origin='" + origin + '\'' +
                 ", destination='" + destination + '\'' +
                 ", departure_time='" + departure_time + '\'' +
+                ", price=" + price +
                 ", fSeat=" + fSeat +
                 ", rSeat=" + rSeat +
                 ", mSeat=" + mSeat +
