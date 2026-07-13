@@ -24,7 +24,7 @@ public interface UserService {
                         @Field("role") String role, @Field("is_active") int is_active,
                         @Field("secret") String secret, @Field("studID") String studID,
                         @Field("carModel") String carModel, @Field("plateNumber") String plateNumber,
-                        @Field("license") String license);
+                        @Field("license") String license, @Field("fullName") String fullName);
 
     @FormUrlEncoded
     @POST("users/login")
@@ -41,6 +41,7 @@ public interface UserService {
                           @Field("lease") String lease, @Field("role") String role,
                           @Field("is_active") int is_active, @Field("secret") String secret,
                           @Field("studID") String studID, @Field("carModel") String carModel,
-                          @Field("plateNumber") String plateNumber, @Field("license") String license);
+                          @Field("plateNumber") String plateNumber, @Field("license") String license,
+                          @Field("fullName") String fullName);
 
 }

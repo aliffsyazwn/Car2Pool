@@ -207,7 +207,7 @@ public class RideDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    tvDriver.setText(StringUtils.capitalize(response.body().getUsername()));
+                    tvDriver.setText(StringUtils.capitalize(response.body().getFullName()));
                 } else {
                     tvDriver.setText("Unknown Driver (" + ride.getDriver_id() + ")");
                 }

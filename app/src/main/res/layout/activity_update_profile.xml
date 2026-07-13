@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
-                android:text="My Profile"
+                android:text="Update Profile"
                 android:textColor="#2E7D32"
                 android:textSize="28sp"
                 android:textStyle="bold" />
@@ -44,6 +44,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
+                android:text="Full Name"
+                android:textColor="#444444"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etFullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="#FFFFFF"
+                android:elevation="3dp"
+                android:padding="14dp"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
                 android:text="Username"
                 android:textColor="#444444"
                 android:textStyle="bold" />

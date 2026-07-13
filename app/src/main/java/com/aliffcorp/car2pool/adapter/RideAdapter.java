@@ -20,7 +20,6 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         public TextView tvOrigin;
         public TextView tvDestination;
         public TextView tvTime;
-        public TextView tvDriver;
 
 
         public ViewHolder(View itemView) {
@@ -28,7 +27,6 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
             tvOrigin = itemView.findViewById(R.id.tvOrigin);
             tvDestination = itemView.findViewById(R.id.tvDestination);
             tvTime = itemView.findViewById(R.id.tvTime);
-            tvDriver = itemView.findViewById(R.id.tvDriver);
 
 
             itemView.setOnLongClickListener(this);  //register long click action to this viewholder instance
@@ -73,12 +71,6 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         holder.tvOrigin.setText(m.getOrigin());
         holder.tvDestination.setText(m.getDestination());
         holder.tvTime.setText(m.getDeparture_time());
-
-        if (m.getDriver() != null) {
-            holder.tvDriver.setText(StringUtils.capitalize(m.getDriver().getUsername()));
-        } else {
-            holder.tvDriver.setText("Unknown");
-        }
     }
 
     @Override

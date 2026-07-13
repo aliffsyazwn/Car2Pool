@@ -31,6 +31,7 @@ import retrofit2.Response;
 public class UpdateProfileActivity extends AppCompatActivity {
 
     private EditText etUsername;
+    private EditText etFullName;
     private EditText etEmail;
     private EditText etPassword;
     private EditText etStudID;
@@ -60,6 +61,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
         // Initialize Views
         etUsername = findViewById(R.id.etUsername);
+        etFullName = findViewById(R.id.etFullName);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         etStudID = findViewById(R.id.etStudID);
@@ -86,6 +88,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
                         user = response.body();
 
                         if (user != null) {
+                            etFullName.setText(user.getFullName());
                             etUsername.setText(user.getUsername());
                             etEmail.setText(user.getEmail());
                             etPassword.setText(""); // Keep password empty for security
@@ -151,6 +154,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
         String api_key = "3b191b07-7739-4698-b885-8660b564c963";
         String username = etUsername.getText().toString();
+        String fullName = etFullName.getText().toString();
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
         String token = "00000000-00000-0000-0000-000000000000";
@@ -166,6 +170,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         Log.d("MyApp:", "Updating User info: " + user.toString());
 
         user.setUsername(username);
+        user.setFullName(fullName);
         user.setEmail(email);
         user.setPassword(password);
         user.setToken(token);
@@ -180,7 +185,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
         Call<User> call = userService.updateUser(spm.getUser().getToken(), user.getId(), email,
                 username, password, token, lease, role, is_active,
-                secret, studID, carModel, plateNumber, license);
+                secret, studID, carModel, plateNumber, license, fullName);
 
         call.enqueue(new Callback<User>() {
             @Override
