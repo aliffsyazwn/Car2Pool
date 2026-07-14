@@ -3,6 +3,20 @@ package com.aliffcorp.car2pool;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+import com.aliffcorp.car2pool.model.Ride;
+import com.aliffcorp.car2pool.remote.ApiUtils;
+import com.aliffcorp.car2pool.remote.RideService;
+import com.aliffcorp.car2pool.model.Booking;
+import com.aliffcorp.car2pool.remote.BookingService;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +31,10 @@ import com.aliffcorp.car2pool.sharedpref.SharedPrefManager;
 public class DriverMainActivity extends AppCompatActivity {
 
     private TextView tvHello;
+    private TextView tvTotalRide;
 
+    private RideService rideService;
+    private BookingService bookingService;
     private CardView cardProfile;
     private CardView cardCreateRide;
     private CardView cardUpdateRide;
@@ -61,6 +78,9 @@ public class DriverMainActivity extends AppCompatActivity {
 
         // Initialize Views
         tvHello = findViewById(R.id.tvHello);
+        tvTotalRide = findViewById(R.id.tvTotalRide);
+        bookingService = ApiUtils.getBookingService();
+        rideService = ApiUtils.getRideService();
 
         cardProfile = findViewById(R.id.cardProfile);
         cardCreateRide = findViewById(R.id.cardCreateRide);
@@ -68,6 +88,7 @@ public class DriverMainActivity extends AppCompatActivity {
 
         // Welcome message
         tvHello.setText("Welcome back, " + user.getUsername() + "!");
+        loadDashboard(user);
 
         // ==========================
         // Profile
@@ -102,4 +123,43 @@ public class DriverMainActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+    private void loadDashboard(User user) {
+
+        rideService.getAllRides(user.getToken()).enqueue(new Callback<List<Ride>>() {
+
+            @Override
+            public void onResponse(Call<List<Ride>> call, Response<List<Ride>> response) {
+
+                if (response.isSuccessful() && response.body() != null) {
+
+                    int todayRide = 0;
+
+                    String today =
+                            new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                                    .format(new Date());
+
+                    for (Ride ride : response.body()) {
+
+                        if (ride.getDriver_id() != user.getId())
+                            continue;
+
+                        if (ride.getDeparture_time().startsWith(today)) {
+                            todayRide++;
+                        }
+                    }
+
+                    tvTotalRide.setText(String.valueOf(todayRide));
+
+                } else {
+                    tvTotalRide.setText("0");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Ride>> call, Throwable t) {
+                tvTotalRide.setText("0");
+            }
+        });
+    }
+
 }
