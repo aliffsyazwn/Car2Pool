@@ -223,7 +223,7 @@ public class CreateRideActivity extends AppCompatActivity {
         );
 
         Calendar minDate = Calendar.getInstance();
-        minDate.add(Calendar.DAY_OF_MONTH, 1);   // Move to tomorrow
+        minDate.add(Calendar.DAY_OF_MONTH, 0);   // Move to tomorrow
         minDate.set(Calendar.HOUR_OF_DAY, 0);
         minDate.set(Calendar.MINUTE, 0);
         minDate.set(Calendar.SECOND, 0);
