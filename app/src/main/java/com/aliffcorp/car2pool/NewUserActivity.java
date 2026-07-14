@@ -13,9 +13,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.aliffcorp.car2pool.model.FailLogin;
 import com.aliffcorp.car2pool.model.User;
 import com.aliffcorp.car2pool.remote.ApiUtils;
 import com.aliffcorp.car2pool.remote.UserService;
+import com.google.gson.Gson;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -85,14 +87,24 @@ public class NewUserActivity extends AppCompatActivity {
                 } else {
                     try (ResponseBody errorBody = response.errorBody()) {
                         if (errorBody != null) {
-                            String errorMsg = errorBody.string();
-                            Log.e("NewUserActivity", "Error Body: " + errorMsg);
-                            Toast.makeText(NewUserActivity.this, "Error: " + errorMsg, Toast.LENGTH_LONG).show();
+                            String errorJson = errorBody.string();
+                            Log.e("NewUserActivity", "Error Body: " + errorJson);
+                            
+                            try {
+                                FailLogin failResponse = new Gson().fromJson(errorJson, FailLogin.class);
+                                if (failResponse != null && failResponse.getError() != null) {
+                                    Toast.makeText(NewUserActivity.this, failResponse.getError().getMessage(), Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(NewUserActivity.this, "Error: " + errorJson, Toast.LENGTH_LONG).show();
+                                }
+                            } catch (Exception e) {
+                                Toast.makeText(NewUserActivity.this, "Error: " + errorJson, Toast.LENGTH_LONG).show();
+                            }
                         } else {
                             Toast.makeText(NewUserActivity.this, "Error: " + response.code() + " " + response.message(), Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
-                        Log.e("NewUserActivity", "Error parsing error body", e);
+                        Log.e("NewUserActivity", "Error reading error body", e);
                         Toast.makeText(NewUserActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
                     }
                 }
