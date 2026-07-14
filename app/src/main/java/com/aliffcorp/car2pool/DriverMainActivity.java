@@ -87,7 +87,7 @@ public class DriverMainActivity extends AppCompatActivity {
         cardUpdateRide = findViewById(R.id.cardUpdateRide);
 
         // Welcome message
-        tvHello.setText("Welcome back, " + user.getUsername() + "!");
+        tvHello.setText("Welcome back, " + user.getFullName() + "!");
         loadDashboard(user);
 
         // ==========================
