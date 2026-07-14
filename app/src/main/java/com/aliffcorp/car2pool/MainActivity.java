@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private CardView cardSearchRide;
     private CardView cardBooking;
     private CardView cardProfile;
+    private Button btnBookNow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         cardSearchRide = findViewById(R.id.cardSearchRide);
         cardBooking = findViewById(R.id.cardBooking);
         cardProfile = findViewById(R.id.cardProfile);
+        btnBookNow = findViewById(R.id.btnBookNow);
 
         // Check Login
         // Check Login
@@ -71,12 +76,33 @@ public class MainActivity extends AppCompatActivity {
 
 // Display username
         tvHello.setText("Welcome back, " + user.getUsername() + "!");
+        ObjectAnimator scaleX =
+                ObjectAnimator.ofFloat(btnBookNow, "scaleX", 1f, 1.08f);
+
+        ObjectAnimator scaleY =
+                ObjectAnimator.ofFloat(btnBookNow, "scaleY", 1f, 1.08f);
+
+        scaleX.setDuration(700);
+        scaleY.setDuration(700);
+
+        scaleX.setRepeatCount(ValueAnimator.INFINITE);
+        scaleY.setRepeatCount(ValueAnimator.INFINITE);
+
+        scaleX.setRepeatMode(ValueAnimator.REVERSE);
+        scaleY.setRepeatMode(ValueAnimator.REVERSE);
+
+        scaleX.start();
+        scaleY.start();
 
         // ===========================
         // Bottom Navigation
         // ===========================
         // Search Ride
         cardSearchRide.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, RideListActivity.class);
+            startActivity(intent);
+        });
+        btnBookNow.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, RideListActivity.class);
             startActivity(intent);
         });
